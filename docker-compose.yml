@@ -1,0 +1,32 @@
+version: "2"
+
+services:
+  concert-diary:
+    environment:
+      - DB_CLIENT=${DB_CLIENT}
+      - DB_AUTH_SOURCE=${DB_AUTH_SOURCE}
+      - DB_AUTH_USER=${DB_AUTH_USER}
+      - DB_AUTH_PASSWORD=${DB_AUTH_PASSWORD}
+      - SESSION_COOKIE_SECRET=${SESSION_COOKIE_SECRET}
+      - REGISTER_TOKEN=${REGISTER_TOKEN}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "concert-diary"
+    restart: unless-stopped
+    ports:
+      - "${PORT}:${PORT}"
+#    links:
+#      - concert-diary-db
+#    depends_on:
+#      - concert-diary-db
+#
+#  concert-diary-db:
+#    image: mongo:latest
+#    container_name: "concert-diary-db"
+#    volumes:
+#      - ~/concert-diary/db:/data/db
+#    ports:
+#      - 27017:27017
+#    restart: unless-stopped
+#    command: [--auth]

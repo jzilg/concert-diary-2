@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# JetBrains
+.idea
+
+# VS Code
+.vscode
+
+# Enviorment
+.env
+
+# npm
+node_modules
+
+# Built files
+/.cache
+/build
+/public/build

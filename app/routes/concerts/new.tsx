@@ -1,0 +1,58 @@
+import type { FC } from 'react'
+import { useSubmit } from '@remix-run/react'
+import uniqid from 'uniqid'
+import type Concert from '~/entities/Concert'
+import ConcertForm from '~/components/ConcertForm'
+import type { ActionFunction, MetaFunction } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
+import concertsProvider from '~/providers/concertsProvider'
+import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
+import { getUserFromRequest } from '~/logic/user'
+import todaysDate from '~/helpers/todaysDate'
+
+export const meta: MetaFunction = () => ({
+  title: 'Concert Diary | New Concert',
+})
+
+export const action: ActionFunction = async ({ request }) => {
+  const user = await getUserFromRequest(request)
+
+  if (user === undefined) {
+    return redirect('/login')
+  }
+
+  const body = await request.formData()
+  const concertToAdd: Concert = {
+    id: uniqid(),
+    band: extractStringFromBody(body)('band'),
+    supportBands: extractListFromBody(body)('supportBands'),
+    location: extractStringFromBody(body)('location'),
+    date: extractStringFromBody(body)('date'),
+    companions: extractListFromBody(body)('companions'),
+  }
+
+  await concertsProvider(user.id).add(concertToAdd)
+
+  return redirect('/concerts')
+}
+
+const NewConcert: FC = () => {
+  const saveConcert = useSubmit()
+  const concert: Concert = {
+    id: '',
+    date: todaysDate,
+    companions: [],
+    band: '',
+    location: '',
+    supportBands: [],
+  }
+
+  return (
+    <>
+      <h2 className="text-2xl mt-10 mb-6 font-bold">New Concert</h2>
+      <ConcertForm concert={concert} saveConcert={saveConcert} method="post" />
+    </>
+  )
+}
+
+export default NewConcert
