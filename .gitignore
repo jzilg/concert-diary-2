@@ -17,3 +17,4 @@ node_modules
 /.cache
 /build
 /public/build
+/app/styles/app.css
