@@ -15,7 +15,7 @@ services:
     container_name: "concert-diary"
     restart: unless-stopped
     ports:
-      - "${PORT}:${PORT}"
+      - "${PORT}:3000"
 #    links:
 #      - concert-diary-db
 #    depends_on:
