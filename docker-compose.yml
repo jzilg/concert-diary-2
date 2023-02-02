@@ -18,15 +18,15 @@ services:
       - "${PORT}:3000"
     links:
       - concert-diary-db
-#    depends_on:
-#      - concert-diary-db
-#
-#  concert-diary-db:
-#    image: mongo:latest
-#    container_name: "concert-diary-db"
-#    volumes:
-#      - ~/concert-diary/db:/data/db
-#    ports:
-#      - 27017:27017
-#    restart: unless-stopped
-#    command: [--auth]
+    depends_on:
+      - concert-diary-db
+
+  concert-diary-db:
+    image: mongo:latest
+    container_name: "concert-diary-db"
+    volumes:
+      - ~/concert-diary/db:/data/db
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+    command: [--auth]
