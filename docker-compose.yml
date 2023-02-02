@@ -16,8 +16,8 @@ services:
     restart: unless-stopped
     ports:
       - "${PORT}:3000"
-#    links:
-#      - concert-diary-db
+    links:
+      - concert-diary-db
 #    depends_on:
 #      - concert-diary-db
 #
