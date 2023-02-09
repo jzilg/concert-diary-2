@@ -13,14 +13,21 @@ import styles from './styles/app.css'
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
+  title: 'Concert Diary',
+  viewport: 'width=device-width,initial-scale=1,maximum-scale=1',
 })
 
-export const links: LinksFunction = () => [{
-  rel: 'stylesheet',
-  href: styles,
-}]
+export const links: LinksFunction = () => [
+  {
+    rel: 'shortcut icon',
+    href: 'favicon.png',
+    sizes: '196x196',
+  },
+  {
+    rel: 'stylesheet',
+    href: styles,
+  },
+]
 
 const App: FC = () => (
   <html lang="en">
