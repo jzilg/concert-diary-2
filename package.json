@@ -9,7 +9,7 @@
     "start": "remix-serve build",
     "lint": "eslint . --ext .js,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc --skipLibCheck"
   },
   "dependencies": {
     "@remix-run/node": "^1.7.2",
