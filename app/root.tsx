@@ -29,6 +29,8 @@ export const links: LinksFunction = () => [
   },
 ]
 
+console.log('CI successfully')
+
 const App: FC = () => (
   <html lang="en">
     <head>
