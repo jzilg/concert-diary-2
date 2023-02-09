@@ -46,7 +46,6 @@ const Register: FC = () => (
           name="username"
           minLength={2}
           required
-          defaultValue="testuser"
         />
       </label>
       <label className="block mt-3">
@@ -56,7 +55,6 @@ const Register: FC = () => (
           name="password"
           minLength={6}
           required
-          defaultValue="qweasd"
         />
       </label>
       <label className="block mt-3">
@@ -65,7 +63,6 @@ const Register: FC = () => (
           type="password"
           name="token"
           required
-          defaultValue="&!fvbPK4Bnh22uY#$p^8UxCFQ7"
         />
       </label>
       <ul className="flex gap-2 mt-6">
