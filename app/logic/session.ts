@@ -4,14 +4,11 @@ import config from '~/config'
 const { getSession, commitSession, destroySession } = createCookieSessionStorage({
   cookie: {
     name: '__session',
-    maxAge: 60 * 60, // 5min
+    maxAge: 5 * 60 /* sec */,
     path: '/',
     httpOnly: true,
     secrets: [config.sessionCookieSecret],
     secure: !config.modeIsDevelopment,
-
-    // all of these are optional
-    // sameSite: 'lax',
   },
 })
 
