@@ -58,7 +58,7 @@ const Register: FC = () => (
         />
       </label>
       <label className="block mt-3">
-        <span className="block mb-2 font-bold">Password</span>
+        <span className="block mb-2 font-bold">Register token</span>
         <Input
           type="password"
           name="token"
