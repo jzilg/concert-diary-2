@@ -56,7 +56,6 @@ const Login: FC = () => (
           name="username"
           minLength={2}
           required
-          defaultValue="jzilg"
         />
       </label>
       <label className="block mt-3">
@@ -66,7 +65,6 @@ const Login: FC = () => (
           name="password"
           minLength={6}
           required
-          defaultValue="&};.fm2KH^O$!r(*YKcQ;%n6P2mO14"
         />
       </label>
       <ul className="flex gap-2 mt-6">
