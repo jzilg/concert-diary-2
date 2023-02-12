@@ -8,7 +8,7 @@ const {
   dbAuthPassword,
 } = config
 
-const createClient = (): MongoClient => new MongoClient(dbClient, {
+const client = new MongoClient(dbClient, {
   authSource: dbAuthSource,
   auth: {
     username: dbAuthUser,
@@ -16,4 +16,4 @@ const createClient = (): MongoClient => new MongoClient(dbClient, {
   },
 })
 
-export default createClient
+export default client

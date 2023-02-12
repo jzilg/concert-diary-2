@@ -1,5 +1,5 @@
 import type User from '~/entities/User'
-import createClient from '../db/createClient'
+import client from '../db/createClient'
 
 const DB = 'concert-diary'
 const COLLECTION = 'users'
@@ -11,8 +11,6 @@ type UsersProvider = {
 
 const usersProvider: UsersProvider = {
   async getUserByField(field, value) {
-    const client = createClient()
-
     try {
       await client.connect()
       const db = client.db(DB)
@@ -28,8 +26,6 @@ const usersProvider: UsersProvider = {
   },
 
   async addNewUser(user) {
-    const client = createClient()
-
     try {
       await client.connect()
       const db = client.db(DB)

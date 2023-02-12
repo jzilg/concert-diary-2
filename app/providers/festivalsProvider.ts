@@ -1,5 +1,5 @@
 import type Festival from '~/entities/Festival'
-import createClient from '../db/createClient'
+import client from '../db/createClient'
 
 const DB = 'concert-diary'
 const COLLECTION = 'festivals'
@@ -17,8 +17,6 @@ const festivalsProvider: FestivalsProvider = (userId) => {
 
   return {
     async getAll() {
-      const client = createClient()
-
       try {
         await client.connect()
         const db = client.db(DB)
@@ -34,8 +32,6 @@ const festivalsProvider: FestivalsProvider = (userId) => {
     },
 
     async getById(id) {
-      const client = createClient()
-
       try {
         await client.connect()
         const db = client.db(DB)
@@ -51,8 +47,6 @@ const festivalsProvider: FestivalsProvider = (userId) => {
     },
 
     async add(festival) {
-      const client = createClient()
-
       try {
         await client.connect()
         const db = client.db(DB)
@@ -67,8 +61,6 @@ const festivalsProvider: FestivalsProvider = (userId) => {
     },
 
     async update(id, festival) {
-      const client = createClient()
-
       try {
         await client.connect()
         const db = client.db(DB)
@@ -87,8 +79,6 @@ const festivalsProvider: FestivalsProvider = (userId) => {
     },
 
     async remove(id) {
-      const client = createClient()
-
       try {
         await client.connect()
         const db = client.db(DB)
