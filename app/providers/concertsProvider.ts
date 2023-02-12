@@ -1,4 +1,5 @@
 import type Concert from '~/entities/Concert'
+import { createConcert } from '~/entities/Concert'
 import client from '../db/client'
 
 const DB = 'concert-diary'
@@ -23,9 +24,9 @@ const concertsProvider: ConcertsProvider = (userId) => {
         const collection = db.collection(collectionName)
         const cursor = collection.find()
 
-        const concerts = await cursor.toArray()
+        const concertDataList = await cursor.toArray()
 
-        return concerts as unknown as Concert[]
+        return concertDataList.map((concertData) => createConcert(concertData as Object))
       } finally {
         await client.close()
       }
@@ -38,9 +39,9 @@ const concertsProvider: ConcertsProvider = (userId) => {
         const collection = db.collection(collectionName)
         const query = { id }
 
-        const concert = await collection.findOne(query)
+        const concertData = await collection.findOne(query)
 
-        return concert as unknown as Concert
+        return createConcert(concertData as Object)
       } finally {
         await client.close()
       }

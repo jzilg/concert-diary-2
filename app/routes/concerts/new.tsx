@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 import { useSubmit } from '@remix-run/react'
-import uniqid from 'uniqid'
 import type Concert from '~/entities/Concert'
 import ConcertForm from '~/components/ConcertForm'
 import type { ActionFunction, MetaFunction } from '@remix-run/node'
@@ -9,6 +8,7 @@ import concertsProvider from '~/providers/concertsProvider'
 import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
 import { getUserFromRequest } from '~/logic/user'
 import todaysDate from '~/helpers/todaysDate'
+import { createConcert } from '~/entities/Concert'
 
 export const meta: MetaFunction = () => ({
   title: 'Concert Diary | New Concert',
@@ -22,14 +22,13 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   const body = await request.formData()
-  const concertToAdd: Concert = {
-    id: uniqid(),
+  const concertToAdd = createConcert({
     band: extractStringFromBody(body)('band'),
     supportBands: extractListFromBody(body)('supportBands'),
     location: extractStringFromBody(body)('location'),
     date: extractStringFromBody(body)('date'),
     companions: extractListFromBody(body)('companions'),
-  }
+  })
 
   await concertsProvider(user.id).add(concertToAdd)
 
