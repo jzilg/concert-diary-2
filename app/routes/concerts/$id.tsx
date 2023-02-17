@@ -1,9 +1,11 @@
 import type { FC } from 'react'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 import ConcertForm from '~/components/ConcertForm'
 import type { ActionFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import concertsProvider from '~/providers/concertsProvider'
-import { useLoaderData, useSubmit } from '@remix-run/react'
+import { useLoaderData, useSubmit, useTransition } from '@remix-run/react'
 import type Concert from '~/entities/Concert'
 import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
 import { getUserFromRequest } from '~/logic/user'
@@ -53,7 +55,14 @@ export const action: ActionFunction = async ({ request }) => {
 
 const EditConcert: FC = () => {
   const concert = useLoaderData<Concert>()
+  const transition = useTransition()
   const saveConcert = useSubmit()
+
+  useEffect(() => {
+    if (transition.type === 'actionRedirect') {
+      toast.success('Concert updated')
+    }
+  }, [transition.type])
 
   return (
     <>

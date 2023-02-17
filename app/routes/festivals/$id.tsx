@@ -1,9 +1,11 @@
 import type { FC } from 'react'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 import FestivalForm from '~/components/FestivalForm'
 import type { ActionFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import festivalsProvider from '~/providers/festivalsProvider'
-import { useLoaderData, useSubmit } from '@remix-run/react'
+import { useLoaderData, useSubmit, useTransition } from '@remix-run/react'
 import type Festival from '~/entities/Festival'
 import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
 import { getUserFromRequest } from '~/logic/user'
@@ -55,7 +57,14 @@ export const action: ActionFunction = async ({ request }) => {
 
 const EditFestival: FC = () => {
   const festival = useLoaderData<Festival>()
+  const transition = useTransition()
   const saveFestival = useSubmit()
+
+  useEffect(() => {
+    if (transition.type === 'actionRedirect') {
+      toast.success('Festival updated')
+    }
+  }, [transition.type])
 
   return (
     <>

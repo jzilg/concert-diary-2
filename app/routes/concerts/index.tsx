@@ -1,4 +1,6 @@
 import type { FC } from 'react'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 import ConcertsTable from '~/components/ConcertsTable'
 import type Concert from '~/entities/Concert'
 import { useFetcher, useLoaderData } from '@remix-run/react'
@@ -46,7 +48,13 @@ export const action: ActionFunction = async ({ request }) => {
 
 const ConcertsView: FC = (props) => {
   const concerts = useLoaderData<Concert[]>()
-  const { submit } = useFetcher()
+  const fetcher = useFetcher()
+
+  useEffect(() => {
+    if (fetcher.type === 'done') {
+      toast.success('Concert removed')
+    }
+  }, [fetcher.type])
 
   if (!concerts) {
     return null
@@ -67,7 +75,7 @@ const ConcertsView: FC = (props) => {
       </div>
       <ConcertsTable
         concerts={concerts}
-        deleteConcert={submit}
+        deleteConcert={fetcher.submit}
       />
     </>
   )

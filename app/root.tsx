@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 import type { LinksFunction, MetaFunction } from '@remix-run/node'
+import { ToastContainer } from 'react-toastify'
 import {
   Links,
   LiveReload,
@@ -9,6 +10,7 @@ import {
   ScrollRestoration,
 } from '@remix-run/react'
 import LoadingIndicator from '~/components/LoadingIndicator'
+import toastifyStyles from 'react-toastify/dist/ReactToastify.css'
 import styles from './styles/app.css'
 
 export const meta: MetaFunction = () => ({
@@ -27,6 +29,10 @@ export const links: LinksFunction = () => [
     rel: 'stylesheet',
     href: styles,
   },
+  {
+    rel: 'stylesheet',
+    href: toastifyStyles,
+  },
 ]
 
 const App: FC = () => (
@@ -37,6 +43,7 @@ const App: FC = () => (
     </head>
     <body className="bg-gray-50">
       <LoadingIndicator />
+      <ToastContainer />
       <Outlet />
       <ScrollRestoration />
       <Scripts />

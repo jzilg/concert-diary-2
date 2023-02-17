@@ -1,4 +1,6 @@
 import type { FC } from 'react'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 import type Festival from '~/entities/Festival'
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import type { LoaderFunction, ActionFunction, MetaFunction } from '@remix-run/node'
@@ -46,7 +48,13 @@ export const action: ActionFunction = async ({ request }) => {
 
 const FestivalsView: FC = (props) => {
   const festivals = useLoaderData<Festival[]>()
-  const { submit } = useFetcher()
+  const fetcher = useFetcher()
+
+  useEffect(() => {
+    if (fetcher.type === 'done') {
+      toast.success('Festival removed')
+    }
+  }, [fetcher.type])
 
   if (!festivals) {
     return null
@@ -67,7 +75,7 @@ const FestivalsView: FC = (props) => {
       </div>
       <FestivalsTable
         festivals={festivals}
-        deleteFestival={submit}
+        deleteFestival={fetcher.submit}
       />
     </>
   )
