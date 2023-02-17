@@ -44,8 +44,8 @@ export const action: ActionFunction = async ({ request }) => {
     name: extractStringFromBody(body)('name'),
     bands: extractListFromBody(body)('bands'),
     date: {
-      from: extractStringFromBody(body)('date'),
-      until: extractStringFromBody(body)('date'),
+      from: extractStringFromBody(body)('dateFrom'),
+      until: extractStringFromBody(body)('dateUntil'),
     },
     companions: extractListFromBody(body)('companions'),
   }
