@@ -50,7 +50,7 @@ const Login: FC = () => {
   const actionData = useActionData()
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto p-6">
       <h1 className="text-4xl font-bold my-6">Concert Diary</h1>
       <Form method="post">
         <h2 className="text-2xl font-bold">Login</h2>

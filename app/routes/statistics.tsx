@@ -40,16 +40,18 @@ const StatisticsRoute: FC = () => {
     <>
       <Header />
       <div className="container mx-auto">
-        <h2 className="text-2xl font-bold mt-10 mb-6">Statistics</h2>
-        <div className="mb-3">
-          <GeneralStatistics
-            totalNumOfBands={totalBandsCount}
-            totalNumOfConcerts={totalConcertsCount}
-            totalNumOfFestivals={totalFestivalsCount}
-            totalNumOfLocations={totalLocationsCount}
-          />
+        <div className="px-6">
+          <h2 className="text-2xl font-bold mt-10 mb-6">Statistics</h2>
+          <div className="mb-3">
+            <GeneralStatistics
+              totalNumOfBands={totalBandsCount}
+              totalNumOfConcerts={totalConcertsCount}
+              totalNumOfFestivals={totalFestivalsCount}
+              totalNumOfLocations={totalLocationsCount}
+            />
+          </div>
         </div>
-        <div className="flex gap-6">
+        <div className="lg:flex gap-6">
           <div>
             <MostSeenBands mostSeenBands={mostSeenBands} />
           </div>

@@ -25,37 +25,38 @@ const ConcertsTable: FC<Props> = (props) => {
     }
 
     return (
-      <tr key={id} className="hover:bg-gray-100">
-        <td className="px-3 py-0 border-b">{band}</td>
-        <td className="px-3 py-0 border-b">{supportBands}</td>
-        <td className="px-3 py-0 border-b">{location}</td>
-        <td className="px-3 py-0 border-b">{date}</td>
-        <td className="px-3 py-0 border-b">{companions}</td>
-        <td className="border-b py-0">
+      <div key={id} className="hover:bg-gray-100 grid grid-cols-[1fr_auto] items-center border-b">
+        <div className="p-6">
+          <p>
+            <span className="font-bold">{band}</span>
+            <span> supported by </span>
+            <span className="font-bold">{supportBands}</span>
+          </p>
+          <p>
+            <span> at </span>
+            <span>{location}</span>
+            <span> on </span>
+            <span>{date}</span>
+          </p>
+          <p>
+            <span> accomblished by </span>
+            <span>{companions}</span>
+          </p>
+        </div>
+        <div>
           <TableControls
             editUrl={editUrl}
             deleteFn={deleteFn}
           />
-        </td>
-      </tr>
+        </div>
+      </div>
     )
   })
 
   return (
-    <table className="w-full table-fixed border-separate border-spacing-0">
-      <thead className="text-left">
-        <tr className="sticky top-0 bg-gray-50">
-          <th className="py-2 px-3 border-b">Band</th>
-          <th className="py-2 px-3 border-b">Support</th>
-          <th className="py-2 px-3 border-b">Location</th>
-          <th className="py-2 px-3 border-b">Date</th>
-          <th className="py-2 px-3 border-b" colSpan={2}>Companions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rowElements}
-      </tbody>
-    </table>
+    <div className="bg-white">
+      {rowElements}
+    </div>
   )
 }
 

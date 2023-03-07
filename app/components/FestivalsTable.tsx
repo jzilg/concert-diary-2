@@ -17,7 +17,7 @@ const FestivalsTable: FC<Props> = (props) => {
     const companions = festival.companions.join(', ')
     const startDate = new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(festival.date.from))
     const endDate = new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(festival.date.until))
-    const date = `${startDate} - ${endDate}`
+    const date = `from ${startDate} until ${endDate}`
     const editUrl = `/festivals/${id}`
 
     const deleteFn = (): void => {
@@ -27,35 +27,33 @@ const FestivalsTable: FC<Props> = (props) => {
     }
 
     return (
-      <tr key={id} className="hover:bg-gray-100">
-        <td className="px-3 py-0 border-b">{name}</td>
-        <td className="px-3 py-0 border-b">{bands}</td>
-        <td className="px-3 py-0 border-b">{date}</td>
-        <td className="px-3 py-0 border-b">{companions}</td>
-        <td className="border-b py-0">
+      <div key={id} className="hover:bg-gray-100 grid grid-cols-[1fr_auto] items-center border-b">
+        <div className="p-6">
+          <p>
+            <span className="font-bold">{name}</span>
+            <span> with </span>
+            <span>{bands}</span>
+          </p>
+          <p>
+            <span>{date}</span>
+            <span> accomblished by </span>
+            <span>{companions}</span>
+          </p>
+        </div>
+        <div>
           <TableControls
             editUrl={editUrl}
             deleteFn={deleteFn}
           />
-        </td>
-      </tr>
+        </div>
+      </div>
     )
   })
 
   return (
-    <table className="w-full table-fixed border-separate border-spacing-0">
-      <thead className="text-left">
-        <tr className="sticky top-0 bg-gray-50">
-          <th className="py-2 px-3 border-b">Name</th>
-          <th className="py-2 px-3 border-b">Bands</th>
-          <th className="py-2 px-3 border-b">Date</th>
-          <th className="py-2 px-3 border-b" colSpan={2}>Companions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rowElements}
-      </tbody>
-    </table>
+    <div className="bg-white">
+      {rowElements}
+    </div>
   )
 }
 

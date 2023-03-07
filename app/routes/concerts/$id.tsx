@@ -65,10 +65,10 @@ const EditConcert: FC = () => {
   }, [transition.type])
 
   return (
-    <>
+    <div className="px-6">
       <h2 className="text-2xl mt-10 mb-6 font-bold">Edit Concert</h2>
       <ConcertForm concert={concert} saveConcert={saveConcert} method="put" />
-    </>
+    </div>
   )
 }
 
