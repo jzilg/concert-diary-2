@@ -25,7 +25,7 @@ const ConcertsTable: FC<Props> = (props) => {
     }
 
     return (
-      <div key={id} className="hover:bg-gray-100 grid grid-cols-[1fr_auto] items-center border-b">
+      <div key={id} className="hover:bg-gray-100 dark:hover:bg-slate-700 grid grid-cols-[1fr_auto] items-center border-b dark:border-slate-900">
         <div className="p-6">
           <p>
             <span className="font-bold">{band}</span>
@@ -54,7 +54,7 @@ const ConcertsTable: FC<Props> = (props) => {
   })
 
   return (
-    <div className="bg-white">
+    <div className="bg-white dark:bg-slate-800">
       {rowElements}
     </div>
   )

@@ -8,7 +8,7 @@ const Button: FC<Props> = (props) => {
 
   return (
     <button
-      className={`bg-green-500 inline-flex gap-2 items-center text-white rounded-full px-4 py-3 ${className ?? ''}`}
+      className={`bg-green-500 dark:bg-green-700 inline-flex gap-2 items-center text-white rounded-full px-4 py-3 ${className ?? ''}`}
       {...props}
     >
       {children}

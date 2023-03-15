@@ -41,7 +41,7 @@ const App: FC = () => (
       <Meta />
       <Links />
     </head>
-    <body className="bg-gray-50">
+    <body className="bg-gray-50 dark:bg-slate-900 dark:text-white">
       <LoadingIndicator />
       <ToastContainer />
       <Outlet />

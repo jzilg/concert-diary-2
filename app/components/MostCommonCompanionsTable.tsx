@@ -17,26 +17,26 @@ const MostCommonCompanionsTable: FC<Props> = (props) => {
     } = mostCommonCompanion
 
     return (
-      <tr key={name} className="hover:bg-gray-100">
-        <td className="px-6 py-4 border-b">{name}</td>
-        <td className="px-6 py-4 border-b text-center">{totalCount}</td>
-        <td className="px-6 py-4 border-b text-center">{concertCount}</td>
-        <td className="px-6 py-4 border-b text-center">{festivalCount}</td>
+      <tr key={name} className="hover:bg-gray-100 dark:hover:bg-slate-700">
+        <td className="px-6 py-4 border-b dark:border-slate-900">{name}</td>
+        <td className="px-6 py-4 border-b dark:border-slate-900 text-center">{totalCount}</td>
+        <td className="px-6 py-4 border-b dark:border-slate-900 text-center">{concertCount}</td>
+        <td className="px-6 py-4 border-b dark:border-slate-900 text-center">{festivalCount}</td>
       </tr>
     )
   })
 
   return (
-    <table className="w-full bg-white border-separate border-spacing-0">
+    <table className="w-full bg-white dark:bg-slate-800 border-separate border-spacing-0">
       <caption>
         <h3 className="font-bold text-xl mb-3">Most Common Companion</h3>
       </caption>
       <thead>
         <tr>
-          <th className="px-6 py-4 border-b text-left">Name</th>
-          <th className="px-6 py-4 border-b">Total</th>
-          <th className="px-6 py-4 border-b">Concerts</th>
-          <th className="px-6 py-4 border-b">Festivals</th>
+          <th className="px-6 py-4 border-b dark:border-slate-900 text-left">Name</th>
+          <th className="px-6 py-4 border-b dark:border-slate-900">Total</th>
+          <th className="px-6 py-4 border-b dark:border-slate-900">Concerts</th>
+          <th className="px-6 py-4 border-b dark:border-slate-900">Festivals</th>
         </tr>
       </thead>
       <tbody>
