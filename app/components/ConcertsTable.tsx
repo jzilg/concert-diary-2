@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 import type { SubmitFunction } from '@remix-run/react'
+import renderIf from '~/helpers/renderIf'
 import type Concert from '../entities/Concert'
 import TableControls from './TableControls'
 
@@ -29,7 +30,7 @@ const ConcertsTable: FC<Props> = (props) => {
         <div className="p-6">
           <p>
             <span className="font-bold">{band}</span>
-            <span> supported by </span>
+            {renderIf(<span> supported by </span>, supportBands.length > 0)}
             <span className="font-bold">{supportBands}</span>
           </p>
           <p>
@@ -39,7 +40,7 @@ const ConcertsTable: FC<Props> = (props) => {
             <span>{date}</span>
           </p>
           <p>
-            <span> accomblished by </span>
+            {renderIf(<span> accomblished by </span>, companions.length > 0)}
             <span>{companions}</span>
           </p>
         </div>
