@@ -9,6 +9,7 @@ import { useLoaderData, useSubmit, useTransition } from '@remix-run/react'
 import type Festival from '~/entities/Festival'
 import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
 import { getUserFromRequest } from '~/logic/user'
+import cachedJson from '~/helpers/cachedJson'
 
 export const meta: MetaFunction = () => ({
   title: 'Concert Diary | Edit Festival',
@@ -27,7 +28,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
   const festival = await festivalsProvider(user.id).getById(params.id)
 
-  return json(festival)
+  return cachedJson(request, festival)
 }
 
 export const action: ActionFunction = async ({ request }) => {

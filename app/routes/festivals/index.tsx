@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import type Festival from '~/entities/Festival'
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import type { LoaderFunction, ActionFunction, MetaFunction } from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 import festivalsProvider from '~/providers/festivalsProvider'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { PlusCircle } from 'react-bootstrap-icons'
@@ -12,6 +12,7 @@ import { getUserFromRequest } from '~/logic/user'
 import { getSortedFestivalsOfUser } from '~/logic/festivals'
 import FestivalsTable from '~/components/FestivalsTable'
 import NavLink from '~/components/NavLink'
+import cachedJson from '~/helpers/cachedJson'
 
 export const meta: MetaFunction = () => ({
   title: 'Concert Diary | Festivals',
@@ -26,7 +27,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const sortedFestivals = await getSortedFestivalsOfUser(user.id)
 
-  return json(sortedFestivals)
+  return cachedJson(request, sortedFestivals)
 }
 
 export const action: ActionFunction = async ({ request }) => {

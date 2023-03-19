@@ -5,13 +5,14 @@ import ConcertsTable from '~/components/ConcertsTable'
 import type Concert from '~/entities/Concert'
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import type { LoaderFunction, ActionFunction, MetaFunction } from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 import concertsProvider from '~/providers/concertsProvider'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { PlusCircle } from 'react-bootstrap-icons'
 import { getUserFromRequest } from '~/logic/user'
 import { getSortedConcertsOfUser } from '~/logic/concerts'
 import NavLink from '~/components/NavLink'
+import cachedJson from '~/helpers/cachedJson'
 
 export const meta: MetaFunction = () => ({
   title: 'Concert Diary | Concerts',
@@ -26,7 +27,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const sortedConcerts = await getSortedConcertsOfUser(user.id)
 
-  return json(sortedConcerts)
+  return cachedJson(request, sortedConcerts)
 }
 
 export const action: ActionFunction = async ({ request }) => {

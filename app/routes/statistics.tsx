@@ -4,10 +4,11 @@ import Header from '~/components/Header'
 import GeneralStatistics from '~/components/GeneralStatistics'
 import MostSeenBands from '~/components/MostSeenBands'
 import MostCommonCompanionsTable from '~/components/MostCommonCompanionsTable'
-import { json, redirect } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 import { getUserFromRequest } from '~/logic/user'
 import { useLoaderData } from '@remix-run/react'
 import { getStatisticsOfUser } from '~/logic/statistics'
+import cachedJson from '~/helpers/cachedJson'
 import type Statistics from '../entities/Statistics'
 
 export const meta: MetaFunction = () => ({
@@ -23,7 +24,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const statistics = await getStatisticsOfUser(user.id)
 
-  return json(statistics)
+  return cachedJson(request, statistics)
 }
 
 const StatisticsRoute: FC = () => {
