@@ -21,9 +21,11 @@ const FestivalsTable: FC<Props> = (props) => {
     const editUrl = `/festivals/${id}`
 
     const deleteFn = (): void => {
-      deleteFestival({ id }, {
-        method: 'delete',
-      })
+      if (window.confirm(`Do you really want to delete the ${festival.name} festival`)) {
+        deleteFestival({ id }, {
+          method: 'delete',
+        })
+      }
     }
 
     return (
