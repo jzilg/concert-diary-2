@@ -40,7 +40,7 @@ const StatisticsRoute: FC = () => {
   return (
     <>
       <Header />
-      <div className="container mx-auto">
+      <main className="container mx-auto">
         <div className="px-6">
           <h2 className="text-2xl font-bold mt-10 mb-6">Statistics</h2>
           <div className="mb-3">
@@ -60,7 +60,7 @@ const StatisticsRoute: FC = () => {
             <MostCommonCompanionsTable mostCommonCompanions={mostCommonCompanions} />
           </div>
         </div>
-      </div>
+      </main>
     </>
   )
 }

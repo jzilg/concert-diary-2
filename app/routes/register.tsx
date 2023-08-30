@@ -35,7 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 const Register: FC = () => (
-  <div className="container mx-auto p-6">
+  <main className="container mx-auto p-6">
     <h1 className="text-4xl font-bold my-6">Concert Diary</h1>
     <Form method="post">
       <h2 className="text-2xl font-bold">Register</h2>
@@ -78,7 +78,7 @@ const Register: FC = () => (
         </li>
       </ul>
     </Form>
-  </div>
+  </main>
 )
 
 export default Register
