@@ -52,10 +52,10 @@ const FestivalsView: FC = (props) => {
   const fetcher = useFetcher()
 
   useEffect(() => {
-    if (fetcher.type === 'done') {
+    if (fetcher.state === 'loading' && fetcher.formMethod === 'DELETE') {
       toast.success('Festival removed')
     }
-  }, [fetcher.type])
+  }, [fetcher.formMethod, fetcher.state])
 
   if (!festivals) {
     return null
