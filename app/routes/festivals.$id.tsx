@@ -5,7 +5,7 @@ import FestivalForm from '~/components/FestivalForm'
 import type { ActionFunction, LoaderFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import festivalsProvider from '~/providers/festivalsProvider'
-import { useLoaderData, useSubmit, useTransition } from '@remix-run/react'
+import { useLoaderData, useSubmit, useNavigation } from '@remix-run/react'
 import type Festival from '~/entities/Festival'
 import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
 import { getUserFromRequest } from '~/logic/user'
@@ -58,14 +58,14 @@ export const action: ActionFunction = async ({ request }) => {
 
 const EditFestival: FC = () => {
   const festival = useLoaderData<Festival>()
-  const transition = useTransition()
+  const navigation = useNavigation()
   const saveFestival = useSubmit()
 
   useEffect(() => {
-    if (transition.type === 'actionRedirect') {
+    if (navigation.state === 'loading' && navigation.formMethod === 'PUT') {
       toast.success('Festival updated')
     }
-  }, [transition.type])
+  }, [navigation.state, navigation.formMethod])
 
   return (
     <div className="px-6">

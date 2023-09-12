@@ -5,7 +5,7 @@ import ConcertForm from '~/components/ConcertForm'
 import type { ActionFunction, LoaderFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import concertsProvider from '~/providers/concertsProvider'
-import { useLoaderData, useSubmit, useTransition } from '@remix-run/react'
+import { useLoaderData, useNavigation, useSubmit } from '@remix-run/react'
 import type Concert from '~/entities/Concert'
 import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
 import { getUserFromRequest } from '~/logic/user'
@@ -56,14 +56,14 @@ export const action: ActionFunction = async ({ request }) => {
 
 const EditConcert: FC = () => {
   const concert = useLoaderData<Concert>()
-  const transition = useTransition()
+  const navigation = useNavigation()
   const saveConcert = useSubmit()
 
   useEffect(() => {
-    if (transition.type === 'actionRedirect') {
+    if (navigation.state === 'loading' && navigation.formMethod === 'PUT') {
       toast.success('Concert updated')
     }
-  }, [transition.type])
+  }, [navigation.state, navigation.formMethod])
 
   return (
     <div className="px-6">

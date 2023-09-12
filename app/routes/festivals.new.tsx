@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { useSubmit, useTransition } from '@remix-run/react'
+import { useSubmit, useNavigation } from '@remix-run/react'
 import type Festival from '~/entities/Festival'
 import FestivalForm from '~/components/FestivalForm'
 import type { ActionFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
@@ -41,7 +41,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 const NewFestival: FC = () => {
   const saveFestival = useSubmit()
-  const transition = useTransition()
+  const navigation = useNavigation()
   const festival: Festival = {
     id: '',
     bands: [],
@@ -54,10 +54,10 @@ const NewFestival: FC = () => {
   }
 
   useEffect(() => {
-    if (transition.type === 'actionRedirect') {
+    if (navigation.state === 'loading' && navigation.formMethod === 'POST') {
       toast.success('Festival added')
     }
-  }, [transition.type])
+  }, [navigation.state, navigation.formMethod])
 
   return (
     <div className="px-6">

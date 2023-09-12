@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { useEffect } from 'react'
-import { useSubmit, useTransition } from '@remix-run/react'
+import { useSubmit, useNavigation } from '@remix-run/react'
 import { toast } from 'react-toastify'
 import type Concert from '~/entities/Concert'
 import ConcertForm from '~/components/ConcertForm'
@@ -39,7 +39,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 const NewConcert: FC = () => {
   const saveConcert = useSubmit()
-  const transition = useTransition()
+  const navigation = useNavigation()
   const concert: Concert = {
     id: '',
     date: todaysDate,
@@ -50,10 +50,10 @@ const NewConcert: FC = () => {
   }
 
   useEffect(() => {
-    if (transition.type === 'actionRedirect') {
+    if (navigation.state === 'loading' && navigation.formMethod === 'POST') {
       toast.success('Concert added')
     }
-  }, [transition.type])
+  }, [navigation.state, navigation.formMethod])
 
   return (
     <div className="px-6">
