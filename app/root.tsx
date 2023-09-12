@@ -12,7 +12,7 @@ import {
 } from '@remix-run/react'
 import LoadingIndicator from '~/components/LoadingIndicator'
 import toastifyStyles from 'react-toastify/dist/ReactToastify.css'
-import styles from './styles/app.css'
+import styles from './styles/index.css'
 
 export const meta: MetaFunction = () => [
   { charset: 'utf-8' },
