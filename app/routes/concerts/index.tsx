@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import ConcertsTable from '~/components/ConcertsTable'
 import type Concert from '~/entities/Concert'
 import { useFetcher, useLoaderData } from '@remix-run/react'
-import type { LoaderFunction, ActionFunction, MetaFunction } from '@remix-run/node'
+import type { LoaderFunction, ActionFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import concertsProvider from '~/providers/concertsProvider'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
@@ -14,9 +14,9 @@ import { getSortedConcertsOfUser } from '~/logic/concerts'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
 
-export const meta: MetaFunction = () => ({
-  title: 'Concert Diary | Concerts',
-})
+export const meta: MetaFunction = () => [
+  { title: 'Concert Diary | Concerts' },
+]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUserFromRequest(request)

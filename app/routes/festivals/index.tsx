@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import type Festival from '~/entities/Festival'
 import { useFetcher, useLoaderData } from '@remix-run/react'
-import type { LoaderFunction, ActionFunction, MetaFunction } from '@remix-run/node'
+import type { LoaderFunction, ActionFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import festivalsProvider from '~/providers/festivalsProvider'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
@@ -14,9 +14,9 @@ import FestivalsTable from '~/components/FestivalsTable'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
 
-export const meta: MetaFunction = () => ({
-  title: 'Concert Diary | Festivals',
-})
+export const meta: MetaFunction = () => [
+  { title: 'Concert Diary | Festivals' },
+]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUserFromRequest(request)

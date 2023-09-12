@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { useSubmit, useTransition } from '@remix-run/react'
 import type Festival from '~/entities/Festival'
 import FestivalForm from '~/components/FestivalForm'
-import type { ActionFunction, MetaFunction } from '@remix-run/node'
+import type { ActionFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import festivalsProvider from '~/providers/festivalsProvider'
 import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
@@ -12,9 +12,9 @@ import { getUserFromRequest } from '~/logic/user'
 import todaysDate from '~/helpers/todaysDate'
 import { createFestival } from '~/entities/Festival'
 
-export const meta: MetaFunction = () => ({
-  title: 'Concert Diary | New Festival',
-})
+export const meta: MetaFunction = () => [
+  { title: 'Concert Diary | New Festival' },
+]
 
 export const action: ActionFunction = async ({ request }) => {
   const user = await getUserFromRequest(request)

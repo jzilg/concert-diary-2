@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type { MetaFunction, LoaderFunction } from '@remix-run/node'
+import type { V2_MetaFunction as MetaFunction, LoaderFunction } from '@remix-run/node'
 import Header from '~/components/Header'
 import GeneralStatistics from '~/components/GeneralStatistics'
 import MostSeenBands from '~/components/MostSeenBands'
@@ -11,9 +11,9 @@ import { getStatisticsOfUser } from '~/logic/statistics'
 import cachedJson from '~/helpers/cachedJson'
 import type Statistics from '../entities/Statistics'
 
-export const meta: MetaFunction = () => ({
-  title: 'Concert Diary | Statistics',
-})
+export const meta: MetaFunction = () => [
+  { title: 'Concert Diary | Statistics' },
+]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUserFromRequest(request)

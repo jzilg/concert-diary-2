@@ -12,9 +12,10 @@
     "typecheck": "tsc --skipLibCheck"
   },
   "dependencies": {
-    "@remix-run/node": "^1.7.2",
-    "@remix-run/react": "^1.7.2",
-    "@remix-run/serve": "^1.7.2",
+    "@remix-run/css-bundle": "^1.19.3",
+    "@remix-run/node": "^1.19.3",
+    "@remix-run/react": "^1.19.3",
+    "@remix-run/serve": "^1.19.3",
     "bcryptjs": "^2.4.3",
     "crypto-js": "^4.1.1",
     "isbot": "^3.5.4",

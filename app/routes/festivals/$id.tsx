@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import FestivalForm from '~/components/FestivalForm'
-import type { ActionFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
+import type { ActionFunction, LoaderFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import festivalsProvider from '~/providers/festivalsProvider'
 import { useLoaderData, useSubmit, useTransition } from '@remix-run/react'
@@ -11,9 +11,9 @@ import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFro
 import { getUserFromRequest } from '~/logic/user'
 import cachedJson from '~/helpers/cachedJson'
 
-export const meta: MetaFunction = () => ({
-  title: 'Concert Diary | Edit Festival',
-})
+export const meta: MetaFunction = () => [
+  { title: 'Concert Diary | Edit Festival' },
+]
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   if (params.id === undefined) {

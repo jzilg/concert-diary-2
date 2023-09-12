@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { Form, useActionData } from '@remix-run/react'
-import type { ActionFunction, MetaFunction } from '@remix-run/node'
+import type { ActionFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { json, redirect } from '@remix-run/node'
 import Input from '~/components/Input'
@@ -10,9 +10,9 @@ import { authenticateUser } from '~/logic/user'
 import Button from '~/components/Button'
 import NavLink from '~/components/NavLink'
 
-export const meta: MetaFunction = () => ({
-  title: 'Concert Diary | Login',
-})
+export const meta: MetaFunction = () => [
+  { title: 'Concert Diary | Login' },
+]
 
 export const action: ActionFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'))

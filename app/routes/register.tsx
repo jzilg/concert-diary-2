@@ -1,4 +1,4 @@
-import type { ActionFunction, MetaFunction } from '@remix-run/node'
+import type { ActionFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
 import type { FC } from 'react'
 import type RegisterDto from '~/entities/RegisterDto'
 import { Form } from '@remix-run/react'
@@ -9,9 +9,9 @@ import { createNewUser, userAlreadyExists, validateToken } from '~/logic/user'
 import Button from '~/components/Button'
 import NavLink from '~/components/NavLink'
 
-export const meta: MetaFunction = () => ({
-  title: 'Concert Diary | Register',
-})
+export const meta: MetaFunction = () => [
+  { title: 'Concert Diary | Register' },
+]
 
 export const action: ActionFunction = async ({ request }) => {
   const body = await request.formData()

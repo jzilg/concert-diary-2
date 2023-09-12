@@ -1,13 +1,13 @@
 import type { FC } from 'react'
-import type { ActionFunction, MetaFunction } from '@remix-run/node'
+import type { ActionFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
 import { useFetcher } from '@remix-run/react'
 import { redirect } from '@remix-run/node'
 import { getSession, destroySession } from '~/logic/session'
 import { useEffect } from 'react'
 
-export const meta: MetaFunction = () => ({
-  title: 'Concert Diary | Logging out...',
-})
+export const meta: MetaFunction = () => [
+  { title: 'Concert Diary | Logging out...' },
+]
 
 export const action: ActionFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'))

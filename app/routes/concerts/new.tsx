@@ -4,7 +4,7 @@ import { useSubmit, useTransition } from '@remix-run/react'
 import { toast } from 'react-toastify'
 import type Concert from '~/entities/Concert'
 import ConcertForm from '~/components/ConcertForm'
-import type { ActionFunction, MetaFunction } from '@remix-run/node'
+import type { ActionFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import concertsProvider from '~/providers/concertsProvider'
 import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
@@ -12,9 +12,9 @@ import { getUserFromRequest } from '~/logic/user'
 import todaysDate from '~/helpers/todaysDate'
 import { createConcert } from '~/entities/Concert'
 
-export const meta: MetaFunction = () => ({
-  title: 'Concert Diary | New Concert',
-})
+export const meta: MetaFunction = () => [
+  { title: 'Concert Diary | New Concert' },
+]
 
 export const action: ActionFunction = async ({ request }) => {
   const user = await getUserFromRequest(request)
