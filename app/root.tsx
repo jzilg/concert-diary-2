@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 import type { LinksFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
+import { cssBundleHref } from '@remix-run/css-bundle'
 import { ToastContainer } from 'react-toastify'
 import {
   Links,
@@ -33,6 +34,10 @@ export const links: LinksFunction = () => [
     rel: 'stylesheet',
     href: toastifyStyles,
   },
+  ...(cssBundleHref ? [{
+    rel: 'stylesheet',
+    href: cssBundleHref,
+  }] : []),
 ]
 
 const App: FC = () => (
