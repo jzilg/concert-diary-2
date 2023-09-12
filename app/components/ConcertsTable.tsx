@@ -1,12 +1,11 @@
 import type { FC } from 'react'
-import type { SubmitFunction } from '@remix-run/react'
 import renderIf from '~/helpers/renderIf'
 import type Concert from '../entities/Concert'
 import TableControls from './TableControls'
 
 export type Props = {
     concerts: Concert[]
-    deleteConcert: SubmitFunction
+    deleteConcert: (id: Concert['id']) => void
 }
 
 const ConcertsTable: FC<Props> = (props) => {
@@ -21,9 +20,7 @@ const ConcertsTable: FC<Props> = (props) => {
 
     const deleteFn = (): void => {
       if (window.confirm(`Do you really want to delete the ${concert.band} concert`)) {
-        deleteConcert({ id }, {
-          method: 'delete',
-        })
+        deleteConcert(id)
       }
     }
 

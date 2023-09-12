@@ -76,7 +76,11 @@ const ConcertsView: FC = (props) => {
       </div>
       <ConcertsTable
         concerts={concerts}
-        deleteConcert={fetcher.submit}
+        deleteConcert={(id) => {
+          fetcher.submit({ id }, {
+            method: 'delete',
+          })
+        }}
       />
     </>
   )
