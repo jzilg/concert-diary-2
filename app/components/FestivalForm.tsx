@@ -4,6 +4,7 @@ import Input from '~/components/Input'
 import { ArrowLeft, Save } from 'react-bootstrap-icons'
 import Button from '~/components/Button'
 import NavLink from '~/components/NavLink'
+import { Form } from '@remix-run/react'
 import type Festival from '../entities/Festival'
 
 type Props = {
@@ -23,7 +24,12 @@ const FestivalForm: FC<Props> = (props) => {
   } = festival
 
   return (
-    <form>
+    <Form
+      method={method}
+      onSubmit={(event) => {
+        saveFestival(event.currentTarget)
+      }}
+    >
       <input
         name="id"
         type="hidden"
@@ -75,14 +81,7 @@ const FestivalForm: FC<Props> = (props) => {
       </label>
       <ul className="flex justify-between mt-6">
         <li>
-          <Button
-            type="button"
-            onClick={(event) => {
-              saveFestival(event.currentTarget, {
-                method,
-              })
-            }}
-          >
+          <Button type="submit">
             Save
             <Save />
           </Button>
@@ -94,7 +93,7 @@ const FestivalForm: FC<Props> = (props) => {
           </NavLink>
         </li>
       </ul>
-    </form>
+    </Form>
   )
 }
 

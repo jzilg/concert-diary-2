@@ -4,6 +4,7 @@ import Input from '~/components/Input'
 import { ArrowLeft, Save } from 'react-bootstrap-icons'
 import Button from '~/components/Button'
 import NavLink from '~/components/NavLink'
+import { Form } from '@remix-run/react'
 import type Concert from '../entities/Concert'
 
 type Props = {
@@ -24,7 +25,12 @@ const ConcertForm: FC<Props> = (props) => {
   } = concert
 
   return (
-    <form>
+    <Form
+      method={method}
+      onSubmit={(event) => {
+        saveConcert(event.currentTarget)
+      }}
+    >
       <input
         name="id"
         type="hidden"
@@ -77,14 +83,7 @@ const ConcertForm: FC<Props> = (props) => {
       </label>
       <ul className="flex justify-between mt-6">
         <li>
-          <Button
-            type="button"
-            onClick={(event) => {
-              saveConcert(event.currentTarget, {
-                method,
-              })
-            }}
-          >
+          <Button type="submit">
             Save
             <Save />
           </Button>
@@ -96,7 +95,7 @@ const ConcertForm: FC<Props> = (props) => {
           </NavLink>
         </li>
       </ul>
-    </form>
+    </Form>
   )
 }
 
