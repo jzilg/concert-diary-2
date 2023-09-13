@@ -1,4 +1,4 @@
-import * as validate from 'yup'
+import { z } from 'zod'
 import createId from 'uniqid'
 import dateRegEx from '~/helpers/dateRegEx'
 
@@ -12,34 +12,22 @@ type Concert = {
 }
 
 export const createConcert = (concertData: Partial<Concert>): Concert => {
-  const schema = validate.object({
-    id: validate
+  const schema = z.object({
+    id: z
       .string()
       .default(createId()),
-    band: validate
+    band: z
       .string()
-      .min(1)
-      .required(),
-    date: validate
+      .min(1),
+    date: z
       .string()
-      .matches(dateRegEx)
-      .required(),
-    location: validate
-      .string()
-      .required(),
-    supportBands: validate
-      .array(validate
-        .string()
-        .required())
-      .required(),
-    companions: validate
-      .array(validate
-        .string()
-        .required())
-      .required(),
-  }).noUnknown()
+      .regex(dateRegEx),
+    location: z.string(),
+    supportBands: z.array(z.string()),
+    companions: z.array(z.string()),
+  })
 
-  const validatedConcertData = schema.validateSync(concertData)
+  const validatedConcertData = schema.parse(concertData)
 
   return Object.freeze(validatedConcertData)
 }
