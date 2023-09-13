@@ -62,10 +62,10 @@ const EditFestival: FC = () => {
   const saveFestival = useSubmit()
 
   useEffect(() => {
-    if (navigation.state === 'loading' && navigation.formMethod === 'PUT') {
+    if (navigation.state === 'loading' && navigation.formMethod === 'PUT' && navigation.location.pathname === '/festivals') {
       toast.success('Festival updated')
     }
-  }, [navigation.state, navigation.formMethod])
+  }, [navigation.state, navigation.formMethod, navigation.location])
 
   return (
     <div className="px-6">

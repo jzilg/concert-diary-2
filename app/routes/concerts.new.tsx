@@ -50,10 +50,10 @@ const NewConcert: FC = () => {
   }
 
   useEffect(() => {
-    if (navigation.state === 'loading' && navigation.formMethod === 'POST') {
+    if (navigation.state === 'loading' && navigation.formMethod === 'POST' && navigation.location.pathname === '/concerts') {
       toast.success('Concert added')
     }
-  }, [navigation.state, navigation.formMethod])
+  }, [navigation.state, navigation.formMethod, navigation.location])
 
   return (
     <div className="px-6">
