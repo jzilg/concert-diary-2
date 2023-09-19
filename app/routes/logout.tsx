@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type { ActionFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
+import type { ActionFunction, MetaFunction } from '@remix-run/node'
 import { useFetcher } from '@remix-run/react'
 import { redirect } from '@remix-run/node'
 import { getSession, destroySession } from '~/logic/session'

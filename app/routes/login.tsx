@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { Form, useActionData } from '@remix-run/react'
-import type { ActionFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
+import type { ActionFunction, MetaFunction } from '@remix-run/node'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { json, redirect } from '@remix-run/node'
 import Input from '~/components/Input'

@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type { V2_MetaFunction as MetaFunction, LoaderFunction } from '@remix-run/node'
+import type { MetaFunction, LoaderFunction } from '@remix-run/node'
 import Header from '~/components/Header'
 import GeneralStatistics from '~/components/GeneralStatistics'
 import MostSeenBands from '~/components/MostSeenBands'

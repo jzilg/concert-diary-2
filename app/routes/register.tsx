@@ -1,4 +1,4 @@
-import type { ActionFunction, V2_MetaFunction as MetaFunction } from '@remix-run/node'
+import type { ActionFunction, MetaFunction } from '@remix-run/node'
 import type { FC } from 'react'
 import type RegisterDto from '~/entities/RegisterDto'
 import { Form } from '@remix-run/react'
