@@ -47,7 +47,7 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 const Login: FC = () => {
-  const actionData = useActionData()
+  const actionData = useActionData<{ error?: string } | undefined>()
 
   return (
     <main className="container mx-auto p-6">
