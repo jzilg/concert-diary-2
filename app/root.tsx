@@ -15,9 +15,7 @@ import toastifyStyles from 'react-toastify/dist/ReactToastify.css'
 import styles from './styles/index.css'
 
 export const meta: MetaFunction = () => [
-  { charset: 'utf-8' },
   { title: 'Concert Diary' },
-  { viewport: 'width=device-width,initial-scale=1,maximum-scale=1' },
 ]
 
 export const links: LinksFunction = () => [
@@ -43,6 +41,8 @@ export const links: LinksFunction = () => [
 const App: FC = () => (
   <html lang="en">
     <head>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
       <Meta />
       <Links />
     </head>
