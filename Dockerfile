@@ -1,7 +1,6 @@
-FROM node:18-slim
+FROM oven/bun:latest
 WORKDIR /app
 COPY . /app
-RUN npm ci && \
-    npm run build && \
-    npm prune --production
-CMD  ["npm", "start"]
+RUN bun install && \
+    bun run build
+CMD  ["bun", "start"]
