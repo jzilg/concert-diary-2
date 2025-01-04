@@ -42,7 +42,7 @@ const StatisticsRoute: FC = () => {
       <Header />
       <main className="container mx-auto">
         <div className="px-6">
-          <h2 className="text-2xl font-bold mt-10 mb-6">Statistics</h2>
+          <h2 className="text-2xl font-bold mb-6">Statistics</h2>
           <div className="mb-3">
             <GeneralStatistics
               totalNumOfBands={totalBandsCount}

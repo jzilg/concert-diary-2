@@ -37,7 +37,7 @@ const Navigation: FC = () => {
 
   return (
     <nav>
-      <ul className="flex">
+      <ul className="flex flex-wrap">
         {linkElements}
       </ul>
     </nav>

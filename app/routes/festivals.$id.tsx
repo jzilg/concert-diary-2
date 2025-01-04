@@ -69,7 +69,7 @@ const EditFestival: FC = () => {
 
   return (
     <div className="px-6">
-      <h2 className="text-2xl mt-10 mb-6 font-bold">Edit Festival</h2>
+      <h2 className="text-2xl mb-6 font-bold">Edit Festival</h2>
       <FestivalForm festival={festival} saveFestival={saveFestival} method="put" />
     </div>
   )

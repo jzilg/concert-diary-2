@@ -61,7 +61,7 @@ const NewFestival: FC = () => {
 
   return (
     <div className="px-6">
-      <h2 className="text-2xl mt-10 mb-6 font-bold">New Festival</h2>
+      <h2 className="text-2xl mb-6 font-bold">New Festival</h2>
       <FestivalForm festival={festival} saveFestival={saveFestival} method="post" />
     </div>
   )

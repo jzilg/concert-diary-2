@@ -63,7 +63,7 @@ const FestivalsView: FC = (props) => {
 
   return (
     <>
-      <div className="flex justify-between items-center mt-10 mb-6 px-6">
+      <div className="flex justify-between items-center mb-6 px-6">
         <h2 className="text-2xl font-bold">Festivals</h2>
         <ul>
           <li>
