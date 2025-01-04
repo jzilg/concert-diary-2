@@ -52,7 +52,7 @@ const StatisticsRoute: FC = () => {
             />
           </div>
         </div>
-        <div className="lg:flex gap-6">
+        <div className="flex flex-col-reverse lg:flex-row gap-6">
           <div>
             <MostSeenBands mostSeenBands={mostSeenBands} />
           </div>
