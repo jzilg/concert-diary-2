@@ -51,7 +51,7 @@ const Login: FC = () => {
 
   return (
     <main className="container mx-auto p-6">
-      <h1 className="text-4xl font-bold my-6">Concert Diary Demo</h1>
+      <h1 className="text-4xl font-bold my-6">Concert Diary</h1>
       <Form method="post">
         <h2 className="text-2xl font-bold">Login</h2>
         <label className="block mt-3">
