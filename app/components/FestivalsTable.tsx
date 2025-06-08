@@ -35,7 +35,7 @@ const FestivalsTable: FC<Props> = (props) => {
           </p>
           <p>
             <span>{date}</span>
-            <span> accomblished by </span>
+            <span> accompanied by </span>
             <span>{companions}</span>
           </p>
         </div>

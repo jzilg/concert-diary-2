@@ -39,7 +39,7 @@ const ConcertsTable: FC<Props> = (props) => {
             <span>{date}</span>
           </p>
           <p>
-            {renderIf(<span> accomblished by </span>, companions.length > 0)}
+            {renderIf(<span> accompanied by </span>, companions.length > 0)}
             <span>{companions}</span>
           </p>
         </div>
