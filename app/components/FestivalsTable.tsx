@@ -39,7 +39,7 @@ const FestivalsTable: FC<Props> = (props) => {
             <span>{companions}</span>
           </p>
         </div>
-        <div>
+        <div className="self-end">
           <TableControls
             editUrl={editUrl}
             deleteFn={deleteFn}

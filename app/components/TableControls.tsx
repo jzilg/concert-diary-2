@@ -14,12 +14,12 @@ const TableControls: FC<Props> = (props) => {
   } = props
 
   return (
-    <ul className="flex justify-end">
+    <ul className="sm:flex">
       <li>
         <Link
           to={editUrl}
           title="Edit"
-          className="inline-flex p-4 hover:text-white hover:bg-blue-600 transition-colors"
+          className="inline-flex p-4 bg-white hover:text-white hover:bg-blue-600 transition-colors border-l border-t rounded-tl-md"
         >
           <PencilSquare />
         </Link>
@@ -28,7 +28,7 @@ const TableControls: FC<Props> = (props) => {
         <button
           type="button"
           title="Delete"
-          className="p-4 hover:text-white hover:bg-red-600 transition-colors"
+          className="p-4 bg-white hover:text-white hover:bg-red-600 transition-colors border-t border-l"
           onClick={() => {
             deleteFn()
           }}
