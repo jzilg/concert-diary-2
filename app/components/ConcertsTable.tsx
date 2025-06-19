@@ -54,7 +54,7 @@ const ConcertsTable: FC<Props> = (props) => {
   })
 
   return (
-    <div className="bg-white dark:bg-slate-800">
+    <div className="bg-white dark:bg-slate-800 shadow-lg">
       {rowElements}
     </div>
   )
