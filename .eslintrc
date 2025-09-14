@@ -2,7 +2,8 @@
   "root": true,
   "extends": [
     "@remix-run/eslint-config",
-    "@remix-run/eslint-config/node"
+    "@remix-run/eslint-config/node",
+    "prettier"
   ],
   "ignorePatterns": [
     "build/",
