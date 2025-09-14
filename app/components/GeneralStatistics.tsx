@@ -1,19 +1,14 @@
 import type { FC } from 'react'
 
 type Props = {
-    totalNumOfConcerts: number
-    totalNumOfFestivals: number
-    totalNumOfBands: number
-    totalNumOfLocations: number
+  totalNumOfConcerts: number
+  totalNumOfFestivals: number
+  totalNumOfBands: number
+  totalNumOfLocations: number
 }
 
 const GeneralStatistics: FC<Props> = (props) => {
-  const {
-    totalNumOfConcerts,
-    totalNumOfBands,
-    totalNumOfFestivals,
-    totalNumOfLocations,
-  } = props
+  const { totalNumOfConcerts, totalNumOfBands, totalNumOfFestivals, totalNumOfLocations } = props
 
   const list = [
     {
@@ -35,17 +30,13 @@ const GeneralStatistics: FC<Props> = (props) => {
   ]
 
   const listElements = list.map((item) => (
-    <li key={item.label}>
-      {`${item.label}: ${item.value}`}
-    </li>
+    <li key={item.label}>{`${item.label}: ${item.value}`}</li>
   ))
 
   return (
     <section>
       <h3 className="font-bold text-xl mb-3">General</h3>
-      <ul>
-        {listElements}
-      </ul>
+      <ul>{listElements}</ul>
     </section>
   )
 }

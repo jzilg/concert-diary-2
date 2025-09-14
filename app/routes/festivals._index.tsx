@@ -14,9 +14,7 @@ import FestivalsTable from '~/components/FestivalsTable'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
 
-export const meta: MetaFunction = () => [
-  { title: 'Concert Diary | Festivals' },
-]
+export const meta: MetaFunction = () => [{ title: 'Concert Diary | Festivals' }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUserFromRequest(request)
@@ -77,9 +75,12 @@ const FestivalsView: FC = (props) => {
       <FestivalsTable
         festivals={festivals}
         deleteFestival={(id) => {
-          fetcher.submit({ id }, {
-            method: 'delete',
-          })
+          fetcher.submit(
+            { id },
+            {
+              method: 'delete',
+            },
+          )
         }}
       />
     </>

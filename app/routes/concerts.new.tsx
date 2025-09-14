@@ -12,9 +12,7 @@ import { getUserFromRequest } from '~/logic/user'
 import todaysDate from '~/helpers/todaysDate'
 import { createConcert } from '~/entities/Concert'
 
-export const meta: MetaFunction = () => [
-  { title: 'Concert Diary | New Concert' },
-]
+export const meta: MetaFunction = () => [{ title: 'Concert Diary | New Concert' }]
 
 export const action: ActionFunction = async ({ request }) => {
   const user = await getUserFromRequest(request)
@@ -50,7 +48,11 @@ const NewConcert: FC = () => {
   }
 
   useEffect(() => {
-    if (navigation.state === 'loading' && navigation.formMethod === 'POST' && navigation.location.pathname === '/concerts') {
+    if (
+      navigation.state === 'loading' &&
+      navigation.formMethod === 'POST' &&
+      navigation.location.pathname === '/concerts'
+    ) {
       toast.success('Concert added')
     }
   }, [navigation.state, navigation.formMethod, navigation.location])

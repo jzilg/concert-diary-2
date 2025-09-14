@@ -11,9 +11,7 @@ import { getStatisticsOfUser } from '~/logic/statistics'
 import cachedJson from '~/helpers/cachedJson'
 import type Statistics from '../entities/Statistics'
 
-export const meta: MetaFunction = () => [
-  { title: 'Concert Diary | Statistics' },
-]
+export const meta: MetaFunction = () => [{ title: 'Concert Diary | Statistics' }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUserFromRequest(request)

@@ -2,21 +2,12 @@ import type { FC } from 'react'
 import type { LinksFunction, MetaFunction } from '@remix-run/node'
 import { cssBundleHref } from '@remix-run/css-bundle'
 import { ToastContainer } from 'react-toastify'
-import {
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from '@remix-run/react'
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
 import LoadingIndicator from '~/components/LoadingIndicator'
 import toastifyStyles from 'react-toastify/dist/ReactToastify.css'
 import styles from './styles/index.css'
 
-export const meta: MetaFunction = () => [
-  { title: 'Concert Diary' },
-]
+export const meta: MetaFunction = () => [{ title: 'Concert Diary' }]
 
 export const links: LinksFunction = () => [
   {
@@ -32,10 +23,14 @@ export const links: LinksFunction = () => [
     rel: 'stylesheet',
     href: toastifyStyles,
   },
-  ...(cssBundleHref ? [{
-    rel: 'stylesheet',
-    href: cssBundleHref,
-  }] : []),
+  ...(cssBundleHref
+    ? [
+        {
+          rel: 'stylesheet',
+          href: cssBundleHref,
+        },
+      ]
+    : []),
 ]
 
 const App: FC = () => (

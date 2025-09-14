@@ -15,14 +15,7 @@ type Props = {
 
 const ConcertForm: FC<Props> = (props) => {
   const { concert, saveConcert, method } = props
-  const {
-    id,
-    band,
-    supportBands,
-    location,
-    date,
-    companions,
-  } = concert
+  const { id, band, supportBands, location, date, companions } = concert
 
   return (
     <Form
@@ -31,20 +24,10 @@ const ConcertForm: FC<Props> = (props) => {
         saveConcert(event.currentTarget)
       }}
     >
-      <input
-        name="id"
-        type="hidden"
-        value={id}
-      />
+      <input name="id" type="hidden" value={id} />
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Band</span>
-        <Input
-          type="text"
-          name="band"
-          defaultValue={band}
-          placeholder="Pink Floyd"
-          required
-        />
+        <Input type="text" name="band" defaultValue={band} placeholder="Pink Floyd" required />
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Support</span>
@@ -66,12 +49,7 @@ const ConcertForm: FC<Props> = (props) => {
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Date</span>
-        <Input
-          type="date"
-          name="date"
-          defaultValue={date}
-          required
-        />
+        <Input type="date" name="date" defaultValue={date} required />
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Companions</span>

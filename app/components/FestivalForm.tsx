@@ -15,13 +15,7 @@ type Props = {
 
 const FestivalForm: FC<Props> = (props) => {
   const { festival, saveFestival, method } = props
-  const {
-    id,
-    name,
-    bands,
-    date,
-    companions,
-  } = festival
+  const { id, name, bands, date, companions } = festival
 
   return (
     <Form
@@ -30,20 +24,10 @@ const FestivalForm: FC<Props> = (props) => {
         saveFestival(event.currentTarget)
       }}
     >
-      <input
-        name="id"
-        type="hidden"
-        value={id}
-      />
+      <input name="id" type="hidden" value={id} />
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Name</span>
-        <Input
-          type="text"
-          name="name"
-          defaultValue={name}
-          placeholder="Melt 2010"
-          required
-        />
+        <Input type="text" name="name" defaultValue={name} placeholder="Melt 2010" required />
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Bands</span>
@@ -55,21 +39,11 @@ const FestivalForm: FC<Props> = (props) => {
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Start Date</span>
-        <Input
-          type="date"
-          name="dateFrom"
-          defaultValue={date.from}
-          required
-        />
+        <Input type="date" name="dateFrom" defaultValue={date.from} required />
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">End Date</span>
-        <Input
-          type="date"
-          name="dateUntil"
-          defaultValue={date.until}
-          required
-        />
+        <Input type="date" name="dateUntil" defaultValue={date.until} required />
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Companions</span>

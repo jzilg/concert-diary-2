@@ -10,9 +10,7 @@ const LoadingIndicator: FC = () => {
     return null
   }
 
-  return (
-    <div className="fixed top-2 left-2">Loading...</div>
-  )
+  return <div className="fixed top-2 left-2">Loading...</div>
 }
 
 export default LoadingIndicator

@@ -14,9 +14,7 @@ import { getSortedConcertsOfUser } from '~/logic/concerts'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
 
-export const meta: MetaFunction = () => [
-  { title: 'Concert Diary | Concerts' },
-]
+export const meta: MetaFunction = () => [{ title: 'Concert Diary | Concerts' }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUserFromRequest(request)
@@ -77,9 +75,12 @@ const ConcertsView: FC = (props) => {
       <ConcertsTable
         concerts={concerts}
         deleteConcert={(id) => {
-          fetcher.submit({ id }, {
-            method: 'delete',
-          })
+          fetcher.submit(
+            { id },
+            {
+              method: 'delete',
+            },
+          )
         }}
       />
     </>

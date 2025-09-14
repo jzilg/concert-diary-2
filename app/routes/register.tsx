@@ -9,9 +9,7 @@ import { createNewUser, userAlreadyExists, validateToken } from '~/logic/user'
 import Button from '~/components/Button'
 import NavLink from '~/components/NavLink'
 
-export const meta: MetaFunction = () => [
-  { title: 'Concert Diary | Register' },
-]
+export const meta: MetaFunction = () => [{ title: 'Concert Diary | Register' }]
 
 export const action: ActionFunction = async ({ request }) => {
   const body = await request.formData()
@@ -41,40 +39,22 @@ const Register: FC = () => (
       <h2 className="text-2xl font-bold">Register</h2>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Username</span>
-        <Input
-          type="text"
-          name="username"
-          minLength={2}
-          required
-        />
+        <Input type="text" name="username" minLength={2} required />
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Password</span>
-        <Input
-          type="password"
-          name="password"
-          minLength={6}
-          required
-        />
+        <Input type="password" name="password" minLength={6} required />
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Register token</span>
-        <Input
-          type="password"
-          name="token"
-          required
-        />
+        <Input type="password" name="token" required />
       </label>
       <ul className="flex gap-2 mt-6">
         <li>
-          <Button type="submit">
-            Register
-          </Button>
+          <Button type="submit">Register</Button>
         </li>
         <li>
-          <NavLink to="/login">
-            Login
-          </NavLink>
+          <NavLink to="/login">Login</NavLink>
         </li>
       </ul>
     </Form>

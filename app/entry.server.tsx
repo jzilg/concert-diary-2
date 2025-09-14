@@ -15,18 +15,8 @@ export default function handleRequest(
   remixContext: EntryContext,
 ): Promise<unknown> {
   return isbot(request.headers.get('user-agent'))
-    ? handleBotRequest(
-      request,
-      responseStatusCode,
-      responseHeaders,
-      remixContext,
-    )
-    : handleBrowserRequest(
-      request,
-      responseStatusCode,
-      responseHeaders,
-      remixContext,
-    )
+    ? handleBotRequest(request, responseStatusCode, responseHeaders, remixContext)
+    : handleBrowserRequest(request, responseStatusCode, responseHeaders, remixContext)
 }
 
 function handleBotRequest(
@@ -48,9 +38,9 @@ function handleBotRequest(
           responseHeaders.set('Content-Type', 'text/html')
 
           resolve(new Response(stream, {
-            headers: responseHeaders,
-            status: didError ? 500 : responseStatusCode,
-          }))
+              headers: responseHeaders,
+              status: didError ? 500 : responseStatusCode,
+            }))
 
           pipe(body)
         },
@@ -88,9 +78,9 @@ function handleBrowserRequest(
           responseHeaders.set('Content-Type', 'text/html')
 
           resolve(new Response(stream, {
-            headers: responseHeaders,
-            status: didError ? 500 : responseStatusCode,
-          }))
+              headers: responseHeaders,
+              status: didError ? 500 : responseStatusCode,
+            }))
 
           pipe(body)
         },

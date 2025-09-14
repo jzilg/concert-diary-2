@@ -10,9 +10,7 @@ import { authenticateUser } from '~/logic/user'
 import Button from '~/components/Button'
 import NavLink from '~/components/NavLink'
 
-export const meta: MetaFunction = () => [
-  { title: 'Concert Diary | Login' },
-]
+export const meta: MetaFunction = () => [{ title: 'Concert Diary | Login' }]
 
 export const action: ActionFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'))
@@ -27,14 +25,17 @@ export const action: ActionFunction = async ({ request }) => {
   if (!userIsAuthenticated) {
     session.flash('error', 'Invalid username/password')
 
-    return json({
-      error: 'Wrong username or password',
-    }, {
-      status: 401,
-      headers: {
-        'Set-Cookie': await commitSession(session),
+    return json(
+      {
+        error: 'Wrong username or password',
       },
-    })
+      {
+        status: 401,
+        headers: {
+          'Set-Cookie': await commitSession(session),
+        },
+      },
+    )
   }
 
   session.set('userId', user?.id)
@@ -56,35 +57,19 @@ const Login: FC = () => {
         <h2 className="text-2xl font-bold">Login</h2>
         <label className="block mt-3">
           <span className="block mb-2 font-bold">Username</span>
-          <Input
-            type="text"
-            name="username"
-            minLength={2}
-            required
-          />
+          <Input type="text" name="username" minLength={2} required />
         </label>
         <label className="block mt-3">
           <span className="block mb-2 font-bold">Password</span>
-          <Input
-            type="password"
-            name="password"
-            minLength={6}
-            required
-          />
+          <Input type="password" name="password" minLength={6} required />
         </label>
-        <p className="mt-6 text-red-600">
-          {actionData?.error}
-        </p>
+        <p className="mt-6 text-red-600">{actionData?.error}</p>
         <ul className="flex gap-2 mt-6">
           <li>
-            <Button type="submit">
-              Login
-            </Button>
+            <Button type="submit">Login</Button>
           </li>
           <li>
-            <NavLink to="/register">
-              Register
-            </NavLink>
+            <NavLink to="/register">Register</NavLink>
           </li>
         </ul>
       </Form>

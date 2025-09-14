@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react'
 export type InputList = string[]
 
 type Props = {
-    list: InputList
-    onChange: (list: InputList) => void
-    placeholder?: string
+  list: InputList
+  onChange: (list: InputList) => void
+  placeholder?: string
 }
 
 const ListInput: FC<Props> = (props) => {

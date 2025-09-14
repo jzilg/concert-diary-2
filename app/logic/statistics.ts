@@ -24,11 +24,7 @@ const calcMostSeenBands = (concerts: Concert[], festivals: Festival[]): MostSeen
       type: 'support',
     }))
 
-    return [
-      ...accumulator,
-      ...supportBands,
-      mainBand,
-    ]
+    return [...accumulator, ...supportBands, mainBand]
   }, [] as Band[])
 
   const bandsFromFestivals = festivals.reduce((accumulator, festival) => {
@@ -37,18 +33,15 @@ const calcMostSeenBands = (concerts: Concert[], festivals: Festival[]): MostSeen
       type: 'festival',
     }))
 
-    return [
-      ...accumulator,
-      ...bands,
-    ]
+    return [...accumulator, ...bands]
   }, [] as Band[])
 
-  const bands = [
-    ...bandsFromConcerts,
-    ...bandsFromFestivals,
-  ]
+  const bands = [...bandsFromConcerts, ...bandsFromFestivals]
 
-  const toMostSeenBands = (accumulator: Record<MostSeenBand['name'], MostSeenBand>, band: Band): Record<MostSeenBand['name'], MostSeenBand> => {
+  const toMostSeenBands = (
+    accumulator: Record<MostSeenBand['name'], MostSeenBand>,
+    band: Band,
+  ): Record<MostSeenBand['name'], MostSeenBand> => {
     const mainCount = band.type === 'main' ? 1 : 0
     const supportCount = band.type === 'support' ? 1 : 0
     const festivalCount = band.type === 'festival' ? 1 : 0
@@ -56,19 +49,21 @@ const calcMostSeenBands = (concerts: Concert[], festivals: Festival[]): MostSeen
 
     const duplicateEntry = accumulator[band.name]
 
-    const mostSeenBand: MostSeenBand = (duplicateEntry) ? {
-      ...duplicateEntry,
-      mainCount: duplicateEntry.mainCount + mainCount,
-      supportCount: duplicateEntry.supportCount + supportCount,
-      festivalCount: duplicateEntry.festivalCount + festivalCount,
-      totalCount: duplicateEntry.totalCount + totalCount,
-    } : {
-      name: band.name,
-      mainCount,
-      supportCount,
-      festivalCount,
-      totalCount,
-    }
+    const mostSeenBand: MostSeenBand = duplicateEntry
+      ? {
+          ...duplicateEntry,
+          mainCount: duplicateEntry.mainCount + mainCount,
+          supportCount: duplicateEntry.supportCount + supportCount,
+          festivalCount: duplicateEntry.festivalCount + festivalCount,
+          totalCount: duplicateEntry.totalCount + totalCount,
+        }
+      : {
+          name: band.name,
+          mainCount,
+          supportCount,
+          festivalCount,
+          totalCount,
+        }
 
     return {
       ...accumulator,
@@ -119,20 +114,15 @@ const calcMostCommonCompanions = (
   const concertCompanionsCounts = countDuplicates(concertCompanions)
   const festivalCompanions = festivals.flatMap((festival) => festival.companions)
   const festivalCompanionsCounts = countDuplicates(festivalCompanions)
-  const companions = [...new Set([
-    ...concertCompanions,
-    ...festivalCompanions,
-  ])]
+  const companions = [...new Set([...concertCompanions, ...festivalCompanions])]
 
   return companions
     .map((companion) => ({
       name: companion,
       concertCount: concertCompanionsCounts[companion] ?? 0,
       festivalCount: festivalCompanionsCounts[companion] ?? 0,
-      totalCount: (
-        (concertCompanionsCounts[companion] ?? 0)
-        + (festivalCompanionsCounts[companion] ?? 0)
-      ),
+      totalCount:
+        (concertCompanionsCounts[companion] ?? 0) + (festivalCompanionsCounts[companion] ?? 0),
     }))
     .sort((x, y) => y.totalCount - x.totalCount)
 }

@@ -29,17 +29,13 @@ const Navigation: FC = () => {
 
   const linkElements = navLinks.map((link) => (
     <li key={`${link.url}-${link.label}`}>
-      <NavLink to={link.url}>
-        {link.label}
-      </NavLink>
+      <NavLink to={link.url}>{link.label}</NavLink>
     </li>
   ))
 
   return (
     <nav>
-      <ul className="flex flex-wrap">
-        {linkElements}
-      </ul>
+      <ul className="flex flex-wrap">{linkElements}</ul>
     </nav>
   )
 }

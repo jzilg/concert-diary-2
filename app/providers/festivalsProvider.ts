@@ -5,13 +5,13 @@ import client from '../db/client'
 const DB = 'concert-diary'
 const COLLECTION = 'festivals'
 
-type FestivalsProvider = (userId: string) => ({
+type FestivalsProvider = (userId: string) => {
   getAll(): Promise<Festival[]>
   getById(id: string): Promise<Festival>
   add(festival: Festival): Promise<Festival>
   update(id: string, festival: Festival): Promise<Festival>
   remove(id: string): Promise<void>
-})
+}
 
 const festivalsProvider: FestivalsProvider = (userId) => {
   const collectionName = `${COLLECTION}-${userId}`

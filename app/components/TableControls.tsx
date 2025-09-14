@@ -3,15 +3,12 @@ import { Link } from '@remix-run/react'
 import { PencilSquare, Trash } from 'react-bootstrap-icons'
 
 type Props = {
-    editUrl: string
-    deleteFn: () => void
+  editUrl: string
+  deleteFn: () => void
 }
 
 const TableControls: FC<Props> = (props) => {
-  const {
-    editUrl,
-    deleteFn,
-  } = props
+  const { editUrl, deleteFn } = props
 
   return (
     <ul className="sm:flex">

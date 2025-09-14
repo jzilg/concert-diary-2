@@ -14,22 +14,20 @@ export const getUserFromRequest = async (request: Request): Promise<User | undef
 }
 
 // eslint-disable-next-line max-len
-export const authenticateUser = async (username: string, password: string): Promise<[boolean, User | null]> => {
+export const authenticateUser = async (
+  username: string,
+  password: string,
+): Promise<[boolean, User | null]> => {
   const user = await usersProvider.getUserByField('username', username)
 
-  return [
-    await compare(password, user?.password ?? ''),
-    user,
-  ]
+  return [await compare(password, user?.password ?? ''), user]
 }
 
-export const validateToken = (incomingToken: string): boolean => (
+export const validateToken = (incomingToken: string): boolean =>
   incomingToken !== config.registerToken
-)
 
-export const userAlreadyExists = async (incomingUsername: string): Promise<boolean> => (
-  await usersProvider.getUserByField('username', incomingUsername) !== null
-)
+export const userAlreadyExists = async (incomingUsername: string): Promise<boolean> =>
+  (await usersProvider.getUserByField('username', incomingUsername)) !== null
 
 export const createNewUser = async (username: string, password: string): Promise<void> => {
   const salt = await genSalt()

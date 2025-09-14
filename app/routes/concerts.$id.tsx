@@ -11,9 +11,7 @@ import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFro
 import { getUserFromRequest } from '~/logic/user'
 import cachedJson from '~/helpers/cachedJson'
 
-export const meta: MetaFunction = () => [
-  { title: 'Concert Diary | Edit Concert' },
-]
+export const meta: MetaFunction = () => [{ title: 'Concert Diary | Edit Concert' }]
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   if (params.id === undefined) {
@@ -60,7 +58,11 @@ const EditConcert: FC = () => {
   const saveConcert = useSubmit()
 
   useEffect(() => {
-    if (navigation.state === 'loading' && navigation.formMethod === 'PUT' && navigation.location.pathname === '/concerts') {
+    if (
+      navigation.state === 'loading' &&
+      navigation.formMethod === 'PUT' &&
+      navigation.location.pathname === '/concerts'
+    ) {
       toast.success('Concert updated')
     }
   }, [navigation.state, navigation.formMethod, navigation.location])
