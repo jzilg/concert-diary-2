@@ -29,7 +29,7 @@ const MostSeenBands: FC<Props> = (props) => {
   })
 
   return (
-    <table className="w-full bg-white dark:bg-slate-800 table-fixed border-separate border-spacing-0">
+    <table className="w-full bg-white dark:bg-slate-800 table-fixed border-separate border-spacing-0 shadow-lg">
       <caption className="text-left sm:text-center px-6">
         <h3 className="font-bold text-xl mb-3">Most Seen Bands</h3>
       </caption>
