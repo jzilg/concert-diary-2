@@ -19,7 +19,7 @@ const TableControls: FC<Props> = (props) => {
         <Link
           to={editUrl}
           title="Edit"
-          className="inline-flex p-4 bg-white hover:text-white hover:bg-blue-600 transition-colors border-l border-t rounded-tl-md"
+          className="inline-flex p-4 dark:bg-slate-800 bg-white hover:text-white hover:bg-blue-600 transition-colors border-l border-t dark:border-slate-900 rounded-tl-md"
         >
           <PencilSquare />
         </Link>
@@ -28,7 +28,7 @@ const TableControls: FC<Props> = (props) => {
         <button
           type="button"
           title="Delete"
-          className="p-4 bg-white hover:text-white hover:bg-red-600 transition-colors border-t border-l"
+          className="p-4 bg-white dark:bg-slate-800 hover:text-white hover:bg-red-600 transition-colors border-t border-l dark:border-slate-900"
           onClick={() => {
             deleteFn()
           }}
