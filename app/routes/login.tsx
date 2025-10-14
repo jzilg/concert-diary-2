@@ -1,18 +1,17 @@
 import type { FC } from 'react'
-import { Form, useActionData } from '@remix-run/react'
-import type { ActionFunction, MetaFunction } from '@remix-run/node'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
-import { json, redirect } from '@remix-run/node'
 import Input from '~/components/Input'
 import type LoginDto from '~/entities/LoginDto'
 import { getSession, commitSession } from '~/logic/session'
 import { authenticateUser } from '~/logic/user'
 import Button from '~/components/Button'
 import NavLink from '~/components/NavLink'
+import type { Route } from './+types/login'
+import { data, Form, redirect, useActionData } from 'react-router'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | Login' }]
+export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | Login' }]
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
   const body = await request.formData()
   const loginDto: LoginDto = {
@@ -25,7 +24,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (!userIsAuthenticated) {
     session.flash('error', 'Invalid username/password')
 
-    return json(
+    return data(
       {
         error: 'Wrong username or password',
       },

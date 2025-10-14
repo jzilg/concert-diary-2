@@ -1,11 +1,10 @@
 import type { FC } from 'react'
-import type { SubmitFunction } from '@remix-run/react'
 import Input from '~/components/Input'
 import { ArrowLeft, Save } from 'react-bootstrap-icons'
 import Button from '~/components/Button'
 import NavLink from '~/components/NavLink'
-import { Form } from '@remix-run/react'
 import type Festival from '../entities/Festival'
+import { Form, type SubmitFunction } from 'react-router'
 
 type Props = {
   festival: Festival

@@ -1,20 +1,19 @@
 import type { FC } from 'react'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { useSubmit, useNavigation } from '@remix-run/react'
 import type Festival from '~/entities/Festival'
 import FestivalForm from '~/components/FestivalForm'
-import type { ActionFunction, MetaFunction } from '@remix-run/node'
-import { redirect } from '@remix-run/node'
 import festivalsProvider from '~/providers/festivalsProvider'
 import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
 import { getUserFromRequest } from '~/logic/user'
 import todaysDate from '~/helpers/todaysDate'
 import { createFestival } from '~/entities/Festival'
+import type { Route } from './+types/festivals.new'
+import { redirect, useNavigation, useSubmit } from 'react-router'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | New Festival' }]
+export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | New Festival' }]
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {

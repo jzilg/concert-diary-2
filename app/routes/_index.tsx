@@ -1,14 +1,12 @@
 import type { FC } from 'react'
-import type { LoaderFunction } from '@remix-run/node'
-import { redirect } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { redirect, useLoaderData } from 'react-router'
 
-export const loader: LoaderFunction = () => redirect('/concerts')
+export const loader = () => redirect('/concerts')
 
 const Index: FC = () => {
   useLoaderData()
 
-  return null
+  return undefined
 }
 
 export default Index

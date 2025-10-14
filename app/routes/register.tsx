@@ -1,17 +1,16 @@
-import type { ActionFunction, MetaFunction } from '@remix-run/node'
 import type { FC } from 'react'
 import type RegisterDto from '~/entities/RegisterDto'
-import { Form } from '@remix-run/react'
 import Input from '~/components/Input'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
-import { json, redirect } from '@remix-run/node'
 import { createNewUser, userAlreadyExists, validateToken } from '~/logic/user'
 import Button from '~/components/Button'
 import NavLink from '~/components/NavLink'
+import type { Route } from './+types/register'
+import { data, Form, redirect } from 'react-router'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | Register' }]
+export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | Register' }]
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const body = await request.formData()
   const registerDto: RegisterDto = {
     username: extractStringFromBody(body)('username'),
@@ -20,11 +19,11 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   if (validateToken(registerDto.token)) {
-    return json('Incorrect token', { status: 401 })
+    return data('Incorrect token', { status: 401 })
   }
 
   if (await userAlreadyExists(registerDto.username)) {
-    return json('Username already exists', { status: 400 })
+    return data('Username already exists', { status: 400 })
   }
 
   await createNewUser(registerDto.username, registerDto.password)

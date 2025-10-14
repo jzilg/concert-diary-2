@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { useFetchers, useNavigation } from '@remix-run/react'
+import { useFetchers, useNavigation } from 'react-router'
 
 const LoadingIndicator: FC = () => {
   const { state: navigationState } = useNavigation()

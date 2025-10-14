@@ -1,7 +1,7 @@
 import MD5 from 'crypto-js/md5'
-import { json } from '@remix-run/node'
+import { data as json } from 'react-router'
 
-const cachedJson = (request: Request, data: unknown): Response => {
+const cachedJson = (request: Request, data: unknown) => {
   const hash = MD5(JSON.stringify(data)).toString()
 
   if (hash === request.headers.get('If-None-Match')) {

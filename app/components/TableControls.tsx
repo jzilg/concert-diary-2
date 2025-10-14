@@ -1,6 +1,6 @@
 import type { FC } from 'react'
-import { Link } from '@remix-run/react'
 import { PencilSquare, Trash } from 'react-bootstrap-icons'
+import { Link } from 'react-router'
 
 type Props = {
   editUrl: string

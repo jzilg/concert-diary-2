@@ -1,5 +1,5 @@
-import { createCookieSessionStorage } from '@remix-run/node'
 import config from '~/config'
+import { createCookieSessionStorage } from 'react-router'
 
 const { getSession, commitSession, destroySession } = createCookieSessionStorage({
   cookie: {

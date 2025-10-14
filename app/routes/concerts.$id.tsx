@@ -2,20 +2,19 @@ import type { FC } from 'react'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import ConcertForm from '~/components/ConcertForm'
-import type { ActionFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
 import concertsProvider from '~/providers/concertsProvider'
-import { useLoaderData, useNavigation, useSubmit } from '@remix-run/react'
 import type Concert from '~/entities/Concert'
 import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
 import { getUserFromRequest } from '~/logic/user'
 import cachedJson from '~/helpers/cachedJson'
+import type { Route } from './+types/concerts.$id'
+import { data, redirect, useLoaderData, useNavigation, useSubmit } from 'react-router'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | Edit Concert' }]
+export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | Edit Concert' }]
 
-export const loader: LoaderFunction = async ({ params, request }) => {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
   if (params.id === undefined) {
-    return json('no id provided', { status: 400 })
+    return data('no id provided', { status: 400 })
   }
 
   const user = await getUserFromRequest(request)
@@ -29,7 +28,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   return cachedJson(request, concert)
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {

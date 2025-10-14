@@ -1,9 +1,11 @@
 import type User from '~/entities/User'
 import usersProvider from '~/providers/usersProvider'
 import config from '~/config'
-import { compare, genSalt, hash } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import uniqid from 'uniqid'
 import { getSession } from './session'
+
+const { compare, genSalt, hash } = bcrypt
 
 export const getUserFromRequest = async (request: Request): Promise<User | undefined> => {
   const session = await getSession(request.headers.get('Cookie'))

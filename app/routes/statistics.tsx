@@ -1,19 +1,18 @@
 import type { FC } from 'react'
-import type { MetaFunction, LoaderFunction } from '@remix-run/node'
 import Header from '~/components/Header'
 import GeneralStatistics from '~/components/GeneralStatistics'
 import MostSeenBands from '~/components/MostSeenBands'
 import MostCommonCompanionsTable from '~/components/MostCommonCompanionsTable'
-import { redirect } from '@remix-run/node'
 import { getUserFromRequest } from '~/logic/user'
-import { useLoaderData } from '@remix-run/react'
 import { getStatisticsOfUser } from '~/logic/statistics'
 import cachedJson from '~/helpers/cachedJson'
 import type Statistics from '../entities/Statistics'
+import type { Route } from './+types/statistics'
+import { redirect, useLoaderData } from 'react-router'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | Statistics' }]
+export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | Statistics' }]
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {

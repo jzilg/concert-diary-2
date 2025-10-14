@@ -2,9 +2,6 @@ import type { FC } from 'react'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import type Festival from '~/entities/Festival'
-import { useFetcher, useLoaderData } from '@remix-run/react'
-import type { LoaderFunction, ActionFunction, MetaFunction } from '@remix-run/node'
-import { redirect } from '@remix-run/node'
 import festivalsProvider from '~/providers/festivalsProvider'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { PlusCircle } from 'react-bootstrap-icons'
@@ -13,10 +10,12 @@ import { getSortedFestivalsOfUser } from '~/logic/festivals'
 import FestivalsTable from '~/components/FestivalsTable'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
+import type { Route } from './+types/festivals'
+import { redirect, useFetcher, useLoaderData } from 'react-router'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | Festivals' }]
+export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | Festivals' }]
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {
@@ -28,7 +27,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return cachedJson(request, sortedFestivals)
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {

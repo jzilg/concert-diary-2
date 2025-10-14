@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import Header from '~/components/Header'
-import { Outlet } from '@remix-run/react'
+import { Outlet } from 'react-router'
 
 const Festivals: FC = () => (
   <>
