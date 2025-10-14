@@ -1,16 +1,27 @@
 import type { FC } from 'react'
 import { useEffect } from 'react'
+import {
+  data,
+  redirect,
+  useLoaderData,
+  useNavigation,
+  useSubmit,
+} from 'react-router'
 import { toast } from 'react-toastify'
 import FestivalForm from '~/components/FestivalForm'
-import festivalsProvider from '~/providers/festivalsProvider'
 import type Festival from '~/entities/Festival'
-import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
-import { getUserFromRequest } from '~/logic/user'
 import cachedJson from '~/helpers/cachedJson'
+import {
+  extractListFromBody,
+  extractStringFromBody,
+} from '~/helpers/extractFromBody'
+import { getUserFromRequest } from '~/logic/user'
+import festivalsProvider from '~/providers/festivalsProvider'
 import type { Route } from './+types/festivals.$id'
-import { data, redirect, useLoaderData, useNavigation, useSubmit } from 'react-router'
 
-export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | Edit Festival' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Edit Festival' },
+]
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   if (params.id === undefined) {
@@ -71,7 +82,11 @@ const EditFestival: FC = () => {
   return (
     <div className="px-6">
       <h2 className="text-2xl mb-6 font-bold">Edit Festival</h2>
-      <FestivalForm festival={festival} saveFestival={saveFestival} method="put" />
+      <FestivalForm
+        festival={festival}
+        saveFestival={saveFestival}
+        method="put"
+      />
     </div>
   )
 }

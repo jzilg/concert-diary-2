@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading, react/button-has-type */
 import type { ButtonHTMLAttributes, FC } from 'react'
 
 export type Props = ButtonHTMLAttributes<HTMLButtonElement>

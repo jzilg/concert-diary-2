@@ -9,11 +9,14 @@ const MostSeenBands: FC<Props> = (props) => {
   const { mostSeenBands } = props
 
   const rowElements = mostSeenBands.map((mostSeenBand) => {
-    const { name, mainCount, supportCount, festivalCount, totalCount } = mostSeenBand
+    const { name, mainCount, supportCount, festivalCount, totalCount } =
+      mostSeenBand
 
     return (
       <tr key={name} className="hover:bg-gray-100 dark:hover:bg-slate-700">
-        <td className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">{name}</td>
+        <td className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">
+          {name}
+        </td>
         <td className="px-3 sm:px-6 py-4 text-center border-b dark:border-slate-900">
           {totalCount}
         </td>
@@ -37,11 +40,21 @@ const MostSeenBands: FC<Props> = (props) => {
       </caption>
       <thead>
         <tr>
-          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900 text-left">Band</th>
-          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">Sum</th>
-          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">Main Act</th>
-          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">Festival Act</th>
-          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">Support Act</th>
+          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900 text-left">
+            Band
+          </th>
+          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">
+            Sum
+          </th>
+          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">
+            Main Act
+          </th>
+          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">
+            Festival Act
+          </th>
+          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">
+            Support Act
+          </th>
         </tr>
       </thead>
       <tbody>{rowElements}</tbody>

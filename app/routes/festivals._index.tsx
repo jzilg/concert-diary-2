@@ -1,19 +1,21 @@
 import type { FC } from 'react'
 import { useEffect } from 'react'
-import { toast } from 'react-toastify'
-import type Festival from '~/entities/Festival'
-import festivalsProvider from '~/providers/festivalsProvider'
-import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { PlusCircle } from 'react-bootstrap-icons'
-import { getUserFromRequest } from '~/logic/user'
-import { getSortedFestivalsOfUser } from '~/logic/festivals'
+import { redirect, useFetcher, useLoaderData } from 'react-router'
+import { toast } from 'react-toastify'
 import FestivalsTable from '~/components/FestivalsTable'
 import NavLink from '~/components/NavLink'
+import type Festival from '~/entities/Festival'
 import cachedJson from '~/helpers/cachedJson'
+import { extractStringFromBody } from '~/helpers/extractFromBody'
+import { getSortedFestivalsOfUser } from '~/logic/festivals'
+import { getUserFromRequest } from '~/logic/user'
+import festivalsProvider from '~/providers/festivalsProvider'
 import type { Route } from './+types/festivals'
-import { redirect, useFetcher, useLoaderData } from 'react-router'
 
-export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | Festivals' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Festivals' },
+]
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const user = await getUserFromRequest(request)
@@ -44,7 +46,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   })
 }
 
-const FestivalsView: FC = (props) => {
+const FestivalsView: FC = () => {
   const festivals = useLoaderData<Festival[]>()
   const fetcher = useFetcher()
 

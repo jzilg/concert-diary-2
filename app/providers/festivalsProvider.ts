@@ -26,7 +26,9 @@ const festivalsProvider: FestivalsProvider = (userId) => {
 
         const festivalDataList = await cursor.toArray()
 
-        return festivalDataList.map((festivalData) => createFestival(festivalData as Object))
+        return festivalDataList.map((festivalData) =>
+          createFestival(festivalData as Object),
+        )
       } finally {
         await client.close()
       }

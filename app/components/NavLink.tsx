@@ -1,8 +1,7 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import type { ComponentProps, FC } from 'react'
 import { Link } from 'react-router'
 
-export type Props = ComponentProps<typeof Link>;
+export type Props = ComponentProps<typeof Link>
 
 const NavLink: FC<Props> = (props) => {
   const { children, className } = props

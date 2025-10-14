@@ -1,16 +1,27 @@
 import type { FC } from 'react'
 import { useEffect } from 'react'
+import {
+  data,
+  redirect,
+  useLoaderData,
+  useNavigation,
+  useSubmit,
+} from 'react-router'
 import { toast } from 'react-toastify'
 import ConcertForm from '~/components/ConcertForm'
-import concertsProvider from '~/providers/concertsProvider'
 import type Concert from '~/entities/Concert'
-import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
-import { getUserFromRequest } from '~/logic/user'
 import cachedJson from '~/helpers/cachedJson'
+import {
+  extractListFromBody,
+  extractStringFromBody,
+} from '~/helpers/extractFromBody'
+import { getUserFromRequest } from '~/logic/user'
+import concertsProvider from '~/providers/concertsProvider'
 import type { Route } from './+types/concerts.$id'
-import { data, redirect, useLoaderData, useNavigation, useSubmit } from 'react-router'
 
-export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | Edit Concert' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Edit Concert' },
+]
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   if (params.id === undefined) {

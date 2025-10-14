@@ -15,11 +15,17 @@ const ConcertsTable: FC<Props> = (props) => {
     const { id, band, location } = concert
     const supportBands = concert.supportBands.join(', ')
     const companions = concert.companions.join(', ')
-    const date = new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(concert.date))
+    const date = new Intl.DateTimeFormat('de-DE', {
+      dateStyle: 'medium',
+    }).format(new Date(concert.date))
     const editUrl = `/concerts/${id}`
 
     const deleteFn = (): void => {
-      if (window.confirm(`Do you really want to delete the ${concert.band} concert`)) {
+      if (
+        window.confirm(
+          `Do you really want to delete the ${concert.band} concert`,
+        )
+      ) {
         deleteConcert(id)
       }
     }
@@ -53,7 +59,9 @@ const ConcertsTable: FC<Props> = (props) => {
     )
   })
 
-  return <div className="bg-white dark:bg-slate-800 shadow-lg">{rowElements}</div>
+  return (
+    <div className="bg-white dark:bg-slate-800 shadow-lg">{rowElements}</div>
+  )
 }
 
 export default ConcertsTable

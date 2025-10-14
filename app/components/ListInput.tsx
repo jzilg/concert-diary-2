@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export type InputList = string[]
 

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import type { FC, InputHTMLAttributes } from 'react'
 
 const Input: FC<InputHTMLAttributes<HTMLInputElement>> = (props) => {

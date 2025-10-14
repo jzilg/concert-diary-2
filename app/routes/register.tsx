@@ -1,14 +1,16 @@
 import type { FC } from 'react'
-import type RegisterDto from '~/entities/RegisterDto'
+import { data, Form, redirect } from 'react-router'
+import Button from '~/components/Button'
 import Input from '~/components/Input'
+import NavLink from '~/components/NavLink'
+import type RegisterDto from '~/entities/RegisterDto'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { createNewUser, userAlreadyExists, validateToken } from '~/logic/user'
-import Button from '~/components/Button'
-import NavLink from '~/components/NavLink'
 import type { Route } from './+types/register'
-import { data, Form, redirect } from 'react-router'
 
-export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | Register' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Register' },
+]
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const body = await request.formData()

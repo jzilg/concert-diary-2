@@ -1,17 +1,22 @@
 import type { FC } from 'react'
 import { useEffect } from 'react'
-import { toast } from 'react-toastify'
-import type Concert from '~/entities/Concert'
-import ConcertForm from '~/components/ConcertForm'
-import concertsProvider from '~/providers/concertsProvider'
-import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
-import { getUserFromRequest } from '~/logic/user'
-import todaysDate from '~/helpers/todaysDate'
-import { createConcert } from '~/entities/Concert'
-import type { Route } from './+types/concerts.new'
 import { redirect, useNavigation, useSubmit } from 'react-router'
+import { toast } from 'react-toastify'
+import ConcertForm from '~/components/ConcertForm'
+import type Concert from '~/entities/Concert'
+import { createConcert } from '~/entities/Concert'
+import {
+  extractListFromBody,
+  extractStringFromBody,
+} from '~/helpers/extractFromBody'
+import todaysDate from '~/helpers/todaysDate'
+import { getUserFromRequest } from '~/logic/user'
+import concertsProvider from '~/providers/concertsProvider'
+import type { Route } from './+types/concerts.new'
 
-export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | New Concert' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | New Concert' },
+]
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const user = await getUserFromRequest(request)

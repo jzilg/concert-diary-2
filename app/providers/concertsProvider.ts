@@ -26,7 +26,9 @@ const concertsProvider: ConcertsProvider = (userId) => {
 
         const concertDataList = await cursor.toArray()
 
-        return concertDataList.map((concertData) => createConcert(concertData as Object))
+        return concertDataList.map((concertData) =>
+          createConcert(concertData as Object),
+        )
       } finally {
         await client.close()
       }

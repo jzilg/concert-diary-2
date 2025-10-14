@@ -1,5 +1,5 @@
-import type MostSeenBand from './MostSeenBand'
 import type MostCommonCompanion from './MostCommonCompanion'
+import type MostSeenBand from './MostSeenBand'
 
 type Statistics = {
   mostSeenBands: MostSeenBand[]

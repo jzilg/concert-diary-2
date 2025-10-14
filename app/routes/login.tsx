@@ -1,15 +1,17 @@
 import type { FC } from 'react'
-import { extractStringFromBody } from '~/helpers/extractFromBody'
-import Input from '~/components/Input'
-import type LoginDto from '~/entities/LoginDto'
-import { getSession, commitSession } from '~/logic/session'
-import { authenticateUser } from '~/logic/user'
+import { data, Form, redirect } from 'react-router'
 import Button from '~/components/Button'
+import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
+import type LoginDto from '~/entities/LoginDto'
+import { extractStringFromBody } from '~/helpers/extractFromBody'
+import { commitSession, getSession } from '~/logic/session'
+import { authenticateUser } from '~/logic/user'
 import type { Route } from './+types/login'
-import { data, Form, redirect, useActionData } from 'react-router'
 
-export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | Login' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Login' },
+]
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
@@ -19,7 +21,10 @@ export const action = async ({ request }: Route.ActionArgs) => {
     password: extractStringFromBody(body)('password'),
   }
 
-  const [userIsAuthenticated, user] = await authenticateUser(loginDto.username, loginDto.password)
+  const [userIsAuthenticated, user] = await authenticateUser(
+    loginDto.username,
+    loginDto.password,
+  )
 
   if (!userIsAuthenticated) {
     session.flash('error', 'Invalid username/password')
@@ -46,9 +51,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   })
 }
 
-const Login: FC = () => {
-  const actionData = useActionData<{ error?: string } | undefined>()
-
+const Login: FC<Route.ComponentProps> = ({ actionData }) => {
   return (
     <main className="container mx-auto p-6">
       <h1 className="text-4xl font-bold my-6">Concert Diary</h1>

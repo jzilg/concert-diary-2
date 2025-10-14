@@ -1,16 +1,18 @@
 import type { FC } from 'react'
-import Header from '~/components/Header'
+import { redirect, useLoaderData } from 'react-router'
 import GeneralStatistics from '~/components/GeneralStatistics'
-import MostSeenBands from '~/components/MostSeenBands'
+import Header from '~/components/Header'
 import MostCommonCompanionsTable from '~/components/MostCommonCompanionsTable'
-import { getUserFromRequest } from '~/logic/user'
-import { getStatisticsOfUser } from '~/logic/statistics'
+import MostSeenBands from '~/components/MostSeenBands'
 import cachedJson from '~/helpers/cachedJson'
+import { getStatisticsOfUser } from '~/logic/statistics'
+import { getUserFromRequest } from '~/logic/user'
 import type Statistics from '../entities/Statistics'
 import type { Route } from './+types/statistics'
-import { redirect, useLoaderData } from 'react-router'
 
-export const meta: Route.MetaFunction = () => [{ title: 'Concert Diary | Statistics' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Statistics' },
+]
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const user = await getUserFromRequest(request)
@@ -54,7 +56,9 @@ const StatisticsRoute: FC = () => {
             <MostSeenBands mostSeenBands={mostSeenBands} />
           </div>
           <div>
-            <MostCommonCompanionsTable mostCommonCompanions={mostCommonCompanions} />
+            <MostCommonCompanionsTable
+              mostCommonCompanions={mostCommonCompanions}
+            />
           </div>
         </div>
       </main>

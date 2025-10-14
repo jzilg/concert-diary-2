@@ -4,7 +4,9 @@ import { useFetchers, useNavigation } from 'react-router'
 const LoadingIndicator: FC = () => {
   const { state: navigationState } = useNavigation()
   const fetchers = useFetchers()
-  const everyFetcherIsIdle = fetchers.every((fetcher) => fetcher.state === 'idle')
+  const everyFetcherIsIdle = fetchers.every(
+    (fetcher) => fetcher.state === 'idle',
+  )
 
   if (navigationState === 'idle' && everyFetcherIsIdle) {
     return null

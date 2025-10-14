@@ -1,14 +1,17 @@
-import type User from '~/entities/User'
 import type Statistics from '~/entities/Statistics'
+import type User from '~/entities/User'
 import concertsProvider from '~/providers/concertsProvider'
 import festivalsProvider from '~/providers/festivalsProvider'
 import type Concert from '../entities/Concert'
 import type Festival from '../entities/Festival'
-import type MostSeenBand from '../entities/MostSeenBand'
 import type MostCommonCompanion from '../entities/MostCommonCompanion'
+import type MostSeenBand from '../entities/MostSeenBand'
 import countDuplicates from '../helpers/countDuplicates'
 
-const calcMostSeenBands = (concerts: Concert[], festivals: Festival[]): MostSeenBand[] => {
+const calcMostSeenBands = (
+  concerts: Concert[],
+  festivals: Festival[],
+): MostSeenBand[] => {
   type Band = {
     name: string
     type: 'main' | 'support' | 'festival'
@@ -112,7 +115,9 @@ const calcMostCommonCompanions = (
 ): MostCommonCompanion[] => {
   const concertCompanions = concerts.flatMap((concert) => concert.companions)
   const concertCompanionsCounts = countDuplicates(concertCompanions)
-  const festivalCompanions = festivals.flatMap((festival) => festival.companions)
+  const festivalCompanions = festivals.flatMap(
+    (festival) => festival.companions,
+  )
   const festivalCompanionsCounts = countDuplicates(festivalCompanions)
   const companions = [...new Set([...concertCompanions, ...festivalCompanions])]
 
@@ -122,13 +127,15 @@ const calcMostCommonCompanions = (
       concertCount: concertCompanionsCounts[companion] ?? 0,
       festivalCount: festivalCompanionsCounts[companion] ?? 0,
       totalCount:
-        (concertCompanionsCounts[companion] ?? 0) + (festivalCompanionsCounts[companion] ?? 0),
+        (concertCompanionsCounts[companion] ?? 0) +
+        (festivalCompanionsCounts[companion] ?? 0),
     }))
     .sort((x, y) => y.totalCount - x.totalCount)
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export const getStatisticsOfUser = async (userId: User['id']): Promise<Statistics> => {
+export const getStatisticsOfUser = async (
+  userId: User['id'],
+): Promise<Statistics> => {
   const concerts = await concertsProvider(userId).getAll()
   const festivals = await festivalsProvider(userId).getAll()
 
