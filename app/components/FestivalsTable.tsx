@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type { Festival } from '../entities/Festival'
+import type { Festival } from '~/entities/Festival'
 import TableControls from './TableControls'
 
 export type Props = {

@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type { MostSeenBand } from '../entities/MostSeenBand'
+import type { MostSeenBand } from '~/entities/MostSeenBand'
 
 type Props = {
   mostSeenBands: MostSeenBand[]

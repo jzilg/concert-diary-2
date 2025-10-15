@@ -1,6 +1,6 @@
+import client from '~/db/client'
 import type { Festival } from '~/entities/Festival'
 import { createFestival } from '~/entities/Festival'
-import client from '../db/client'
 
 const DB = 'concert-diary'
 const COLLECTION = 'festivals'
