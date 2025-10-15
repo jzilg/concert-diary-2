@@ -1,5 +1,4 @@
-import type { FC } from 'react'
-import { useEffect } from 'react'
+import { type FC, useEffect } from 'react'
 import { redirect, useFetcher } from 'react-router'
 import { destroySession, getSession } from '~/logic/session'
 import type { Route } from './+types/logout'
