@@ -25,7 +25,7 @@ const TableControls: FC<Props> = (props) => {
         <button
           type="button"
           title="Delete"
-          className="p-4 bg-white dark:bg-slate-800 hover:text-white focus-visible:text-white hover:bg-red-600 focus-visible:bg-red-600 transition-colors border-t border-l dark:border-slate-900"
+          className="p-4 bg-white dark:bg-slate-800 hover:text-white focus-visible:text-white hover:bg-red-600 focus-visible:bg-red-600 transition-colors border-t border-l dark:border-slate-900 cursor-pointer"
           onClick={() => {
             deleteFn()
           }}
