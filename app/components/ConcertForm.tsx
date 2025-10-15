@@ -20,7 +20,7 @@ const ConcertForm: FC<Props> = (props) => {
     <Form
       method={method}
       onSubmit={(event) => {
-        saveConcert(event.currentTarget)
+        void saveConcert(event.currentTarget)
       }}
     >
       <input name="id" type="hidden" value={id} />
