@@ -7,7 +7,7 @@ import MostSeenBands from '~/components/MostSeenBands'
 import cachedJson from '~/helpers/cachedJson'
 import { getStatisticsOfUser } from '~/logic/statistics'
 import { getUserFromRequest } from '~/logic/user'
-import type { Route } from './+types/statistics'
+import type { Route } from './+types/Statistics'
 
 export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | Statistics' },

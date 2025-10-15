@@ -9,7 +9,7 @@ import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { getSortedFestivalsOfUser } from '~/logic/festivals'
 import { getUserFromRequest } from '~/logic/user'
 import festivalsProvider from '~/providers/festivalsProvider'
-import type { Route } from './+types/festivals'
+import type { Route } from './+types/FestivalsView'
 
 export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | Festivals' },

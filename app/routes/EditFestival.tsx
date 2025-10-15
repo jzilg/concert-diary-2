@@ -10,7 +10,7 @@ import {
 } from '~/helpers/extractFromBody'
 import { getUserFromRequest } from '~/logic/user'
 import festivalsProvider from '~/providers/festivalsProvider'
-import type { Route } from './+types/festivals.$id'
+import type { Route } from './+types/EditFestival'
 
 export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | Edit Festival' },

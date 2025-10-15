@@ -11,7 +11,7 @@ import {
 import todaysDate from '~/helpers/todaysDate'
 import { getUserFromRequest } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
-import type { Route } from './+types/concerts.new'
+import type { Route } from './+types/NewConcert'
 
 export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | New Concert' },

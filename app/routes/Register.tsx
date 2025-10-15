@@ -6,7 +6,7 @@ import NavLink from '~/components/NavLink'
 import type RegisterDto from '~/entities/RegisterDto'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { createNewUser, userAlreadyExists, validateToken } from '~/logic/user'
-import type { Route } from './+types/register'
+import type { Route } from './+types/Register'
 
 export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | Register' },

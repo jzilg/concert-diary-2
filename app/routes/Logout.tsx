@@ -1,7 +1,7 @@
 import { type FC, useEffect } from 'react'
 import { redirect, useFetcher } from 'react-router'
 import { destroySession, getSession } from '~/logic/session'
-import type { Route } from './+types/logout'
+import type { Route } from './+types/Logout'
 
 export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | Logging out...' },

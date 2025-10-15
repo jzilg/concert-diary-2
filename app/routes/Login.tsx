@@ -8,7 +8,7 @@ import { extractStringFromBody } from '~/helpers/extractFromBody'
 import renderIf from '~/helpers/renderIf'
 import { commitSession, getSession } from '~/logic/session'
 import { authenticateUser } from '~/logic/user'
-import type { Route } from './+types/login'
+import type { Route } from './+types/Login'
 
 export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | Login' },
