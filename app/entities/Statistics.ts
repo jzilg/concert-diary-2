@@ -1,7 +1,7 @@
-import type MostSeenBand from './MostSeenBand'
-import type MostCommonCompanion from './MostCommonCompanion'
+import type { MostCommonCompanion } from './MostCommonCompanion'
+import type { MostSeenBand } from './MostSeenBand'
 
-type Statistics = {
+export type Statistics = {
   mostSeenBands: MostSeenBand[]
   mostCommonCompanions: MostCommonCompanion[]
   totalConcertsCount: number
@@ -9,5 +9,3 @@ type Statistics = {
   totalBandsCount: number
   totalLocationsCount: number
 }
-
-export default Statistics

@@ -1,8 +1,8 @@
-import { z } from 'zod'
 import createId from 'uniqid'
+import { z } from 'zod'
 import dateRegEx from '~/helpers/dateRegEx'
 
-type Festival = {
+export type Festival = {
   id: string
   date: {
     from: string
@@ -13,7 +13,9 @@ type Festival = {
   companions: string[]
 }
 
-export const createFestival = (festivalData: Partial<Festival>): Festival => {
+export const createFestival = (
+  festivalData: Partial<Festival> & Record<string, unknown>,
+) => {
   const schema = z.object({
     id: z.string().default(createId()),
     date: z.object({
@@ -29,5 +31,3 @@ export const createFestival = (festivalData: Partial<Festival>): Festival => {
 
   return Object.freeze(validatedFestivalData)
 }
-
-export default Festival

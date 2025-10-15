@@ -1,20 +1,23 @@
-import type { FC } from 'react'
-import { useEffect } from 'react'
-import { useSubmit, useNavigation } from '@remix-run/react'
+import { type FC, useEffect } from 'react'
+import { redirect, useNavigation, useSubmit } from 'react-router'
 import { toast } from 'react-toastify'
-import type Concert from '~/entities/Concert'
 import ConcertForm from '~/components/ConcertForm'
-import type { ActionFunction, MetaFunction } from '@remix-run/node'
-import { redirect } from '@remix-run/node'
-import concertsProvider from '~/providers/concertsProvider'
-import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
-import { getUserFromRequest } from '~/logic/user'
-import todaysDate from '~/helpers/todaysDate'
+import type { Concert } from '~/entities/Concert'
 import { createConcert } from '~/entities/Concert'
+import {
+  extractListFromBody,
+  extractStringFromBody,
+} from '~/helpers/extractFromBody'
+import todaysDate from '~/helpers/todaysDate'
+import { getUserFromRequest } from '~/logic/user'
+import concertsProvider from '~/providers/concertsProvider'
+import type { Route } from './+types/NewConcert'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | New Concert' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | New Concert' },
+]
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {

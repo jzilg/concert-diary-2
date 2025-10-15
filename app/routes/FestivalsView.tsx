@@ -1,22 +1,21 @@
-import type { FC } from 'react'
-import { useEffect } from 'react'
-import { toast } from 'react-toastify'
-import type Festival from '~/entities/Festival'
-import { useFetcher, useLoaderData } from '@remix-run/react'
-import type { LoaderFunction, ActionFunction, MetaFunction } from '@remix-run/node'
-import { redirect } from '@remix-run/node'
-import festivalsProvider from '~/providers/festivalsProvider'
-import { extractStringFromBody } from '~/helpers/extractFromBody'
+import { type FC, useEffect } from 'react'
 import { PlusCircle } from 'react-bootstrap-icons'
-import { getUserFromRequest } from '~/logic/user'
-import { getSortedFestivalsOfUser } from '~/logic/festivals'
+import { redirect, useFetcher } from 'react-router'
+import { toast } from 'react-toastify'
 import FestivalsTable from '~/components/FestivalsTable'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
+import { extractStringFromBody } from '~/helpers/extractFromBody'
+import { getSortedFestivalsOfUser } from '~/logic/festivals'
+import { getUserFromRequest } from '~/logic/user'
+import festivalsProvider from '~/providers/festivalsProvider'
+import type { Route } from './+types/FestivalsView'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | Festivals' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Festivals' },
+]
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {
@@ -28,7 +27,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return cachedJson(request, sortedFestivals)
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {
@@ -40,13 +39,12 @@ export const action: ActionFunction = async ({ request }) => {
 
   await festivalsProvider(user.id).remove(id)
 
-  return new Response(null, {
+  return new Response(undefined, {
     status: 204,
   })
 }
 
-const FestivalsView: FC = (props) => {
-  const festivals = useLoaderData<Festival[]>()
+const FestivalsView: FC<Route.ComponentProps> = ({ loaderData }) => {
   const fetcher = useFetcher()
 
   useEffect(() => {
@@ -55,8 +53,8 @@ const FestivalsView: FC = (props) => {
     }
   }, [fetcher.formMethod, fetcher.state])
 
-  if (!festivals) {
-    return null
+  if (loaderData === undefined) {
+    return undefined
   }
 
   return (
@@ -73,7 +71,7 @@ const FestivalsView: FC = (props) => {
         </ul>
       </div>
       <FestivalsTable
-        festivals={festivals}
+        festivals={loaderData}
         deleteFestival={(id) => {
           fetcher.submit(
             { id },

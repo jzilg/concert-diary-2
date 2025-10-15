@@ -1,19 +1,19 @@
 import type { FC } from 'react'
-import type { MetaFunction, LoaderFunction } from '@remix-run/node'
-import Header from '~/components/Header'
+import { redirect } from 'react-router'
 import GeneralStatistics from '~/components/GeneralStatistics'
-import MostSeenBands from '~/components/MostSeenBands'
+import Header from '~/components/Header'
 import MostCommonCompanionsTable from '~/components/MostCommonCompanionsTable'
-import { redirect } from '@remix-run/node'
-import { getUserFromRequest } from '~/logic/user'
-import { useLoaderData } from '@remix-run/react'
-import { getStatisticsOfUser } from '~/logic/statistics'
+import MostSeenBands from '~/components/MostSeenBands'
 import cachedJson from '~/helpers/cachedJson'
-import type Statistics from '../entities/Statistics'
+import { getStatisticsOfUser } from '~/logic/statistics'
+import { getUserFromRequest } from '~/logic/user'
+import type { Route } from './+types/Statistics'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | Statistics' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Statistics' },
+]
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {
@@ -25,7 +25,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return cachedJson(request, statistics)
 }
 
-const StatisticsRoute: FC = () => {
+const StatisticsRoute: FC<Route.ComponentProps> = ({ loaderData }) => {
   const {
     totalBandsCount,
     totalConcertsCount,
@@ -33,7 +33,7 @@ const StatisticsRoute: FC = () => {
     totalLocationsCount,
     mostSeenBands,
     mostCommonCompanions,
-  } = useLoaderData<Statistics>()
+  } = loaderData
 
   return (
     <>
@@ -55,7 +55,9 @@ const StatisticsRoute: FC = () => {
             <MostSeenBands mostSeenBands={mostSeenBands} />
           </div>
           <div>
-            <MostCommonCompanionsTable mostCommonCompanions={mostCommonCompanions} />
+            <MostCommonCompanionsTable
+              mostCommonCompanions={mostCommonCompanions}
+            />
           </div>
         </div>
       </main>

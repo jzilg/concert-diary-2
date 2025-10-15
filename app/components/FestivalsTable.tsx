@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type Festival from '../entities/Festival'
+import type { Festival } from '~/entities/Festival'
 import TableControls from './TableControls'
 
 export type Props = {
@@ -14,13 +14,21 @@ const FestivalsTable: FC<Props> = (props) => {
     const { id, name } = festival
     const bands = festival.bands.join(', ')
     const companions = festival.companions.join(', ')
-    const startDate = new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(festival.date.from))
-    const endDate = new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(festival.date.until))
+    const startDate = new Intl.DateTimeFormat('de-DE', {
+      dateStyle: 'medium',
+    }).format(new Date(festival.date.from))
+    const endDate = new Intl.DateTimeFormat('de-DE', {
+      dateStyle: 'medium',
+    }).format(new Date(festival.date.until))
     const date = `from ${startDate} until ${endDate}`
     const editUrl = `/festivals/${id}`
 
     const deleteFn = (): void => {
-      if (window.confirm(`Do you really want to delete the ${festival.name} festival`)) {
+      if (
+        window.confirm(
+          `Do you really want to delete the ${festival.name} festival`,
+        )
+      ) {
         deleteFestival(id)
       }
     }
@@ -49,7 +57,9 @@ const FestivalsTable: FC<Props> = (props) => {
     )
   })
 
-  return <div className="bg-white dark:bg-slate-800 shadow-lg">{rowElements}</div>
+  return (
+    <div className="bg-white dark:bg-slate-800 shadow-lg">{rowElements}</div>
+  )
 }
 
 export default FestivalsTable

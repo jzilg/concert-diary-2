@@ -1,20 +1,23 @@
-import type { FC } from 'react'
-import { useEffect } from 'react'
+import { type FC, useEffect } from 'react'
+import { redirect, useNavigation, useSubmit } from 'react-router'
 import { toast } from 'react-toastify'
-import { useSubmit, useNavigation } from '@remix-run/react'
-import type Festival from '~/entities/Festival'
 import FestivalForm from '~/components/FestivalForm'
-import type { ActionFunction, MetaFunction } from '@remix-run/node'
-import { redirect } from '@remix-run/node'
-import festivalsProvider from '~/providers/festivalsProvider'
-import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
-import { getUserFromRequest } from '~/logic/user'
-import todaysDate from '~/helpers/todaysDate'
+import type { Festival } from '~/entities/Festival'
 import { createFestival } from '~/entities/Festival'
+import {
+  extractListFromBody,
+  extractStringFromBody,
+} from '~/helpers/extractFromBody'
+import todaysDate from '~/helpers/todaysDate'
+import { getUserFromRequest } from '~/logic/user'
+import festivalsProvider from '~/providers/festivalsProvider'
+import type { Route } from './+types/NewFestival'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | New Festival' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | New Festival' },
+]
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {
@@ -64,7 +67,11 @@ const NewFestival: FC = () => {
   return (
     <div className="px-6">
       <h2 className="text-2xl mb-6 font-bold">New Festival</h2>
-      <FestivalForm festival={festival} saveFestival={saveFestival} method="post" />
+      <FestivalForm
+        festival={festival}
+        saveFestival={saveFestival}
+        method="post"
+      />
     </div>
   )
 }

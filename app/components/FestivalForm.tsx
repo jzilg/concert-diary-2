@@ -1,11 +1,10 @@
 import type { FC } from 'react'
-import type { SubmitFunction } from '@remix-run/react'
-import Input from '~/components/Input'
 import { ArrowLeft, Save } from 'react-bootstrap-icons'
+import { Form, type SubmitFunction } from 'react-router'
 import Button from '~/components/Button'
+import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
-import { Form } from '@remix-run/react'
-import type Festival from '../entities/Festival'
+import type { Festival } from '~/entities/Festival'
 
 type Props = {
   festival: Festival
@@ -21,13 +20,19 @@ const FestivalForm: FC<Props> = (props) => {
     <Form
       method={method}
       onSubmit={(event) => {
-        saveFestival(event.currentTarget)
+        void saveFestival(event.currentTarget)
       }}
     >
       <input name="id" type="hidden" value={id} />
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Name</span>
-        <Input type="text" name="name" defaultValue={name} placeholder="Melt 2010" required />
+        <Input
+          type="text"
+          name="name"
+          defaultValue={name}
+          placeholder="Melt 2010"
+          required
+        />
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Bands</span>
@@ -43,7 +48,12 @@ const FestivalForm: FC<Props> = (props) => {
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">End Date</span>
-        <Input type="date" name="dateUntil" defaultValue={date.until} required />
+        <Input
+          type="date"
+          name="dateUntil"
+          defaultValue={date.until}
+          required
+        />
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Companions</span>

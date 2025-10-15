@@ -1,18 +1,20 @@
 import type { FC } from 'react'
-import { Form, useActionData } from '@remix-run/react'
-import type { ActionFunction, MetaFunction } from '@remix-run/node'
-import { extractStringFromBody } from '~/helpers/extractFromBody'
-import { json, redirect } from '@remix-run/node'
-import Input from '~/components/Input'
-import type LoginDto from '~/entities/LoginDto'
-import { getSession, commitSession } from '~/logic/session'
-import { authenticateUser } from '~/logic/user'
+import { data, Form, redirect } from 'react-router'
 import Button from '~/components/Button'
+import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
+import type { LoginDto } from '~/entities/LoginDto'
+import { extractStringFromBody } from '~/helpers/extractFromBody'
+import renderIf from '~/helpers/renderIf'
+import { commitSession, getSession } from '~/logic/session'
+import { authenticateUser } from '~/logic/user'
+import type { Route } from './+types/Login'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | Login' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Login' },
+]
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
   const body = await request.formData()
   const loginDto: LoginDto = {
@@ -20,12 +22,15 @@ export const action: ActionFunction = async ({ request }) => {
     password: extractStringFromBody(body)('password'),
   }
 
-  const [userIsAuthenticated, user] = await authenticateUser(loginDto.username, loginDto.password)
+  const [userIsAuthenticated, user] = await authenticateUser(
+    loginDto.username,
+    loginDto.password,
+  )
 
   if (!userIsAuthenticated) {
     session.flash('error', 'Invalid username/password')
 
-    return json(
+    return data(
       {
         error: 'Wrong username or password',
       },
@@ -47,9 +52,7 @@ export const action: ActionFunction = async ({ request }) => {
   })
 }
 
-const Login: FC = () => {
-  const actionData = useActionData<{ error?: string } | undefined>()
-
+const Login: FC<Route.ComponentProps> = ({ actionData }) => {
   return (
     <main className="container mx-auto p-6">
       <h1 className="text-4xl font-bold my-6">Concert Diary</h1>
@@ -63,7 +66,12 @@ const Login: FC = () => {
           <span className="block mb-2 font-bold">Password</span>
           <Input type="password" name="password" minLength={6} required />
         </label>
-        <p className="mt-6 text-red-600">{actionData?.error}</p>
+        {renderIf(
+          <p className="mt-6 text-red-600" role="alert">
+            {actionData?.error}
+          </p>,
+          actionData?.error !== undefined,
+        )}
         <ul className="flex gap-2 mt-6">
           <li>
             <Button type="submit">Login</Button>

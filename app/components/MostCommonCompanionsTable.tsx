@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type MostCommonCompanion from '../entities/MostCommonCompanion'
+import type { MostCommonCompanion } from '~/entities/MostCommonCompanion'
 
 export type Props = {
   mostCommonCompanions: MostCommonCompanion[]
@@ -9,11 +9,14 @@ const MostCommonCompanionsTable: FC<Props> = (props) => {
   const { mostCommonCompanions } = props
 
   const rowElements = mostCommonCompanions.map((mostCommonCompanion) => {
-    const { name, totalCount, festivalCount, concertCount } = mostCommonCompanion
+    const { name, totalCount, festivalCount, concertCount } =
+      mostCommonCompanion
 
     return (
       <tr key={name} className="hover:bg-gray-100 dark:hover:bg-slate-700">
-        <td className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">{name}</td>
+        <td className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">
+          {name}
+        </td>
         <td className="px-3 sm:px-6 py-4 border-b dark:border-slate-900 text-center">
           {totalCount}
         </td>
@@ -34,10 +37,18 @@ const MostCommonCompanionsTable: FC<Props> = (props) => {
       </caption>
       <thead>
         <tr>
-          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900 text-left">Name</th>
-          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">Total</th>
-          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">Concerts</th>
-          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">Festivals</th>
+          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900 text-left">
+            Name
+          </th>
+          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">
+            Total
+          </th>
+          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">
+            Concerts
+          </th>
+          <th className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">
+            Festivals
+          </th>
         </tr>
       </thead>
       <tbody>{rowElements}</tbody>

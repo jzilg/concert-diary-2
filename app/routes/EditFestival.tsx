@@ -1,21 +1,24 @@
-import type { FC } from 'react'
-import { useEffect } from 'react'
+import { type FC, useEffect } from 'react'
+import { data, redirect, useNavigation, useSubmit } from 'react-router'
 import { toast } from 'react-toastify'
 import FestivalForm from '~/components/FestivalForm'
-import type { ActionFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
-import festivalsProvider from '~/providers/festivalsProvider'
-import { useLoaderData, useSubmit, useNavigation } from '@remix-run/react'
-import type Festival from '~/entities/Festival'
-import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
-import { getUserFromRequest } from '~/logic/user'
+import type { Festival } from '~/entities/Festival'
 import cachedJson from '~/helpers/cachedJson'
+import {
+  extractListFromBody,
+  extractStringFromBody,
+} from '~/helpers/extractFromBody'
+import { getUserFromRequest } from '~/logic/user'
+import festivalsProvider from '~/providers/festivalsProvider'
+import type { Route } from './+types/EditFestival'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | Edit Festival' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Edit Festival' },
+]
 
-export const loader: LoaderFunction = async ({ params, request }) => {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
   if (params.id === undefined) {
-    return json('no id provided', { status: 400 })
+    return data('no id provided', { status: 400 })
   }
 
   const user = await getUserFromRequest(request)
@@ -26,10 +29,14 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
   const festival = await festivalsProvider(user.id).getById(params.id)
 
+  if (festival === undefined) {
+    return data('festival not found', { status: 404 })
+  }
+
   return cachedJson(request, festival)
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {
@@ -54,8 +61,7 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect('/festivals')
 }
 
-const EditFestival: FC = () => {
-  const festival = useLoaderData<Festival>()
+const EditFestival: FC<Route.ComponentProps> = ({ loaderData }) => {
   const navigation = useNavigation()
   const saveFestival = useSubmit()
 
@@ -69,10 +75,22 @@ const EditFestival: FC = () => {
     }
   }, [navigation.state, navigation.formMethod, navigation.location])
 
+  if (typeof loaderData === 'string') {
+    return (
+      <p className="px-6" role="alert">
+        {loaderData}
+      </p>
+    )
+  }
+
   return (
     <div className="px-6">
       <h2 className="text-2xl mb-6 font-bold">Edit Festival</h2>
-      <FestivalForm festival={festival} saveFestival={saveFestival} method="put" />
+      <FestivalForm
+        festival={loaderData}
+        saveFestival={saveFestival}
+        method="put"
+      />
     </div>
   )
 }

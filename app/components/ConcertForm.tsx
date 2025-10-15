@@ -1,11 +1,10 @@
 import type { FC } from 'react'
-import type { SubmitFunction } from '@remix-run/react'
-import Input from '~/components/Input'
 import { ArrowLeft, Save } from 'react-bootstrap-icons'
+import { Form, type SubmitFunction } from 'react-router'
 import Button from '~/components/Button'
+import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
-import { Form } from '@remix-run/react'
-import type Concert from '../entities/Concert'
+import type { Concert } from '~/entities/Concert'
 
 type Props = {
   concert: Concert
@@ -21,13 +20,19 @@ const ConcertForm: FC<Props> = (props) => {
     <Form
       method={method}
       onSubmit={(event) => {
-        saveConcert(event.currentTarget)
+        void saveConcert(event.currentTarget)
       }}
     >
       <input name="id" type="hidden" value={id} />
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Band</span>
-        <Input type="text" name="band" defaultValue={band} placeholder="Pink Floyd" required />
+        <Input
+          type="text"
+          name="band"
+          defaultValue={band}
+          placeholder="Pink Floyd"
+          required
+        />
       </label>
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Support</span>

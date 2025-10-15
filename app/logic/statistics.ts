@@ -1,102 +1,52 @@
-import type User from '~/entities/User'
-import type Statistics from '~/entities/Statistics'
+import countBy from 'lodash.countby'
+import type { Concert } from '~/entities/Concert'
+import type { Festival } from '~/entities/Festival'
+import type { MostCommonCompanion } from '~/entities/MostCommonCompanion'
+import type { MostSeenBand } from '~/entities/MostSeenBand'
+import type { Statistics } from '~/entities/Statistics'
+import type { User } from '~/entities/User'
 import concertsProvider from '~/providers/concertsProvider'
 import festivalsProvider from '~/providers/festivalsProvider'
-import type Concert from '../entities/Concert'
-import type Festival from '../entities/Festival'
-import type MostSeenBand from '../entities/MostSeenBand'
-import type MostCommonCompanion from '../entities/MostCommonCompanion'
-import countDuplicates from '../helpers/countDuplicates'
 
-const calcMostSeenBands = (concerts: Concert[], festivals: Festival[]): MostSeenBand[] => {
-  type Band = {
-    name: string
-    type: 'main' | 'support' | 'festival'
-  }
+type CalcMostSeenBandsParams = {
+  mainBands: string[]
+  supportBands: string[]
+  festivalBands: string[]
+  allBands: string[]
+}
 
-  const bandsFromConcerts = concerts.reduce((accumulator, concert) => {
-    const mainBand: Band = {
-      name: concert.band,
-      type: 'main',
-    }
-    const supportBands: Band[] = concert.supportBands.map((band) => ({
-      name: band,
-      type: 'support',
-    }))
+const calcMostSeenBands = ({
+  mainBands,
+  supportBands,
+  festivalBands,
+  allBands,
+}: CalcMostSeenBandsParams) => {
+  const mainBandsCounts = countBy(mainBands)
+  const supportBandsCounts = countBy(supportBands)
+  const festivalBandsCounts = countBy(festivalBands)
 
-    return [...accumulator, ...supportBands, mainBand]
-  }, [] as Band[])
+  return allBands
+    .map((bandName) => {
+      const mainCount = mainBandsCounts[bandName] ?? 0
+      const supportCount = supportBandsCounts[bandName] ?? 0
+      const festivalCount = festivalBandsCounts[bandName] ?? 0
+      const totalCount = mainCount + supportCount + festivalCount
+      const mostSeenBand: MostSeenBand = {
+        name: bandName,
+        mainCount,
+        supportCount,
+        festivalCount,
+        totalCount,
+      }
 
-  const bandsFromFestivals = festivals.reduce((accumulator, festival) => {
-    const bands: Band[] = festival.bands.map((band) => ({
-      name: band,
-      type: 'festival',
-    }))
-
-    return [...accumulator, ...bands]
-  }, [] as Band[])
-
-  const bands = [...bandsFromConcerts, ...bandsFromFestivals]
-
-  const toMostSeenBands = (
-    accumulator: Record<MostSeenBand['name'], MostSeenBand>,
-    band: Band,
-  ): Record<MostSeenBand['name'], MostSeenBand> => {
-    const mainCount = band.type === 'main' ? 1 : 0
-    const supportCount = band.type === 'support' ? 1 : 0
-    const festivalCount = band.type === 'festival' ? 1 : 0
-    const totalCount = 1
-
-    const duplicateEntry = accumulator[band.name]
-
-    const mostSeenBand: MostSeenBand = duplicateEntry
-      ? {
-          ...duplicateEntry,
-          mainCount: duplicateEntry.mainCount + mainCount,
-          supportCount: duplicateEntry.supportCount + supportCount,
-          festivalCount: duplicateEntry.festivalCount + festivalCount,
-          totalCount: duplicateEntry.totalCount + totalCount,
-        }
-      : {
-          name: band.name,
-          mainCount,
-          supportCount,
-          festivalCount,
-          totalCount,
-        }
-
-    return {
-      ...accumulator,
-      [band.name]: mostSeenBand,
-    }
-  }
-
-  return Object.values(bands.reduce(toMostSeenBands, {}))
+      return mostSeenBand
+    })
     .sort((x, y) => y.festivalCount - x.festivalCount)
     .sort((x, y) => y.mainCount - x.mainCount)
     .sort((x, y) => y.totalCount - x.totalCount)
 }
 
-const calcBandsCount = (concerts: Concert[], festivals: Festival[]): number => {
-  const bands = new Set()
-
-  concerts.forEach((concert) => {
-    bands.add(concert.band)
-    concert.supportBands.forEach((supportBand) => {
-      bands.add(supportBand)
-    })
-  })
-
-  festivals.forEach((festival) => {
-    festival.bands.forEach((supportBand) => {
-      bands.add(supportBand)
-    })
-  })
-
-  return bands.size
-}
-
-const calcLocationsCount = (concerts: Concert[]): number => {
+const calcLocationsCount = (concerts: Concert[]) => {
   const locations = new Set()
 
   concerts.forEach((concert) => {
@@ -111,9 +61,11 @@ const calcMostCommonCompanions = (
   festivals: Festival[],
 ): MostCommonCompanion[] => {
   const concertCompanions = concerts.flatMap((concert) => concert.companions)
-  const concertCompanionsCounts = countDuplicates(concertCompanions)
-  const festivalCompanions = festivals.flatMap((festival) => festival.companions)
-  const festivalCompanionsCounts = countDuplicates(festivalCompanions)
+  const concertCompanionsCounts = countBy(concertCompanions)
+  const festivalCompanions = festivals.flatMap(
+    (festival) => festival.companions,
+  )
+  const festivalCompanionsCounts = countBy(festivalCompanions)
   const companions = [...new Set([...concertCompanions, ...festivalCompanions])]
 
   return companions
@@ -122,22 +74,36 @@ const calcMostCommonCompanions = (
       concertCount: concertCompanionsCounts[companion] ?? 0,
       festivalCount: festivalCompanionsCounts[companion] ?? 0,
       totalCount:
-        (concertCompanionsCounts[companion] ?? 0) + (festivalCompanionsCounts[companion] ?? 0),
+        (concertCompanionsCounts[companion] ?? 0) +
+        (festivalCompanionsCounts[companion] ?? 0),
     }))
     .sort((x, y) => y.totalCount - x.totalCount)
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export const getStatisticsOfUser = async (userId: User['id']): Promise<Statistics> => {
+export const getStatisticsOfUser = async (
+  userId: User['id'],
+): Promise<Statistics> => {
   const concerts = await concertsProvider(userId).getAll()
   const festivals = await festivalsProvider(userId).getAll()
 
+  const mainBands = concerts.map((concert) => concert.band)
+  const supportBands = concerts.flatMap((concert) => concert.supportBands)
+  const festivalBands = festivals.flatMap((festival) => festival.bands)
+  const allBands = [
+    ...new Set([...mainBands, ...supportBands, ...festivalBands]),
+  ]
+
   return {
-    mostSeenBands: calcMostSeenBands(concerts, festivals),
+    mostSeenBands: calcMostSeenBands({
+      mainBands,
+      supportBands,
+      festivalBands,
+      allBands,
+    }),
     mostCommonCompanions: calcMostCommonCompanions(concerts, festivals),
     totalConcertsCount: concerts.length,
     totalFestivalsCount: festivals.length,
-    totalBandsCount: calcBandsCount(concerts, festivals),
+    totalBandsCount: allBands.length,
     totalLocationsCount: calcLocationsCount(concerts),
   }
 }

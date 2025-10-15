@@ -1,9 +1,7 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import type { FC, RefAttributes } from 'react'
-import type { RemixLinkProps } from '@remix-run/react/dist/components'
-import { Link } from '@remix-run/react'
+import type { ComponentProps, FC } from 'react'
+import { Link } from 'react-router'
 
-export type Props = RemixLinkProps & RefAttributes<HTMLAnchorElement>
+export type Props = ComponentProps<typeof Link>
 
 const NavLink: FC<Props> = (props) => {
   const { children, className } = props

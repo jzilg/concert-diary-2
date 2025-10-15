@@ -1,13 +1,13 @@
-import type Concert from '~/entities/Concert'
+import client from '~/db/client'
+import type { Concert } from '~/entities/Concert'
 import { createConcert } from '~/entities/Concert'
-import client from '../db/client'
 
 const DB = 'concert-diary'
 const COLLECTION = 'concerts'
 
 type ConcertsProvider = (userId: string) => {
   getAll(): Promise<Concert[]>
-  getById(id: string): Promise<Concert>
+  getById(id: string): Promise<Concert | undefined>
   add(concert: Concert): Promise<Concert>
   update(id: string, concert: Concert): Promise<Concert>
   remove(id: string): Promise<void>
@@ -26,7 +26,7 @@ const concertsProvider: ConcertsProvider = (userId) => {
 
         const concertDataList = await cursor.toArray()
 
-        return concertDataList.map((concertData) => createConcert(concertData as Object))
+        return concertDataList.map((concertData) => createConcert(concertData))
       } finally {
         await client.close()
       }
@@ -41,7 +41,11 @@ const concertsProvider: ConcertsProvider = (userId) => {
 
         const concertData = await collection.findOne(query)
 
-        return createConcert(concertData as Object)
+        if (concertData === null) {
+          return undefined
+        }
+
+        return createConcert(concertData)
       } finally {
         await client.close()
       }

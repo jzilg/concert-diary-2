@@ -1,8 +1,8 @@
 import type { FC } from 'react'
+import { Outlet } from 'react-router'
 import Header from '~/components/Header'
-import { Outlet } from '@remix-run/react'
 
-const Festivals: FC = () => (
+const Concerts: FC = () => (
   <>
     <Header />
     <main className="container mx-auto pb-10">
@@ -11,4 +11,4 @@ const Festivals: FC = () => (
   </>
 )
 
-export default Festivals
+export default Concerts

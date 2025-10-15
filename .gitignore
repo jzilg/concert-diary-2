@@ -11,9 +11,8 @@
 .env
 
 # npm
-node_modules
+/node_modules/
 
-# Built files
-/.cache
-/build
-/public/build
+# React Router
+/.react-router/
+/build/

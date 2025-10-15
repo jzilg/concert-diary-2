@@ -1,21 +1,24 @@
-import type { FC } from 'react'
-import { useEffect } from 'react'
+import { type FC, useEffect } from 'react'
+import { data, redirect, useNavigation, useSubmit } from 'react-router'
 import { toast } from 'react-toastify'
 import ConcertForm from '~/components/ConcertForm'
-import type { ActionFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
-import concertsProvider from '~/providers/concertsProvider'
-import { useLoaderData, useNavigation, useSubmit } from '@remix-run/react'
-import type Concert from '~/entities/Concert'
-import { extractStringFromBody, extractListFromBody } from '~/helpers/extractFromBody'
-import { getUserFromRequest } from '~/logic/user'
+import type { Concert } from '~/entities/Concert'
 import cachedJson from '~/helpers/cachedJson'
+import {
+  extractListFromBody,
+  extractStringFromBody,
+} from '~/helpers/extractFromBody'
+import { getUserFromRequest } from '~/logic/user'
+import concertsProvider from '~/providers/concertsProvider'
+import type { Route } from './+types/EditConcert'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | Edit Concert' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Edit Concert' },
+]
 
-export const loader: LoaderFunction = async ({ params, request }) => {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
   if (params.id === undefined) {
-    return json('no id provided', { status: 400 })
+    return data('no id provided', { status: 400 })
   }
 
   const user = await getUserFromRequest(request)
@@ -26,10 +29,14 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
   const concert = await concertsProvider(user.id).getById(params.id)
 
+  if (concert === undefined) {
+    return data('concert not found', { status: 404 })
+  }
+
   return cachedJson(request, concert)
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {
@@ -52,8 +59,7 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect('/concerts')
 }
 
-const EditConcert: FC = () => {
-  const concert = useLoaderData<Concert>()
+const EditConcert: FC<Route.ComponentProps> = ({ loaderData }) => {
   const navigation = useNavigation()
   const saveConcert = useSubmit()
 
@@ -67,10 +73,22 @@ const EditConcert: FC = () => {
     }
   }, [navigation.state, navigation.formMethod, navigation.location])
 
+  if (typeof loaderData === 'string') {
+    return (
+      <p className="px-6" role="alert">
+        {loaderData}
+      </p>
+    )
+  }
+
   return (
     <div className="px-6">
       <h2 className="text-2xl mb-6 font-bold">Edit Concert</h2>
-      <ConcertForm concert={concert} saveConcert={saveConcert} method="put" />
+      <ConcertForm
+        concert={loaderData}
+        saveConcert={saveConcert}
+        method="put"
+      />
     </div>
   )
 }

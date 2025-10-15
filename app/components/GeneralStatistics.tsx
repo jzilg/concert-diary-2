@@ -8,7 +8,12 @@ type Props = {
 }
 
 const GeneralStatistics: FC<Props> = (props) => {
-  const { totalNumOfConcerts, totalNumOfBands, totalNumOfFestivals, totalNumOfLocations } = props
+  const {
+    totalNumOfConcerts,
+    totalNumOfBands,
+    totalNumOfFestivals,
+    totalNumOfLocations,
+  } = props
 
   const list = [
     {

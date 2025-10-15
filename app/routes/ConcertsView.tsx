@@ -1,22 +1,21 @@
-import type { FC } from 'react'
-import { useEffect } from 'react'
+import { type FC, useEffect } from 'react'
+import { PlusCircle } from 'react-bootstrap-icons'
+import { redirect, useFetcher } from 'react-router'
 import { toast } from 'react-toastify'
 import ConcertsTable from '~/components/ConcertsTable'
-import type Concert from '~/entities/Concert'
-import { useFetcher, useLoaderData } from '@remix-run/react'
-import type { LoaderFunction, ActionFunction, MetaFunction } from '@remix-run/node'
-import { redirect } from '@remix-run/node'
-import concertsProvider from '~/providers/concertsProvider'
-import { extractStringFromBody } from '~/helpers/extractFromBody'
-import { PlusCircle } from 'react-bootstrap-icons'
-import { getUserFromRequest } from '~/logic/user'
-import { getSortedConcertsOfUser } from '~/logic/concerts'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
+import { extractStringFromBody } from '~/helpers/extractFromBody'
+import { getSortedConcertsOfUser } from '~/logic/concerts'
+import { getUserFromRequest } from '~/logic/user'
+import concertsProvider from '~/providers/concertsProvider'
+import type { Route } from './+types/ConcertsView'
 
-export const meta: MetaFunction = () => [{ title: 'Concert Diary | Concerts' }]
+export const meta: Route.MetaFunction = () => [
+  { title: 'Concert Diary | Concerts' },
+]
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {
@@ -28,7 +27,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return cachedJson(request, sortedConcerts)
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const user = await getUserFromRequest(request)
 
   if (user === undefined) {
@@ -40,13 +39,12 @@ export const action: ActionFunction = async ({ request }) => {
 
   await concertsProvider(user.id).remove(id)
 
-  return new Response(null, {
+  return new Response(undefined, {
     status: 204,
   })
 }
 
-const ConcertsView: FC = (props) => {
-  const concerts = useLoaderData<Concert[]>()
+const ConcertsView: FC<Route.ComponentProps> = ({ loaderData }) => {
   const fetcher = useFetcher()
 
   useEffect(() => {
@@ -55,8 +53,8 @@ const ConcertsView: FC = (props) => {
     }
   }, [fetcher.formMethod, fetcher.state])
 
-  if (!concerts) {
-    return null
+  if (loaderData === undefined) {
+    return undefined
   }
 
   return (
@@ -73,7 +71,7 @@ const ConcertsView: FC = (props) => {
         </ul>
       </div>
       <ConcertsTable
-        concerts={concerts}
+        concerts={loaderData}
         deleteConcert={(id) => {
           fetcher.submit(
             { id },
