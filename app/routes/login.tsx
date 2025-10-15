@@ -5,6 +5,7 @@ import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
 import type LoginDto from '~/entities/LoginDto'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
+import renderIf from '~/helpers/renderIf'
 import { commitSession, getSession } from '~/logic/session'
 import { authenticateUser } from '~/logic/user'
 import type { Route } from './+types/login'
@@ -65,7 +66,12 @@ const Login: FC<Route.ComponentProps> = ({ actionData }) => {
           <span className="block mb-2 font-bold">Password</span>
           <Input type="password" name="password" minLength={6} required />
         </label>
-        <p className="mt-6 text-red-600">{actionData?.error}</p>
+        {renderIf(
+          <p className="mt-6 text-red-600" role="alert">
+            {actionData?.error}
+          </p>,
+          actionData?.error !== undefined,
+        )}
         <ul className="flex gap-2 mt-6">
           <li>
             <Button type="submit">Login</Button>
