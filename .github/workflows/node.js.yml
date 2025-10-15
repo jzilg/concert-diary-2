@@ -6,35 +6,40 @@ on:
 
 jobs:
   build:
-    name: test and build
+    name: Test and Build
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run build
-      - run: npm run typecheck
-      - run: npm run lint
+          version: 9
+          run_install: false
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm run build
+      - name: Typecheck
+        run: pnpm run typecheck
+      - name: Lint
+        run: pnpm run lint
 
   deploy:
-    name: deploy
+    name: Deploy
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: setup ssh
+      - uses: actions/checkout@v4
+      - name: Setup SSH
         run: |
-          mkdir ~/.ssh
-          cd ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_ed25519
-          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > known_hosts
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/id_ed25519
-      - name: execute shell script on server
-        run: ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} ${{ vars.DEPLOY_SCRIPT }}
+      - name: Execute deploy script on server
+        run: ssh -i ~/.ssh/id_ed25519 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "${{ vars.DEPLOY_SCRIPT }}"
