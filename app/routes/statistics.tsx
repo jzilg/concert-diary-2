@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { redirect, useLoaderData } from 'react-router'
+import { redirect } from 'react-router'
 import GeneralStatistics from '~/components/GeneralStatistics'
 import Header from '~/components/Header'
 import MostCommonCompanionsTable from '~/components/MostCommonCompanionsTable'
@@ -7,7 +7,6 @@ import MostSeenBands from '~/components/MostSeenBands'
 import cachedJson from '~/helpers/cachedJson'
 import { getStatisticsOfUser } from '~/logic/statistics'
 import { getUserFromRequest } from '~/logic/user'
-import type Statistics from '../entities/Statistics'
 import type { Route } from './+types/statistics'
 
 export const meta: Route.MetaFunction = () => [
@@ -26,7 +25,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   return cachedJson(request, statistics)
 }
 
-const StatisticsRoute: FC = () => {
+const StatisticsRoute: FC<Route.ComponentProps> = ({ loaderData }) => {
   const {
     totalBandsCount,
     totalConcertsCount,
@@ -34,7 +33,7 @@ const StatisticsRoute: FC = () => {
     totalLocationsCount,
     mostSeenBands,
     mostCommonCompanions,
-  } = useLoaderData<Statistics>()
+  } = loaderData
 
   return (
     <>

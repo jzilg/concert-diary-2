@@ -1,11 +1,10 @@
 import type { FC } from 'react'
 import { useEffect } from 'react'
 import { PlusCircle } from 'react-bootstrap-icons'
-import { redirect, useFetcher, useLoaderData } from 'react-router'
+import { redirect, useFetcher } from 'react-router'
 import { toast } from 'react-toastify'
 import ConcertsTable from '~/components/ConcertsTable'
 import NavLink from '~/components/NavLink'
-import type Concert from '~/entities/Concert'
 import cachedJson from '~/helpers/cachedJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { getSortedConcertsOfUser } from '~/logic/concerts'
@@ -46,8 +45,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   })
 }
 
-const ConcertsView: FC = () => {
-  const concerts = useLoaderData<Concert[]>()
+const ConcertsView: FC<Route.ComponentProps> = ({ loaderData }) => {
   const fetcher = useFetcher()
 
   useEffect(() => {
@@ -56,7 +54,7 @@ const ConcertsView: FC = () => {
     }
   }, [fetcher.formMethod, fetcher.state])
 
-  if (!concerts) {
+  if (loaderData === undefined) {
     return undefined
   }
 
@@ -74,7 +72,7 @@ const ConcertsView: FC = () => {
         </ul>
       </div>
       <ConcertsTable
-        concerts={concerts}
+        concerts={loaderData}
         deleteConcert={(id) => {
           fetcher.submit(
             { id },

@@ -22,7 +22,7 @@ const Logout: FC = () => {
   const { submit } = useFetcher()
 
   useEffect(() => {
-    submit(null, {
+    void submit(null, {
       method: 'post',
     })
   }, [submit])

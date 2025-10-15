@@ -1,12 +1,6 @@
 import type { FC } from 'react'
 import { useEffect } from 'react'
-import {
-  data,
-  redirect,
-  useLoaderData,
-  useNavigation,
-  useSubmit,
-} from 'react-router'
+import { data, redirect, useNavigation, useSubmit } from 'react-router'
 import { toast } from 'react-toastify'
 import FestivalForm from '~/components/FestivalForm'
 import type Festival from '~/entities/Festival'
@@ -64,8 +58,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   return redirect('/festivals')
 }
 
-const EditFestival: FC = () => {
-  const festival = useLoaderData<Festival>()
+const EditFestival: FC<Route.ComponentProps> = ({ loaderData }) => {
   const navigation = useNavigation()
   const saveFestival = useSubmit()
 
@@ -79,11 +72,19 @@ const EditFestival: FC = () => {
     }
   }, [navigation.state, navigation.formMethod, navigation.location])
 
+  if (typeof loaderData === 'string') {
+    return (
+      <p className="px-6" role="alert">
+        {loaderData}
+      </p>
+    )
+  }
+
   return (
     <div className="px-6">
       <h2 className="text-2xl mb-6 font-bold">Edit Festival</h2>
       <FestivalForm
-        festival={festival}
+        festival={loaderData}
         saveFestival={saveFestival}
         method="put"
       />

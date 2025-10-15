@@ -1,11 +1,11 @@
 import MD5 from 'crypto-js/md5'
 import { data as json } from 'react-router'
 
-const cachedJson = (request: Request, data: unknown) => {
+function cachedJson<Data>(request: Request, data: Data) {
   const hash = MD5(JSON.stringify(data)).toString()
 
   if (hash === request.headers.get('If-None-Match')) {
-    return new Response(null, {
+    return new Response(undefined, {
       status: 304,
     })
   }
@@ -13,7 +13,7 @@ const cachedJson = (request: Request, data: unknown) => {
   return json(data, {
     headers: {
       'Cache-Control': 'max-age=0, must-revalidate',
-      etag: hash,
+      ETag: hash,
     },
   })
 }

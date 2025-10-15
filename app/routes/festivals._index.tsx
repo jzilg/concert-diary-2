@@ -1,11 +1,10 @@
 import type { FC } from 'react'
 import { useEffect } from 'react'
 import { PlusCircle } from 'react-bootstrap-icons'
-import { redirect, useFetcher, useLoaderData } from 'react-router'
+import { redirect, useFetcher } from 'react-router'
 import { toast } from 'react-toastify'
 import FestivalsTable from '~/components/FestivalsTable'
 import NavLink from '~/components/NavLink'
-import type Festival from '~/entities/Festival'
 import cachedJson from '~/helpers/cachedJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { getSortedFestivalsOfUser } from '~/logic/festivals'
@@ -46,8 +45,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   })
 }
 
-const FestivalsView: FC = () => {
-  const festivals = useLoaderData<Festival[]>()
+const FestivalsView: FC<Route.ComponentProps> = ({ loaderData }) => {
   const fetcher = useFetcher()
 
   useEffect(() => {
@@ -56,7 +54,7 @@ const FestivalsView: FC = () => {
     }
   }, [fetcher.formMethod, fetcher.state])
 
-  if (!festivals) {
+  if (loaderData === undefined) {
     return undefined
   }
 
@@ -74,7 +72,7 @@ const FestivalsView: FC = () => {
         </ul>
       </div>
       <FestivalsTable
-        festivals={festivals}
+        festivals={loaderData}
         deleteFestival={(id) => {
           fetcher.submit(
             { id },
