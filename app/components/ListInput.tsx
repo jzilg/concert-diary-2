@@ -23,7 +23,7 @@ const ListInput: FC<Props> = (props) => {
     <input
       type="text"
       value={valueString}
-      placeholder={placeholder}
+      placeholder={placeholder ?? ''}
       onChange={(event) => {
         const newValueString = event.target.value
         const newList: InputList = newValueString
@@ -35,10 +35,6 @@ const ListInput: FC<Props> = (props) => {
       }}
     />
   )
-}
-
-ListInput.defaultProps = {
-  placeholder: '',
 }
 
 export default ListInput
