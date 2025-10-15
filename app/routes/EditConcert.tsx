@@ -29,6 +29,10 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
   const concert = await concertsProvider(user.id).getById(params.id)
 
+  if (concert === undefined) {
+    return data('concert not found', { status: 404 })
+  }
+
   return cachedJson(request, concert)
 }
 
