@@ -1,5 +1,5 @@
-import type Concert from '~/entities/Concert'
-import type User from '~/entities/User'
+import type { Concert } from '~/entities/Concert'
+import type { User } from '~/entities/User'
 import concertsProvider from '~/providers/concertsProvider'
 
 export const getSortedConcertsOfUser = async (

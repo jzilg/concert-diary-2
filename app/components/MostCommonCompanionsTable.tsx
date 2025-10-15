@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type MostCommonCompanion from '../entities/MostCommonCompanion'
+import type { MostCommonCompanion } from '../entities/MostCommonCompanion'
 
 export type Props = {
   mostCommonCompanions: MostCommonCompanion[]

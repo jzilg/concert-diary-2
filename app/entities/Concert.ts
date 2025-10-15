@@ -2,7 +2,7 @@ import createId from 'uniqid'
 import { z } from 'zod'
 import dateRegEx from '~/helpers/dateRegEx'
 
-type Concert = {
+export type Concert = {
   id: string
   date: string
   band: string
@@ -25,5 +25,3 @@ export const createConcert = (concertData: Partial<Concert>): Concert => {
 
   return Object.freeze(validatedConcertData)
 }
-
-export default Concert

@@ -1,4 +1,4 @@
-import type Concert from '~/entities/Concert'
+import type { Concert } from '~/entities/Concert'
 import { createConcert } from '~/entities/Concert'
 import client from '../db/client'
 

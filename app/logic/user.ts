@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import uniqid from 'uniqid'
 import config from '~/config'
-import type User from '~/entities/User'
+import type { User } from '~/entities/User'
 import usersProvider from '~/providers/usersProvider'
 import { getSession } from './session'
 

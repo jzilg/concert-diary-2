@@ -1,11 +1,11 @@
-import type Statistics from '~/entities/Statistics'
-import type User from '~/entities/User'
+import type { Statistics } from '~/entities/Statistics'
+import type { User } from '~/entities/User'
 import concertsProvider from '~/providers/concertsProvider'
 import festivalsProvider from '~/providers/festivalsProvider'
-import type Concert from '../entities/Concert'
-import type Festival from '../entities/Festival'
-import type MostCommonCompanion from '../entities/MostCommonCompanion'
-import type MostSeenBand from '../entities/MostSeenBand'
+import type { Concert } from '../entities/Concert'
+import type { Festival } from '../entities/Festival'
+import type { MostCommonCompanion } from '../entities/MostCommonCompanion'
+import type { MostSeenBand } from '../entities/MostSeenBand'
 import countDuplicates from '../helpers/countDuplicates'
 
 const calcMostSeenBands = (

@@ -2,7 +2,7 @@ import { type FC, useEffect } from 'react'
 import { data, redirect, useNavigation, useSubmit } from 'react-router'
 import { toast } from 'react-toastify'
 import FestivalForm from '~/components/FestivalForm'
-import type Festival from '~/entities/Festival'
+import type { Festival } from '~/entities/Festival'
 import cachedJson from '~/helpers/cachedJson'
 import {
   extractListFromBody,

@@ -2,7 +2,7 @@ import { type FC, useEffect } from 'react'
 import { redirect, useNavigation, useSubmit } from 'react-router'
 import { toast } from 'react-toastify'
 import ConcertForm from '~/components/ConcertForm'
-import type Concert from '~/entities/Concert'
+import type { Concert } from '~/entities/Concert'
 import { createConcert } from '~/entities/Concert'
 import {
   extractListFromBody,

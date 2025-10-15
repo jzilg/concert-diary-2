@@ -4,7 +4,7 @@ import { Form, type SubmitFunction } from 'react-router'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
-import type Festival from '../entities/Festival'
+import type { Festival } from '../entities/Festival'
 
 type Props = {
   festival: Festival

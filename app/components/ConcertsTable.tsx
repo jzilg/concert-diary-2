@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import renderIf from '~/helpers/renderIf'
-import type Concert from '../entities/Concert'
+import type { Concert } from '../entities/Concert'
 import TableControls from './TableControls'
 
 export type Props = {
