@@ -9,7 +9,7 @@ const LoadingIndicator: FC = () => {
   )
 
   if (navigationState === 'idle' && everyFetcherIsIdle) {
-    return null
+    return undefined
   }
 
   return <div className="fixed top-2 left-2">Loading...</div>

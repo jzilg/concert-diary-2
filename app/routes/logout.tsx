@@ -27,7 +27,7 @@ const Logout: FC = () => {
     })
   }, [submit])
 
-  return null
+  return undefined
 }
 
 export default Logout

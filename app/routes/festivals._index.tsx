@@ -41,7 +41,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   await festivalsProvider(user.id).remove(id)
 
-  return new Response(null, {
+  return new Response(undefined, {
     status: 204,
   })
 }
@@ -57,7 +57,7 @@ const FestivalsView: FC = () => {
   }, [fetcher.formMethod, fetcher.state])
 
   if (!festivals) {
-    return null
+    return undefined
   }
 
   return (
