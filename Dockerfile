@@ -1,7 +1,10 @@
 FROM node:22-slim
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 WORKDIR /app
 COPY . /app
-RUN npm ci && \
-    npm run build && \
-    npm prune --production
-CMD  ["npm", "start"]
+RUN pnpm intstall && \
+    pnpm run build && \
+    pnpm prune --production
+CMD  ["pnpm", "start"]
