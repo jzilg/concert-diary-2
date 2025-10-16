@@ -1,11 +1,10 @@
-import type { FC } from 'react'
+import { Activity, type FC } from 'react'
 import { data, Form, redirect } from 'react-router'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
 import type { LoginDto } from '~/entities/LoginDto'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
-import renderIf from '~/helpers/renderIf'
 import { commitSession, getSession } from '~/logic/session'
 import { authenticateUser } from '~/logic/user'
 import type { Route } from './+types/Login'
@@ -66,12 +65,11 @@ const Login: FC<Route.ComponentProps> = ({ actionData }) => {
           <span className="block mb-2 font-bold">Password</span>
           <Input type="password" name="password" minLength={6} required />
         </label>
-        {renderIf(
+        <Activity mode={actionData?.error !== undefined ? 'visible' : 'hidden'}>
           <p className="mt-6 text-red-600" role="alert">
             {actionData?.error}
-          </p>,
-          actionData?.error !== undefined,
-        )}
+          </p>
+        </Activity>
         <ul className="flex gap-2 mt-6">
           <li>
             <Button type="submit">Login</Button>

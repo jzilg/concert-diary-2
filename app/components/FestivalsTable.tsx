@@ -40,14 +40,10 @@ const FestivalsTable: FC<Props> = (props) => {
       >
         <div className="p-6">
           <p>
-            <span className="font-bold">{name}</span>
-            <span> with </span>
-            <span>{bands}</span>
+            <span className="font-bold">{name}</span> with {bands}
           </p>
           <p>
-            <span>{date}</span>
-            <span> accompanied by </span>
-            <span>{companions}</span>
+            {date} accompanied by {companions}
           </p>
         </div>
         <div className="self-end">

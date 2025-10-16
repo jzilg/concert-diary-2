@@ -1,6 +1,5 @@
-import type { FC } from 'react'
+import { Activity, type FC } from 'react'
 import type { Concert } from '~/entities/Concert'
-import renderIf from '~/helpers/renderIf'
 import TableControls from './TableControls'
 
 export type Props = {
@@ -37,19 +36,20 @@ const ConcertsTable: FC<Props> = (props) => {
       >
         <div className="p-6">
           <p>
-            <span className="font-bold">{band}</span>
-            {renderIf(<span> supported by </span>, supportBands.length > 0)}
+            <span className="font-bold">{band}</span>{' '}
+            <Activity mode={supportBands.length > 0 ? 'visible' : 'hidden'}>
+              supported by
+            </Activity>{' '}
             <span className="font-bold">{supportBands}</span>
           </p>
           <p>
-            <span> at </span>
-            <span>{location}</span>
-            <span> on </span>
-            <span>{date}</span>
+            at {location} on {date}
           </p>
           <p>
-            {renderIf(<span> accompanied by </span>, companions.length > 0)}
-            <span>{companions}</span>
+            <Activity mode={companions.length > 0 ? 'visible' : 'hidden'}>
+              accompanied by
+            </Activity>{' '}
+            {companions}
           </p>
         </div>
         <div className="self-end">
