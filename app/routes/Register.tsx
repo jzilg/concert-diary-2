@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import { Activity, type FC } from 'react'
 import { data, Form, redirect } from 'react-router'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
@@ -33,7 +33,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   return redirect('/login')
 }
 
-const Register: FC = () => (
+const Register: FC<Route.ComponentProps> = ({ actionData }) => (
   <main className="container mx-auto p-6">
     <h1 className="text-4xl font-bold my-6">Concert Diary</h1>
     <Form method="post">
@@ -50,6 +50,11 @@ const Register: FC = () => (
         <span className="block mb-2 font-bold">Register token</span>
         <Input type="password" name="token" required />
       </label>
+      <Activity mode={actionData !== undefined ? 'visible' : 'hidden'}>
+        <p className="mt-6 text-red-600" role="alert">
+          {actionData}
+        </p>
+      </Activity>
       <ul className="flex gap-2 mt-6">
         <li>
           <Button type="submit">Register</Button>
