@@ -16,6 +16,10 @@ export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | Edit Concert' },
 ]
 
+export const headers = ({ loaderHeaders }: Route.HeadersArgs) => {
+  return Object.fromEntries(loaderHeaders.entries())
+}
+
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   if (params.id === undefined) {
     return data('no id provided', { status: 400 })

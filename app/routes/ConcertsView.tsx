@@ -15,6 +15,10 @@ export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | Concerts' },
 ]
 
+export const headers = ({ loaderHeaders }: Route.HeadersArgs) => {
+  return Object.fromEntries(loaderHeaders.entries())
+}
+
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const user = await getUserFromRequest(request)
 
