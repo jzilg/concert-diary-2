@@ -13,7 +13,7 @@ const LoadingIndicator: FC = () => {
   }
 
   return (
-    <div className="fixed top-2 w-full flex justify-center">
+    <div className="fixed top-2 w-full flex justify-center fade-in">
       <div className="size-8 border-5  border-t-blue-600 dark:border-t-amber-500 rounded-full animate-spin"></div>
       <div className="sr-only">Loading...</div>
     </div>
