@@ -46,16 +46,6 @@ const calcMostSeenBands = ({
     .sort((x, y) => y.totalCount - x.totalCount)
 }
 
-const calcLocationsCount = (concerts: Concert[]) => {
-  const locations = new Set()
-
-  concerts.forEach((concert) => {
-    locations.add(concert.location)
-  })
-
-  return locations.size
-}
-
 const calcMostCommonCompanions = (
   concerts: Concert[],
   festivals: Festival[],
@@ -92,6 +82,9 @@ export const getStatisticsOfUser = async (
   const allBands = [
     ...new Set([...mainBands, ...supportBands, ...festivalBands]),
   ]
+  const totalLocationsCount = new Set(
+    concerts.map((concert) => concert.location),
+  ).size
 
   return {
     mostSeenBands: calcMostSeenBands({
@@ -104,6 +97,6 @@ export const getStatisticsOfUser = async (
     totalConcertsCount: concerts.length,
     totalFestivalsCount: festivals.length,
     totalBandsCount: allBands.length,
-    totalLocationsCount: calcLocationsCount(concerts),
+    totalLocationsCount: totalLocationsCount,
   }
 }
