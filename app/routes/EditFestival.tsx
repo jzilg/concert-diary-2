@@ -8,7 +8,8 @@ import {
   extractListFromBody,
   extractStringFromBody,
 } from '~/helpers/extractFromBody'
-import { getUserFromRequest } from '~/logic/user'
+import { commitSession, getSession } from '~/logic/session'
+import { getUserFromSession } from '~/logic/user'
 import festivalsProvider from '~/providers/festivalsProvider'
 import type { Route } from './+types/EditFestival'
 
@@ -25,7 +26,8 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     return data('no id provided', { status: 400 })
   }
 
-  const user = await getUserFromRequest(request)
+  const session = await getSession(request.headers.get('Cookie'))
+  const user = await getUserFromSession(session)
 
   if (user === undefined) {
     return redirect('/login')
@@ -37,11 +39,12 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     return data('festival not found', { status: 404 })
   }
 
-  return cachedJson(request, festival)
+  return cachedJson(request, await commitSession(session), festival)
 }
 
 export const action = async ({ request }: Route.ActionArgs) => {
-  const user = await getUserFromRequest(request)
+  const session = await getSession(request.headers.get('Cookie'))
+  const user = await getUserFromSession(session)
 
   if (user === undefined) {
     return redirect('/login')
@@ -62,7 +65,11 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   await festivalsProvider(user.id).update(festivalToUpdate.id, festivalToUpdate)
 
-  return redirect('/festivals')
+  return redirect('/festivals', {
+    headers: {
+      'Set-Cookie': await commitSession(session),
+    },
+  })
 }
 
 const EditFestival: FC<Route.ComponentProps> = ({ loaderData }) => {

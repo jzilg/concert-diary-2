@@ -9,7 +9,8 @@ import {
   extractStringFromBody,
 } from '~/helpers/extractFromBody'
 import todaysDate from '~/helpers/todaysDate'
-import { getUserFromRequest } from '~/logic/user'
+import { commitSession, getSession } from '~/logic/session'
+import { getUserFromSession } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
 import type { Route } from './+types/NewConcert'
 
@@ -18,7 +19,8 @@ export const meta: Route.MetaFunction = () => [
 ]
 
 export const action = async ({ request }: Route.ActionArgs) => {
-  const user = await getUserFromRequest(request)
+  const session = await getSession(request.headers.get('Cookie'))
+  const user = await getUserFromSession(session)
 
   if (user === undefined) {
     return redirect('/login')
@@ -35,7 +37,11 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   await concertsProvider(user.id).add(concertToAdd)
 
-  return redirect('/concerts')
+  return redirect('/concerts', {
+    headers: {
+      'Set-Cookie': await commitSession(session),
+    },
+  })
 }
 
 const NewConcert: FC = () => {

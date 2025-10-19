@@ -5,8 +5,9 @@ import Header from '~/components/Header'
 import MostCommonCompanionsTable from '~/components/MostCommonCompanionsTable'
 import MostSeenBands from '~/components/MostSeenBands'
 import cachedJson from '~/helpers/cachedJson'
+import { commitSession, getSession } from '~/logic/session'
 import { getStatisticsOfUser } from '~/logic/statistics'
-import { getUserFromRequest } from '~/logic/user'
+import { getUserFromSession } from '~/logic/user'
 import type { Route } from './+types/Statistics'
 
 export const meta: Route.MetaFunction = () => [
@@ -18,7 +19,8 @@ export const headers = ({ loaderHeaders }: Route.HeadersArgs) => {
 }
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const user = await getUserFromRequest(request)
+  const session = await getSession(request.headers.get('Cookie'))
+  const user = await getUserFromSession(session)
 
   if (user === undefined) {
     return redirect('/login')
@@ -26,7 +28,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
   const statistics = await getStatisticsOfUser(user.id)
 
-  return cachedJson(request, statistics)
+  return cachedJson(request, await commitSession(session), statistics)
 }
 
 const StatisticsRoute: FC<Route.ComponentProps> = ({ loaderData }) => {

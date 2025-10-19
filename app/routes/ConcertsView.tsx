@@ -7,7 +7,8 @@ import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { getSortedConcertsOfUser } from '~/logic/concerts'
-import { getUserFromRequest } from '~/logic/user'
+import { commitSession, getSession } from '~/logic/session'
+import { getUserFromSession } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
 import type { Route } from './+types/ConcertsView'
 
@@ -20,7 +21,8 @@ export const headers = ({ loaderHeaders }: Route.HeadersArgs) => {
 }
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const user = await getUserFromRequest(request)
+  const session = await getSession(request.headers.get('Cookie'))
+  const user = await getUserFromSession(session)
 
   if (user === undefined) {
     return redirect('/login')
@@ -28,11 +30,12 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
   const sortedConcerts = await getSortedConcertsOfUser(user.id)
 
-  return cachedJson(request, sortedConcerts)
+  return cachedJson(request, await commitSession(session), sortedConcerts)
 }
 
 export const action = async ({ request }: Route.ActionArgs) => {
-  const user = await getUserFromRequest(request)
+  const session = await getSession(request.headers.get('Cookie'))
+  const user = await getUserFromSession(session)
 
   if (user === undefined) {
     return redirect('/login')
@@ -45,6 +48,9 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   return new Response(undefined, {
     status: 204,
+    headers: {
+      'Set-Cookie': await commitSession(session),
+    },
   })
 }
 
