@@ -75,7 +75,7 @@ const ConcertsView: FC<Route.ComponentProps> = ({ loaderData }) => {
           <li>
             <NavLink to="/concerts/new">
               Add New Concert
-              <PlusCircle />
+              <PlusCircle aria-hidden />
             </NavLink>
           </li>
         </ul>

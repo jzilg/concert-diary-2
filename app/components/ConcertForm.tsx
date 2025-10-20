@@ -68,12 +68,12 @@ const ConcertForm: FC<Props> = (props) => {
         <li>
           <Button type="submit">
             Save
-            <Save />
+            <Save aria-hidden />
           </Button>
         </li>
         <li>
           <NavLink to="/concerts">
-            <ArrowLeft />
+            <ArrowLeft aria-hidden />
             Back to Concerts
           </NavLink>
         </li>

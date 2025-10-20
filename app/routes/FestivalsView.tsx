@@ -75,7 +75,7 @@ const FestivalsView: FC<Route.ComponentProps> = ({ loaderData }) => {
           <li>
             <NavLink to="/festivals/new">
               Add New Festival
-              <PlusCircle />
+              <PlusCircle aria-hidden />
             </NavLink>
           </li>
         </ul>

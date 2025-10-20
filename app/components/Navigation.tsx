@@ -21,7 +21,7 @@ const Navigation: FC = () => {
       label: (
         <>
           Logout
-          <BoxArrowRight />
+          <BoxArrowRight aria-hidden />
         </>
       ),
     },

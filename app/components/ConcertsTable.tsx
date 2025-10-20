@@ -30,7 +30,7 @@ const ConcertsTable: FC<Props> = (props) => {
     }
 
     return (
-      <div
+      <li
         key={id}
         className="hover:bg-gray-100 dark:hover:bg-slate-700 grid grid-cols-[1fr_auto] items-center border-b dark:border-slate-900"
       >
@@ -53,15 +53,13 @@ const ConcertsTable: FC<Props> = (props) => {
           </p>
         </div>
         <div className="self-end">
-          <TableControls editUrl={editUrl} deleteFn={deleteFn} />
+          <TableControls editUrl={editUrl} deleteFn={deleteFn} title={band} />
         </div>
-      </div>
+      </li>
     )
   })
 
-  return (
-    <div className="bg-white dark:bg-slate-800 shadow-lg">{rowElements}</div>
-  )
+  return <ul className="bg-white dark:bg-slate-800 shadow-lg">{rowElements}</ul>
 }
 
 export default ConcertsTable
