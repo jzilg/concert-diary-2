@@ -3,7 +3,7 @@ import concertsProvider from '~/providers/concertsProvider'
 
 export const getSortedConcertsOfUser = async (userId: User['id']) => {
   const concerts = await concertsProvider(userId).getAll()
-  const sortedConcerts = [...concerts].sort((concert0, concert1) => {
+  const sortedConcerts = concerts.toSorted((concert0, concert1) => {
     const timestamp0 = new Date(concert0.date).getTime()
     const timestamp1 = new Date(concert1.date).getTime()
 
