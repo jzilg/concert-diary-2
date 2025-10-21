@@ -19,7 +19,7 @@ const ConcertsTable: FC<Props> = (props) => {
     }).format(new Date(concert.date))
     const editUrl = `/concerts/${id}`
 
-    const deleteFn = (): void => {
+    const deleteFn = () => {
       if (
         window.confirm(
           `Do you really want to delete the ${concert.band} concert`,

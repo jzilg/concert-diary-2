@@ -23,7 +23,7 @@ const FestivalsTable: FC<Props> = (props) => {
     const date = `from ${startDate} until ${endDate}`
     const editUrl = `/festivals/${id}`
 
-    const deleteFn = (): void => {
+    const deleteFn = () => {
       if (
         window.confirm(
           `Do you really want to delete the ${festival.name} festival`,

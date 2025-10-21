@@ -20,7 +20,7 @@ export const authenticateUser = async (username: string, password: string) => {
   return [await compare(password, user?.password ?? ''), user] as const
 }
 
-export const validateToken = (incomingToken: string): boolean =>
+export const validateToken = (incomingToken: string) =>
   incomingToken !== config.registerToken
 
 export const userAlreadyExists = async (incomingUsername: string) =>
