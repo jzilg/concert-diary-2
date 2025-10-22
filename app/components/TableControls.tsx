@@ -13,12 +13,12 @@ const TableControls: FC<Props> = (props) => {
 
   return (
     <ul className="sm:flex">
-      <li>
+      <li className="has-focus-visible:z-1">
         <Link
           to={editUrl}
           title={`Edit ${title}`}
           aria-label={`Edit ${title}`}
-          className="inline-flex p-4 dark:bg-slate-800 bg-white hover:text-white focus-visible:text-white hover:bg-blue-600 focus-visible:bg-blue-600 transition-colors border-l border-t dark:border-slate-900 rounded-tl-md"
+          className="inline-flex p-4 dark:bg-slate-800 bg-white hover:text-white focus-visible:text-white hover:bg-blue-600 focus-visible:bg-blue-600 focus-visible:border-blue-600 outline-offset-2 transition-colors border-l border-t dark:border-slate-900 rounded-tl-md"
         >
           <PencilSquare aria-hidden />
         </Link>
@@ -28,7 +28,7 @@ const TableControls: FC<Props> = (props) => {
           type="button"
           title={`Delete ${title}`}
           aria-label={`Delete ${title}`}
-          className="p-4 bg-white dark:bg-slate-800 hover:text-white focus-visible:text-white hover:bg-red-600 focus-visible:bg-red-600 transition-colors border-t border-l dark:border-slate-900 cursor-pointer"
+          className="p-4 bg-white dark:bg-slate-800 hover:text-white focus-visible:text-white hover:bg-red-600 focus-visible:bg-red-600 focus-visible:border-red-600 outline-offset-2 transition-colors border-t border-l dark:border-slate-900 cursor-pointer"
           onClick={() => {
             deleteFn()
           }}
