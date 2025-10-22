@@ -6,7 +6,7 @@ import NavLink from '~/components/NavLink'
 import type { LoginDto } from '~/entities/LoginDto'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { commitSession, getSession } from '~/logic/session'
-import { authenticateUser } from '~/logic/user'
+import { getAuthenticatedUser } from '~/logic/user'
 import type { Route } from './+types/Login'
 
 export const meta: Route.MetaFunction = () => [
@@ -21,12 +21,12 @@ export const action = async ({ request }: Route.ActionArgs) => {
     password: extractStringFromBody(body)('password'),
   }
 
-  const [userIsAuthenticated, user] = await authenticateUser(
+  const authenticatedUser = await getAuthenticatedUser(
     loginDto.username,
     loginDto.password,
   )
 
-  if (!userIsAuthenticated) {
+  if (authenticatedUser === undefined) {
     session.flash('error', 'Invalid username/password')
 
     return data(
@@ -42,7 +42,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
     )
   }
 
-  session.set('userId', user?.id)
+  session.set('userId', authenticatedUser.id)
 
   return redirect('/concerts', {
     headers: {

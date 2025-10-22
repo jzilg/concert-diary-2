@@ -13,11 +13,15 @@ export const getUserFromSession = async (session: Session) => {
   return user ?? undefined
 }
 
-export const authenticateUser = async (username: string, password: string) => {
+export const getAuthenticatedUser = async (
+  username: string,
+  password: string,
+) => {
   const user =
     (await usersProvider.getUserByField('username', username)) ?? undefined
+  const userIsAuthenticated = await compare(password, user?.password ?? '')
 
-  return [await compare(password, user?.password ?? ''), user] as const
+  return userIsAuthenticated ? user : undefined
 }
 
 export const validateToken = (incomingToken: string) =>
