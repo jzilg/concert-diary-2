@@ -1,17 +1,12 @@
 import bcrypt from 'bcryptjs'
-import type { Session } from 'react-router'
 import uniqid from 'uniqid'
 import config from '~/config'
 import usersProvider from '~/providers/usersProvider'
 
 const { compare, genSalt, hash } = bcrypt
 
-export const getUserFromSession = async (session: Session) => {
-  const userId = session.get('userId')
-  const user = await usersProvider.getUserByField('id', userId)
-
-  return user ?? undefined
-}
+export const getUserById = async (userId: string) =>
+  (await usersProvider.getUserByField('id', userId)) ?? undefined
 
 export const getAuthenticatedUser = async (
   username: string,

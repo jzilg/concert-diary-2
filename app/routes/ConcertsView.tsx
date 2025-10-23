@@ -8,7 +8,7 @@ import cachedJson from '~/helpers/cachedJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { getSortedConcertsOfUser } from '~/logic/concerts'
 import { commitSession, getSession } from '~/logic/session'
-import { getUserFromSession } from '~/logic/user'
+import { getUserById } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
 import type { Route } from './+types/ConcertsView'
 
@@ -22,7 +22,7 @@ export const headers = ({ loaderHeaders }: Route.HeadersArgs) => {
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserFromSession(session)
+  const user = await getUserById(session.get('userId'))
 
   if (user === undefined) {
     return redirect('/login')
@@ -35,7 +35,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserFromSession(session)
+  const user = await getUserById(session.get('userId'))
 
   if (user === undefined) {
     return redirect('/login')

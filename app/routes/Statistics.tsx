@@ -7,7 +7,7 @@ import MostSeenBands from '~/components/MostSeenBands'
 import cachedJson from '~/helpers/cachedJson'
 import { commitSession, getSession } from '~/logic/session'
 import { getStatisticsOfUser } from '~/logic/statistics'
-import { getUserFromSession } from '~/logic/user'
+import { getUserById } from '~/logic/user'
 import type { Route } from './+types/Statistics'
 
 export const meta: Route.MetaFunction = () => [
@@ -20,7 +20,7 @@ export const headers = ({ loaderHeaders }: Route.HeadersArgs) => {
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserFromSession(session)
+  const user = await getUserById(session.get('userId'))
 
   if (user === undefined) {
     return redirect('/login')

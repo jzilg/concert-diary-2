@@ -9,7 +9,7 @@ import {
   extractStringFromBody,
 } from '~/helpers/extractFromBody'
 import { commitSession, getSession } from '~/logic/session'
-import { getUserFromSession } from '~/logic/user'
+import { getUserById } from '~/logic/user'
 import festivalsProvider from '~/providers/festivalsProvider'
 import type { Route } from './+types/EditFestival'
 
@@ -27,7 +27,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   }
 
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserFromSession(session)
+  const user = await getUserById(session.get('userId'))
 
   if (user === undefined) {
     return redirect('/login')
@@ -44,7 +44,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserFromSession(session)
+  const user = await getUserById(session.get('userId'))
 
   if (user === undefined) {
     return redirect('/login')
