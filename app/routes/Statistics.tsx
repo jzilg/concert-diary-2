@@ -8,6 +8,8 @@ import cachedJson from '~/helpers/cachedJson'
 import { commitSession, getSession } from '~/logic/session'
 import { getStatisticsOfUser } from '~/logic/statistics'
 import { getUserById } from '~/logic/user'
+import concertsProvider from '~/providers/concertsProvider'
+import festivalsProvider from '~/providers/festivalsProvider'
 import type { Route } from './+types/Statistics'
 
 export const meta: Route.MetaFunction = () => [
@@ -26,7 +28,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     return redirect('/login')
   }
 
-  const statistics = await getStatisticsOfUser(user.id)
+  const concerts = await concertsProvider(user.id).getAll()
+  const festivals = await festivalsProvider(user.id).getAll()
+  const statistics = getStatisticsOfUser(concerts, festivals)
 
   return cachedJson(request, await commitSession(session), statistics)
 }

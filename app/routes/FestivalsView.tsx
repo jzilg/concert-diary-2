@@ -28,7 +28,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     return redirect('/login')
   }
 
-  const sortedFestivals = await getSortedFestivalsOfUser(user.id)
+  const festivals = await festivalsProvider(user.id).getAll()
+  const sortedFestivals = getSortedFestivalsOfUser(festivals)
 
   return cachedJson(request, await commitSession(session), sortedFestivals)
 }

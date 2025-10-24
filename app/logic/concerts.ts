@@ -1,8 +1,6 @@
-import type { User } from '~/entities/User'
-import concertsProvider from '~/providers/concertsProvider'
+import type { Concert } from '~/entities/Concert'
 
-export const getSortedConcertsOfUser = async (userId: User['id']) => {
-  const concerts = await concertsProvider(userId).getAll()
+export const getSortedConcertsOfUser = (concerts: Concert[]) => {
   const sortedConcerts = concerts.toSorted((concert0, concert1) => {
     const timestamp0 = new Date(concert0.date).getTime()
     const timestamp1 = new Date(concert1.date).getTime()

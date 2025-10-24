@@ -4,23 +4,15 @@ import type { Festival } from '~/entities/Festival'
 import type { MostCommonCompanion } from '~/entities/MostCommonCompanion'
 import type { MostSeenBand } from '~/entities/MostSeenBand'
 import type { Statistics } from '~/entities/Statistics'
-import type { User } from '~/entities/User'
-import concertsProvider from '~/providers/concertsProvider'
-import festivalsProvider from '~/providers/festivalsProvider'
+import { getBands } from '~/logic/bands'
+import { getCompanions } from '~/logic/companions'
+import { getAllLocations } from '~/logic/locations'
 
-type CalcMostSeenBandsParams = {
-  mainBands: string[]
-  supportBands: string[]
-  festivalBands: string[]
-  allBands: string[]
-}
-
-const calcMostSeenBands = ({
-  mainBands,
-  supportBands,
-  festivalBands,
-  allBands,
-}: CalcMostSeenBandsParams) => {
+const calcMostSeenBands = (concerts: Concert[], festivals: Festival[]) => {
+  const { mainBands, supportBands, festivalBands, allBands } = getBands(
+    concerts,
+    festivals,
+  )
   const mainBandsCounts = countBy(mainBands)
   const supportBandsCounts = countBy(supportBands)
   const festivalBandsCounts = countBy(festivalBands)
@@ -49,54 +41,43 @@ const calcMostSeenBands = ({
 const calcMostCommonCompanions = (
   concerts: Concert[],
   festivals: Festival[],
-): MostCommonCompanion[] => {
-  const concertCompanions = concerts.flatMap((concert) => concert.companions)
+) => {
+  const { festivalCompanions, allCompanions, concertCompanions } =
+    getCompanions(concerts, festivals)
   const concertCompanionsCounts = countBy(concertCompanions)
-  const festivalCompanions = festivals.flatMap(
-    (festival) => festival.companions,
-  )
   const festivalCompanionsCounts = countBy(festivalCompanions)
-  const companions = [...new Set([...concertCompanions, ...festivalCompanions])]
 
-  return companions
-    .map((companion) => ({
-      name: companion,
-      concertCount: concertCompanionsCounts[companion] ?? 0,
-      festivalCount: festivalCompanionsCounts[companion] ?? 0,
-      totalCount:
-        (concertCompanionsCounts[companion] ?? 0) +
-        (festivalCompanionsCounts[companion] ?? 0),
-    }))
+  return allCompanions
+    .map((companion) => {
+      const mostCommonCompanion: MostCommonCompanion = {
+        name: companion,
+        concertCount: concertCompanionsCounts[companion] ?? 0,
+        festivalCount: festivalCompanionsCounts[companion] ?? 0,
+        totalCount:
+          (concertCompanionsCounts[companion] ?? 0) +
+          (festivalCompanionsCounts[companion] ?? 0),
+      }
+
+      return mostCommonCompanion
+    })
     .sort((x, y) => y.totalCount - x.totalCount)
 }
 
-export const getStatisticsOfUser = async (
-  userId: User['id'],
-): Promise<Statistics> => {
-  const concerts = await concertsProvider(userId).getAll()
-  const festivals = await festivalsProvider(userId).getAll()
+export const getStatisticsOfUser = (
+  concerts: Concert[],
+  festivals: Festival[],
+) => {
+  const { allBands } = getBands(concerts, festivals)
+  const allLocations = getAllLocations(concerts)
 
-  const mainBands = concerts.map((concert) => concert.band)
-  const supportBands = concerts.flatMap((concert) => concert.supportBands)
-  const festivalBands = festivals.flatMap((festival) => festival.bands)
-  const allBands = [
-    ...new Set([...mainBands, ...supportBands, ...festivalBands]),
-  ]
-  const totalLocationsCount = new Set(
-    concerts.map((concert) => concert.location),
-  ).size
-
-  return {
-    mostSeenBands: calcMostSeenBands({
-      mainBands,
-      supportBands,
-      festivalBands,
-      allBands,
-    }),
+  const statistics: Statistics = {
+    mostSeenBands: calcMostSeenBands(concerts, festivals),
     mostCommonCompanions: calcMostCommonCompanions(concerts, festivals),
     totalConcertsCount: concerts.length,
     totalFestivalsCount: festivals.length,
     totalBandsCount: allBands.length,
-    totalLocationsCount: totalLocationsCount,
+    totalLocationsCount: allLocations.length,
   }
+
+  return statistics
 }
