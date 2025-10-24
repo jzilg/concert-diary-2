@@ -2,7 +2,7 @@ import { type FC, useEffect } from 'react'
 import { data, redirect, useNavigation, useSubmit } from 'react-router'
 import { toast } from 'react-toastify'
 import ConcertForm from '~/components/ConcertForm'
-import type { Concert } from '~/entities/Concert'
+import { createConcert } from '~/entities/Concert'
 import cachedJson from '~/helpers/cachedJson'
 import {
   extractListFromBody,
@@ -67,14 +67,14 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   const body = await request.formData()
 
-  const concertToUpdate: Concert = {
+  const concertToUpdate = createConcert({
     id: extractStringFromBody(body)('id'),
     band: extractStringFromBody(body)('band'),
     supportBands: extractListFromBody(body)('supportBands'),
     location: extractStringFromBody(body)('location'),
     date: extractStringFromBody(body)('date'),
     companions: extractListFromBody(body)('companions'),
-  }
+  })
 
   await concertsProvider(user.id).update(concertToUpdate.id, concertToUpdate)
 

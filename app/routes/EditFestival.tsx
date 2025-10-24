@@ -2,7 +2,7 @@ import { type FC, useEffect } from 'react'
 import { data, redirect, useNavigation, useSubmit } from 'react-router'
 import { toast } from 'react-toastify'
 import FestivalForm from '~/components/FestivalForm'
-import type { Festival } from '~/entities/Festival'
+import { createFestival } from '~/entities/Festival'
 import cachedJson from '~/helpers/cachedJson'
 import {
   extractListFromBody,
@@ -64,7 +64,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   const body = await request.formData()
 
-  const festivalToUpdate: Festival = {
+  const festivalToUpdate = createFestival({
     id: extractStringFromBody(body)('id'),
     name: extractStringFromBody(body)('name'),
     bands: extractListFromBody(body)('bands'),
@@ -73,7 +73,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
       until: extractStringFromBody(body)('dateUntil'),
     },
     companions: extractListFromBody(body)('companions'),
-  }
+  })
 
   await festivalsProvider(user.id).update(festivalToUpdate.id, festivalToUpdate)
 
