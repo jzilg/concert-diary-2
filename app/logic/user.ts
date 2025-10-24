@@ -27,11 +27,11 @@ export const userAlreadyExists = async (incomingUsername: string) =>
 
 export const createNewUser = async (username: string, password: string) => {
   const salt = await genSalt()
-  const encryptedPassword = await hash(password, salt)
+  const hashedPassword = await hash(password, salt)
 
   await usersProvider.addNewUser({
     id: uniqid(),
     username,
-    password: encryptedPassword,
+    password: hashedPassword,
   })
 }
