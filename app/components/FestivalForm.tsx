@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import { type FC, useId } from 'react'
 import { ArrowLeft, Save } from 'react-bootstrap-icons'
 import { Form, type SubmitFunction } from 'react-router'
 import Button from '~/components/Button'
@@ -10,11 +10,15 @@ type Props = {
   festival: Festival
   saveFestival: SubmitFunction
   method: 'post' | 'put'
+  allBands: string[]
+  allCompanions: string[]
 }
 
 const FestivalForm: FC<Props> = (props) => {
-  const { festival, saveFestival, method } = props
+  const { festival, saveFestival, method, allBands, allCompanions } = props
   const { id, name, bands, date, companions } = festival
+  const bandDatalistId = useId()
+  const companionsDataListId = useId()
 
   return (
     <Form
@@ -40,6 +44,7 @@ const FestivalForm: FC<Props> = (props) => {
           name="bands"
           defaultValue={bands.join(', ')}
           placeholder="The Cure, Talking Heads,..."
+          list={bandDatalistId}
         />
       </label>
       <label className="block mt-3">
@@ -61,6 +66,7 @@ const FestivalForm: FC<Props> = (props) => {
           name="companions"
           defaultValue={companions.join(', ')}
           placeholder="Leo, Max, Peter,..."
+          list={companionsDataListId}
         />
       </label>
       <ul className="flex justify-between mt-6">
@@ -77,6 +83,16 @@ const FestivalForm: FC<Props> = (props) => {
           </NavLink>
         </li>
       </ul>
+      <datalist id={companionsDataListId}>
+        {allCompanions.map((companion) => (
+          <option key={companion} value={companion} />
+        ))}
+      </datalist>
+      <datalist id={bandDatalistId}>
+        {allBands.map((band) => (
+          <option key={band} value={band} />
+        ))}
+      </datalist>
     </Form>
   )
 }

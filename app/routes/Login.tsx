@@ -59,11 +59,23 @@ const Login: FC<Route.ComponentProps> = ({ actionData }) => {
         <h2 className="text-2xl font-bold">Login</h2>
         <label className="block mt-3">
           <span className="block mb-2 font-bold">Username</span>
-          <Input type="text" name="username" minLength={2} required />
+          <Input
+            type="text"
+            name="username"
+            defaultValue="jzilg"
+            minLength={2}
+            required
+          />
         </label>
         <label className="block mt-3">
           <span className="block mb-2 font-bold">Password</span>
-          <Input type="password" name="password" minLength={6} required />
+          <Input
+            type="password"
+            name="password"
+            defaultValue="eL5PtyS4^T&PN4K#K*"
+            minLength={6}
+            required
+          />
         </label>
         <Activity mode={actionData?.error !== undefined ? 'visible' : 'hidden'}>
           <p className="mt-6 text-red-600" role="alert">

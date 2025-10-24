@@ -8,8 +8,11 @@ import {
   extractListFromBody,
   extractStringFromBody,
 } from '~/helpers/extractFromBody'
+import { getBands } from '~/logic/bands'
+import { getCompanions } from '~/logic/companions'
 import { commitSession, getSession } from '~/logic/session'
 import { getUserById } from '~/logic/user'
+import concertsProvider from '~/providers/concertsProvider'
 import festivalsProvider from '~/providers/festivalsProvider'
 import type { Route } from './+types/EditFestival'
 
@@ -39,7 +42,16 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     return data('festival not found', { status: 404 })
   }
 
-  return cachedJson(request, await commitSession(session), festival)
+  const concerts = await concertsProvider(user.id).getAll()
+  const festivals = await festivalsProvider(user.id).getAll()
+  const { allBands } = getBands(concerts, festivals)
+  const { allCompanions } = getCompanions(concerts, festivals)
+
+  return cachedJson(request, await commitSession(session), {
+    festival,
+    allBands,
+    allCompanions,
+  })
 }
 
 export const action = async ({ request }: Route.ActionArgs) => {
@@ -98,7 +110,9 @@ const EditFestival: FC<Route.ComponentProps> = ({ loaderData }) => {
     <div className="px-6">
       <h2 className="text-2xl mb-6 font-bold">Edit Festival</h2>
       <FestivalForm
-        festival={loaderData}
+        festival={loaderData.festival}
+        allBands={loaderData.allBands}
+        allCompanions={loaderData.allCompanions}
         saveFestival={saveFestival}
         method="put"
       />
