@@ -58,7 +58,7 @@ const concertsProvider: ConcertsProvider = (userId) => {
         const db = client.db(DB)
         const collection = db.collection(collectionName)
 
-        await collection.insertOne({ ...concert })
+        await collection.insertOne(concert)
 
         return concert
       } finally {

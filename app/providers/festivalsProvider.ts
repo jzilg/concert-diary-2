@@ -60,7 +60,7 @@ const festivalsProvider: FestivalsProvider = (userId) => {
         const db = client.db(DB)
         const collection = db.collection(collectionName)
 
-        await collection.insertOne({ ...festival })
+        await collection.insertOne(festival)
 
         return festival
       } finally {
