@@ -24,6 +24,9 @@
         "noUnknownAtRules": {
           "level": "warn"
         }
+      },
+      "style": {
+        "useConsistentObjectDefinitions": "error"
       }
     }
   },
