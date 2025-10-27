@@ -1,11 +1,14 @@
 import client from '~/db/client'
-import type { User } from '~/entities/User'
+import { createUser, type User } from '~/entities/User'
 
 const DB = 'concert-diary'
 const COLLECTION = 'users'
 
 type UsersProvider = {
-  getUserByField(field: 'id' | 'username', value: string): Promise<User | null>
+  getUserByField(
+    field: 'id' | 'username',
+    value: string,
+  ): Promise<User | undefined>
   addNewUser(user: User): Promise<void>
 }
 
@@ -17,9 +20,13 @@ const usersProvider: UsersProvider = {
       const collection = db.collection(COLLECTION)
       const query = { [field]: value }
 
-      const user = await collection.findOne(query)
+      const userData = await collection.findOne(query)
 
-      return user as unknown as User
+      if (userData === null) {
+        return undefined
+      }
+
+      return createUser(userData)
     } finally {
       await client.close()
     }
