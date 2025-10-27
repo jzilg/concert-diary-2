@@ -6,7 +6,7 @@ import ConcertsTable from '~/components/ConcertsTable'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
-import { getSortedConcertsOfUser } from '~/logic/concerts'
+import { getSortedConcerts } from '~/logic/concerts'
 import { commitSession, getSession } from '~/logic/session'
 import { getUserById } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
@@ -29,7 +29,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   }
 
   const concerts = await concertsProvider(user.id).getAll()
-  const sortedConcerts = getSortedConcertsOfUser(concerts)
+  const sortedConcerts = getSortedConcerts(concerts)
 
   return cachedJson(request, await commitSession(session), sortedConcerts)
 }

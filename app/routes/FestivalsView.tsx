@@ -6,7 +6,7 @@ import FestivalsTable from '~/components/FestivalsTable'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
-import { getSortedFestivalsOfUser } from '~/logic/festivals'
+import { getSortedFestivals } from '~/logic/festivals'
 import { commitSession, getSession } from '~/logic/session'
 import { getUserById } from '~/logic/user'
 import festivalsProvider from '~/providers/festivalsProvider'
@@ -29,7 +29,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   }
 
   const festivals = await festivalsProvider(user.id).getAll()
-  const sortedFestivals = getSortedFestivalsOfUser(festivals)
+  const sortedFestivals = getSortedFestivals(festivals)
 
   return cachedJson(request, await commitSession(session), sortedFestivals)
 }

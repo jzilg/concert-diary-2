@@ -1,6 +1,6 @@
 import type { Concert } from '~/entities/Concert'
 
-export const getSortedConcertsOfUser = (concerts: Concert[]) => {
+export const getSortedConcerts = (concerts: Concert[]) => {
   const sortedConcerts = concerts.toSorted((concert0, concert1) => {
     const timestamp0 = new Date(concert0.date).getTime()
     const timestamp1 = new Date(concert1.date).getTime()
