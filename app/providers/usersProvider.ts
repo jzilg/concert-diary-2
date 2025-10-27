@@ -16,10 +16,10 @@ const usersProvider: UsersProvider = {
   async getUserByField(field, value) {
     try {
       await client.connect()
+
       const db = client.db(DB)
       const collection = db.collection(COLLECTION)
       const query = { [field]: value }
-
       const userData = await collection.findOne(query)
 
       if (userData === null) {
@@ -35,6 +35,7 @@ const usersProvider: UsersProvider = {
   async addNewUser(user) {
     try {
       await client.connect()
+
       const db = client.db(DB)
       const collection = db.collection(COLLECTION)
 

@@ -20,10 +20,10 @@ const festivalsProvider: FestivalsProvider = (userId) => {
     async getAll() {
       try {
         await client.connect()
+
         const db = client.db(DB)
         const collection = db.collection(collectionName)
         const cursor = collection.find()
-
         const festivalDataList = await cursor.toArray()
 
         return festivalDataList.map((festivalData) =>
@@ -37,10 +37,10 @@ const festivalsProvider: FestivalsProvider = (userId) => {
     async getById(id) {
       try {
         await client.connect()
+
         const db = client.db(DB)
         const collection = db.collection(collectionName)
         const query = { id }
-
         const festivalData = await collection.findOne(query)
 
         if (festivalData === null) {
@@ -56,6 +56,7 @@ const festivalsProvider: FestivalsProvider = (userId) => {
     async add(festival) {
       try {
         await client.connect()
+
         const db = client.db(DB)
         const collection = db.collection(collectionName)
 
@@ -70,6 +71,7 @@ const festivalsProvider: FestivalsProvider = (userId) => {
     async update(id, festival) {
       try {
         await client.connect()
+
         const db = client.db(DB)
         const collection = db.collection(collectionName)
         const query = { id }
@@ -88,6 +90,7 @@ const festivalsProvider: FestivalsProvider = (userId) => {
     async remove(id) {
       try {
         await client.connect()
+
         const db = client.db(DB)
         const collection = db.collection(collectionName)
         const query = { id }
