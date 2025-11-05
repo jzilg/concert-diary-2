@@ -29,5 +29,5 @@ export const createFestival = (
 
   const validatedFestivalData = schema.parse(festivalData)
 
-  return Object.freeze(validatedFestivalData)
+  return validatedFestivalData
 }

@@ -25,5 +25,5 @@ export const createConcert = (
 
   const validatedConcertData = schema.parse(concertData)
 
-  return Object.freeze(validatedConcertData)
+  return validatedConcertData
 }

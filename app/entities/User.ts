@@ -18,5 +18,5 @@ export const createUser = (
 
   const validatedUserData = schema.parse(userData)
 
-  return Object.freeze(validatedUserData)
+  return validatedUserData
 }
