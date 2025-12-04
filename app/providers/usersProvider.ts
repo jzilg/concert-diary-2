@@ -4,16 +4,8 @@ import { createUser, type User } from '~/entities/User'
 const DB = 'concert-diary'
 const COLLECTION = 'users'
 
-type UsersProvider = {
-  getUserByField(
-    field: 'id' | 'username',
-    value: string,
-  ): Promise<User | undefined>
-  addNewUser(user: User): Promise<void>
-}
-
-const usersProvider: UsersProvider = {
-  async getUserByField(field, value) {
+const usersProvider = {
+  async getUserByField(field: 'id' | 'username', value: string) {
     try {
       await client.connect()
 
@@ -32,7 +24,7 @@ const usersProvider: UsersProvider = {
     }
   },
 
-  async addNewUser(user) {
+  async addNewUser(user: User) {
     try {
       await client.connect()
 

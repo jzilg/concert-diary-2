@@ -5,15 +5,7 @@ import { createFestival } from '~/entities/Festival'
 const DB = 'concert-diary'
 const COLLECTION = 'festivals'
 
-type FestivalsProvider = (userId: string) => {
-  getAll(): Promise<Festival[]>
-  getById(id: string): Promise<Festival | undefined>
-  add(festival: Festival): Promise<Festival>
-  update(id: string, festival: Festival): Promise<Festival>
-  remove(id: string): Promise<void>
-}
-
-const festivalsProvider: FestivalsProvider = (userId) => {
+const festivalsProvider = (userId: string) => {
   const collectionName = `${COLLECTION}-${userId}`
 
   return {
@@ -34,7 +26,7 @@ const festivalsProvider: FestivalsProvider = (userId) => {
       }
     },
 
-    async getById(id) {
+    async getById(id: string) {
       try {
         await client.connect()
 
@@ -53,7 +45,7 @@ const festivalsProvider: FestivalsProvider = (userId) => {
       }
     },
 
-    async add(festival) {
+    async add(festival: Festival) {
       try {
         await client.connect()
 
@@ -68,7 +60,7 @@ const festivalsProvider: FestivalsProvider = (userId) => {
       }
     },
 
-    async update(id, festival) {
+    async update(id: string, festival: Festival) {
       try {
         await client.connect()
 
@@ -87,7 +79,7 @@ const festivalsProvider: FestivalsProvider = (userId) => {
       }
     },
 
-    async remove(id) {
+    async remove(id: string) {
       try {
         await client.connect()
 
