@@ -8,4 +8,5 @@ export default Object.freeze({
   dbAuthPassword: process.env['DB_AUTH_PASSWORD'] || '',
   sessionCookieSecret: process.env['SESSION_COOKIE_SECRET'] || '',
   registerToken: process.env['REGISTER_TOKEN'] || '',
+  dropboxAccessToken: process.env['DROPBOX_ACCESS_TOKEN'] || '',
 })

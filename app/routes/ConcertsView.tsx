@@ -6,6 +6,7 @@ import ConcertsTable from '~/components/ConcertsTable'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
+import { backupConcerts } from '~/logic/backup'
 import { getSortedConcerts } from '~/logic/concerts'
 import { commitSession, getSession } from '~/logic/session'
 import { getUserById } from '~/logic/user'
@@ -46,6 +47,8 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const id = extractStringFromBody(body)('id')
 
   await concertsProvider(user.id).remove(id)
+
+  void backupConcerts(user.id)
 
   return new Response(undefined, {
     status: 204,

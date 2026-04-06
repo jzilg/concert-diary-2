@@ -6,6 +6,7 @@ import FestivalsTable from '~/components/FestivalsTable'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
+import { backupFestivals } from '~/logic/backup'
 import { getSortedFestivals } from '~/logic/festivals'
 import { commitSession, getSession } from '~/logic/session'
 import { getUserById } from '~/logic/user'
@@ -46,6 +47,8 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const id = extractStringFromBody(body)('id')
 
   await festivalsProvider(user.id).remove(id)
+
+  void backupFestivals(user.id)
 
   return new Response(undefined, {
     status: 204,
