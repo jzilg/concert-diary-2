@@ -79,7 +79,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   await concertsProvider(user.id).update(concertToUpdate.id, concertToUpdate)
 
-  void backupConcerts(user.id)
+  backupConcerts(user.id)
 
   return redirect('/concerts', {
     headers: {

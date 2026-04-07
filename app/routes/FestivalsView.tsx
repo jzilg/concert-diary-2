@@ -48,7 +48,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   await festivalsProvider(user.id).remove(id)
 
-  void backupFestivals(user.id)
+  backupFestivals(user.id)
 
   return new Response(undefined, {
     status: 204,

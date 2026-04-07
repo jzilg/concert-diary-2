@@ -63,7 +63,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   await festivalsProvider(user.id).add(festivalToAdd)
 
-  void backupFestivals(user.id)
+  backupFestivals(user.id)
 
   return redirect('/festivals', {
     headers: {
