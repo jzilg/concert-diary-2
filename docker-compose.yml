@@ -7,6 +7,7 @@ services:
       - DB_AUTH_PASSWORD=${DB_AUTH_PASSWORD}
       - SESSION_COOKIE_SECRET=${SESSION_COOKIE_SECRET}
       - REGISTER_TOKEN=${REGISTER_TOKEN}
+      - DROPBOX_ACCESS_TOKEN=${DROPBOX_ACCESS_TOKEN}
     build:
       context: .
       dockerfile: Dockerfile
