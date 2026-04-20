@@ -36,9 +36,9 @@ const FestivalsTable: FC<Props> = (props) => {
     return (
       <li
         key={id}
-        className="hover:bg-gray-100 dark:hover:bg-slate-700 grid grid-cols-[1fr_auto] items-center border-b dark:border-slate-900"
+        className="grid grid-cols-[1fr_auto] gap-3 items-center p-6 border-b dark:border-slate-900 transition-colors"
       >
-        <div className="p-6">
+        <div>
           <p>
             <span className="font-bold">{name}</span> with {bands}
           </p>
@@ -46,7 +46,7 @@ const FestivalsTable: FC<Props> = (props) => {
             {date} accompanied by {companions}
           </p>
         </div>
-        <div className="self-end">
+        <div>
           <TableControls
             editUrl={editUrl}
             deleteFn={deleteFn}
@@ -57,7 +57,9 @@ const FestivalsTable: FC<Props> = (props) => {
     )
   })
 
-  return <ul className="bg-white dark:bg-slate-800 shadow-lg">{rowElements}</ul>
+  return (
+    <ul className="bg-white dark:bg-slate-800 rounded-2xl">{rowElements}</ul>
+  )
 }
 
 export default FestivalsTable

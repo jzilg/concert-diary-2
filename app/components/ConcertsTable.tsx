@@ -32,9 +32,9 @@ const ConcertsTable: FC<Props> = (props) => {
     return (
       <li
         key={id}
-        className="hover:bg-gray-100 dark:hover:bg-slate-700 grid grid-cols-[1fr_auto] items-center border-b dark:border-slate-900"
+        className="grid grid-cols-[1fr_auto] gap-3 items-center p-6 border-b dark:border-slate-900 transition-colors"
       >
-        <div className="p-6">
+        <div>
           <p>
             <span className="font-bold">{band}</span>{' '}
             <Activity mode={supportBands.length > 0 ? 'visible' : 'hidden'}>
@@ -52,14 +52,18 @@ const ConcertsTable: FC<Props> = (props) => {
             {companions}
           </p>
         </div>
-        <div className="self-end">
+        <div>
           <TableControls editUrl={editUrl} deleteFn={deleteFn} title={band} />
         </div>
       </li>
     )
   })
 
-  return <ul className="bg-white dark:bg-slate-800 shadow-lg">{rowElements}</ul>
+  return (
+    <ul className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden">
+      {rowElements}
+    </ul>
+  )
 }
 
 export default ConcertsTable

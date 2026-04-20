@@ -34,7 +34,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => (
       <Meta />
       <Links />
     </head>
-    <body className="bg-gray-50 dark:bg-slate-900 dark:text-white">
+    <body className="bg-gray-100 dark:bg-slate-900 dark:text-white">
       <LoadingIndicator />
       <ToastContainer />
       {children}

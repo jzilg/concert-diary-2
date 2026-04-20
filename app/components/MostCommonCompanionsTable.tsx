@@ -13,7 +13,10 @@ const MostCommonCompanionsTable: FC<Props> = (props) => {
       mostCommonCompanion
 
     return (
-      <tr key={name} className="hover:bg-gray-100 dark:hover:bg-slate-700">
+      <tr
+        key={name}
+        className="hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+      >
         <td className="px-3 sm:px-6 py-4 border-b dark:border-slate-900">
           {name}
         </td>
@@ -31,7 +34,7 @@ const MostCommonCompanionsTable: FC<Props> = (props) => {
   })
 
   return (
-    <table className="w-full bg-white dark:bg-slate-800 border-separate border-spacing-0 shadow-lg">
+    <table className="w-full bg-white dark:bg-slate-800 border-separate border-spacing-0 rounded-2xl">
       <caption className="text-left sm:text-center px-6">
         <h3 className="font-bold text-xl mb-3">Most Common Companion</h3>
       </caption>
