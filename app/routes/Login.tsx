@@ -3,7 +3,6 @@ import { data, Form, redirect } from 'react-router'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
-import type { LoginDto } from '~/entities/LoginDto'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { commitSession, getSession } from '~/logic/session'
 import { getAuthenticatedUser } from '~/logic/user'
@@ -16,14 +15,10 @@ export const meta: Route.MetaFunction = () => [
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
   const body = await request.formData()
-  const loginDto: LoginDto = {
-    username: extractStringFromBody(body)('username'),
-    password: extractStringFromBody(body)('password'),
-  }
 
   const authenticatedUser = await getAuthenticatedUser(
-    loginDto.username,
-    loginDto.password,
+    extractStringFromBody(body)('username'),
+    extractStringFromBody(body)('password'),
   )
 
   if (authenticatedUser === undefined) {
