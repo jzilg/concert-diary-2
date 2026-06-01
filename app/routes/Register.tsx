@@ -3,7 +3,6 @@ import { data, Form, redirect } from 'react-router'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
-import type { RegisterDto } from '~/entities/RegisterDto'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { createNewUser, userAlreadyExists, validateToken } from '~/logic/user'
 import type { Route } from './+types/Register'
@@ -14,21 +13,19 @@ export const meta: Route.MetaFunction = () => [
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const body = await request.formData()
-  const registerDto: RegisterDto = {
-    username: extractStringFromBody(body)('username'),
-    password: extractStringFromBody(body)('password'),
-    token: extractStringFromBody(body)('token'),
-  }
+  const username = extractStringFromBody(body)('username')
+  const password = extractStringFromBody(body)('password')
+  const token = extractStringFromBody(body)('token')
 
-  if (validateToken(registerDto.token)) {
+  if (validateToken(token)) {
     return data('Incorrect token', { status: 401 })
   }
 
-  if (await userAlreadyExists(registerDto.username)) {
+  if (await userAlreadyExists(username)) {
     return data('Username already exists', { status: 400 })
   }
 
-  await createNewUser(registerDto.username, registerDto.password)
+  await createNewUser(username, password)
 
   return redirect('/login')
 }
