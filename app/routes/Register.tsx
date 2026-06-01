@@ -22,7 +22,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   }
 
   if (await userAlreadyExists(username)) {
-    return data('Username already exists', { status: 400 })
+    return data('Username already exists', { status: 409 })
   }
 
   await createNewUser(username, password)
