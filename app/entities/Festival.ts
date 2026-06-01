@@ -27,7 +27,5 @@ export const createFestival = (
     companions: z.array(z.string()),
   })
 
-  const validatedFestivalData = schema.parse(festivalData)
-
-  return validatedFestivalData
+  return schema.parse(festivalData)
 }

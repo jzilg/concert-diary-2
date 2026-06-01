@@ -23,7 +23,5 @@ export const createConcert = (
     companions: z.array(z.string()),
   })
 
-  const validatedConcertData = schema.parse(concertData)
-
-  return validatedConcertData
+  return schema.parse(concertData)
 }

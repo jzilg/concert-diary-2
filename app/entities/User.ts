@@ -16,7 +16,5 @@ export const createUser = (
     password: z.string(),
   })
 
-  const validatedUserData = schema.parse(userData)
-
-  return validatedUserData
+  return schema.parse(userData)
 }
