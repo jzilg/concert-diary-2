@@ -1,40 +1,29 @@
-import client from '~/db/client'
+// biome-ignore-all lint/complexity/useLiteralKeys: biome conflicts with TypeScript rule
+import { db } from '~/db'
 import { createUser, type User } from '~/entities/User'
 
-const DB = 'concert-diary'
-const COLLECTION = 'users'
-
 const usersProvider = {
-  async getUserByField(field: 'id' | 'username', value: string) {
-    try {
-      await client.connect()
+  getUserByField(field: 'id' | 'username', value: string = '') {
+    const querySingle = db.prepare(`SELECT * FROM users WHERE ${field} = ?`)
+    const data = querySingle.get(value)
 
-      const db = client.db(DB)
-      const collection = db.collection(COLLECTION)
-      const query = { [field]: value }
-      const userData = await collection.findOne(query)
-
-      if (userData === null) {
-        return undefined
-      }
-
-      return createUser(userData)
-    } finally {
-      await client.close()
+    if (data === undefined) {
+      return undefined
     }
+
+    return createUser({
+      id: data['id'],
+      username: data['username'],
+      password: data['password'],
+    })
   },
 
-  async addNewUser(user: User) {
-    try {
-      await client.connect()
+  addNewUser(user: User) {
+    const insertUser = db.prepare(
+      'INSERT INTO users (id, username, password) VALUES (?, ?, ?)',
+    )
 
-      const db = client.db(DB)
-      const collection = db.collection(COLLECTION)
-
-      await collection.insertOne(user)
-    } finally {
-      await client.close()
-    }
+    insertUser.run(user.id, user.username, user.password)
   },
 }
 

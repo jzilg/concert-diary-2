@@ -7,9 +7,7 @@ export type User = {
   password: string
 }
 
-export const createUser = (
-  userData: Partial<User> & Record<string, unknown>,
-) => {
+export const createUser = (userData: Record<keyof User, unknown>): User => {
   const schema = z.object({
     id: z.string().default(createId()),
     username: z.string(),

@@ -1,4 +1,4 @@
-import { createCookieSessionStorage } from 'react-router'
+import { createCookieSessionStorage, type Session } from 'react-router'
 import config from '~/config'
 
 const { getSession, commitSession, destroySession } =
@@ -12,5 +12,11 @@ const { getSession, commitSession, destroySession } =
       secure: !config.modeIsDevelopment,
     },
   })
+
+export const getUserIdFromSession = (session: Session) => {
+  const data = session.get('userId')
+
+  return typeof data === 'string' ? data : undefined
+}
 
 export { getSession, commitSession, destroySession }

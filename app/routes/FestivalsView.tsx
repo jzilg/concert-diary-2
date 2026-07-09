@@ -10,7 +10,11 @@ import { downloadAsJSON } from '~/helpers/downloadAsJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { backupFestivals } from '~/logic/backup'
 import { getSortedFestivals } from '~/logic/festivals'
-import { commitSession, getSession } from '~/logic/session'
+import {
+  commitSession,
+  getSession,
+  getUserIdFromSession,
+} from '~/logic/session'
 import { getUserById } from '~/logic/user'
 import festivalsProvider from '~/providers/festivalsProvider'
 import type { Route } from './+types/FestivalsView'
@@ -25,13 +29,13 @@ export const headers = ({ loaderHeaders }: Route.HeadersArgs) => {
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserById(session.get('userId'))
+  const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
   }
 
-  const festivals = await festivalsProvider(user.id).getAll()
+  const festivals = festivalsProvider(user.id).getAll()
   const sortedFestivals = getSortedFestivals(festivals)
 
   return cachedJson(request, await commitSession(session), sortedFestivals)
@@ -39,7 +43,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserById(session.get('userId'))
+  const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
@@ -48,7 +52,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const body = await request.formData()
   const id = extractStringFromBody(body)('id')
 
-  await festivalsProvider(user.id).remove(id)
+  festivalsProvider(user.id).remove(id)
 
   backupFestivals(user.id)
 

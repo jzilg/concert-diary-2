@@ -12,8 +12,8 @@ export type Concert = {
 }
 
 export const createConcert = (
-  concertData: Partial<Concert> & Record<string, unknown>,
-) => {
+  concertData: Record<keyof Concert, unknown>,
+): Concert => {
   const schema = z.object({
     id: z.string().default(createId()),
     band: z.string().min(1),

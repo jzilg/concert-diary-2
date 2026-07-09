@@ -13,7 +13,11 @@ import todaysDate from '~/helpers/todaysDate'
 import { backupFestivals } from '~/logic/backup'
 import { getBands } from '~/logic/bands'
 import { getCompanions } from '~/logic/companions'
-import { commitSession, getSession } from '~/logic/session'
+import {
+  commitSession,
+  getSession,
+  getUserIdFromSession,
+} from '~/logic/session'
 import { getUserById } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
 import festivalsProvider from '~/providers/festivalsProvider'
@@ -25,14 +29,14 @@ export const meta: Route.MetaFunction = () => [
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserById(session.get('userId'))
+  const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
   }
 
-  const concerts = await concertsProvider(user.id).getAll()
-  const festivals = await festivalsProvider(user.id).getAll()
+  const concerts = concertsProvider(user.id).getAll()
+  const festivals = festivalsProvider(user.id).getAll()
   const { allBands } = getBands(concerts, festivals)
   const { allCompanions } = getCompanions(concerts, festivals)
 
@@ -44,7 +48,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserById(session.get('userId'))
+  const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
@@ -52,6 +56,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   const body = await request.formData()
   const festivalToAdd = createFestival({
+    id: undefined,
     name: extractStringFromBody(body)('name'),
     bands: extractListFromBody(body)('bands'),
     date: {
@@ -61,7 +66,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
     companions: extractListFromBody(body)('companions'),
   })
 
-  await festivalsProvider(user.id).add(festivalToAdd)
+  festivalsProvider(user.id).add(festivalToAdd)
 
   backupFestivals(user.id)
 

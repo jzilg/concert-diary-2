@@ -14,7 +14,11 @@ import { backupConcerts } from '~/logic/backup'
 import { getBands } from '~/logic/bands'
 import { getCompanions } from '~/logic/companions'
 import { getAllLocations } from '~/logic/locations'
-import { commitSession, getSession } from '~/logic/session'
+import {
+  commitSession,
+  getSession,
+  getUserIdFromSession,
+} from '~/logic/session'
 import { getUserById } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
 import festivalsProvider from '~/providers/festivalsProvider'
@@ -26,14 +30,14 @@ export const meta: Route.MetaFunction = () => [
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserById(session.get('userId'))
+  const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
   }
 
-  const concerts = await concertsProvider(user.id).getAll()
-  const festivals = await festivalsProvider(user.id).getAll()
+  const concerts = concertsProvider(user.id).getAll()
+  const festivals = festivalsProvider(user.id).getAll()
   const { allBands } = getBands(concerts, festivals)
   const { allCompanions } = getCompanions(concerts, festivals)
   const allLocations = getAllLocations(concerts)
@@ -47,7 +51,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserById(session.get('userId'))
+  const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
@@ -55,6 +59,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   const body = await request.formData()
   const concertToAdd = createConcert({
+    id: undefined,
     band: extractStringFromBody(body)('band'),
     supportBands: extractListFromBody(body)('supportBands'),
     location: extractStringFromBody(body)('location'),
@@ -62,7 +67,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
     companions: extractListFromBody(body)('companions'),
   })
 
-  await concertsProvider(user.id).add(concertToAdd)
+  concertsProvider(user.id).add(concertToAdd)
 
   backupConcerts(user.id)
 

@@ -10,7 +10,11 @@ import { downloadAsJSON } from '~/helpers/downloadAsJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { backupConcerts } from '~/logic/backup'
 import { getSortedConcerts } from '~/logic/concerts'
-import { commitSession, getSession } from '~/logic/session'
+import {
+  commitSession,
+  getSession,
+  getUserIdFromSession,
+} from '~/logic/session'
 import { getUserById } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
 import type { Route } from './+types/ConcertsView'
@@ -25,13 +29,13 @@ export const headers = ({ loaderHeaders }: Route.HeadersArgs) => {
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserById(session.get('userId'))
+  const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
   }
 
-  const concerts = await concertsProvider(user.id).getAll()
+  const concerts = concertsProvider(user.id).getAll()
   const sortedConcerts = getSortedConcerts(concerts)
 
   return cachedJson(request, await commitSession(session), sortedConcerts)
@@ -39,7 +43,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserById(session.get('userId'))
+  const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
@@ -48,7 +52,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const body = await request.formData()
   const id = extractStringFromBody(body)('id')
 
-  await concertsProvider(user.id).remove(id)
+  concertsProvider(user.id).remove(id)
 
   backupConcerts(user.id)
 
