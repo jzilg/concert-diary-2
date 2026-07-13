@@ -1,10 +1,12 @@
 import { type FC, useEffect } from 'react'
-import { PlusCircle } from 'react-bootstrap-icons'
+import { BoxArrowDown, PlusCircle } from 'react-bootstrap-icons'
 import { redirect, useFetcher } from 'react-router'
 import { toast } from 'react-toastify'
+import Button from '~/components/Button'
 import FestivalsTable from '~/components/FestivalsTable'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
+import { downloadAsJSON } from '~/helpers/downloadAsJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { backupFestivals } from '~/logic/backup'
 import { getSortedFestivals } from '~/logic/festivals'
@@ -75,12 +77,22 @@ const FestivalsView: FC<Route.ComponentProps> = ({ loaderData }) => {
     <>
       <div className="flex justify-between items-center mb-6 px-6">
         <h2 className="text-2xl font-bold">Festivals</h2>
-        <ul>
+        <ul className="flex gap-3">
           <li>
             <NavLink to="/festivals/new">
               Add New Festival
               <PlusCircle aria-hidden />
             </NavLink>
+          </li>
+          <li>
+            <Button
+              onClick={() => {
+                downloadAsJSON(loaderData, 'festivals_backup.json')
+              }}
+            >
+              Export
+              <BoxArrowDown aria-hidden />
+            </Button>
           </li>
         </ul>
       </div>
