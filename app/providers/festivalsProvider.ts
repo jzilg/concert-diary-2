@@ -1,96 +1,84 @@
-import client from '~/db/client'
+// biome-ignore-all lint/complexity/useLiteralKeys: biome conflicts with TypeScript rule
+import { db } from '~/db'
 import type { Festival } from '~/entities/Festival'
 import { createFestival } from '~/entities/Festival'
-
-const DB = 'concert-diary'
-const COLLECTION = 'festivals'
+import { splitArray } from '~/helpers/splitArray'
 
 const festivalsProvider = (userId: string) => {
-  const collectionName = `${COLLECTION}-${userId}`
-
   return {
-    async getAll() {
-      try {
-        await client.connect()
+    getAll() {
+      const festivalData = db
+        .prepare('SELECT * FROM festivals WHERE userId = ?')
+        .all(userId)
 
-        const db = client.db(DB)
-        const collection = db.collection(collectionName)
-        const cursor = collection.find()
-        const festivalDataList = await cursor.toArray()
-
-        return festivalDataList.map((festivalData) =>
-          createFestival(festivalData),
-        )
-      } finally {
-        await client.close()
-      }
+      return festivalData.map((festivalDate) =>
+        createFestival({
+          id: festivalDate['id'],
+          name: festivalDate['name'],
+          date: {
+            from: festivalDate['dateFrom'],
+            until: festivalDate['dateUntil'],
+          },
+          bands: splitArray(festivalDate['bands']),
+          companions: splitArray(festivalDate['companions']),
+        }),
+      )
     },
 
-    async getById(id: string) {
-      try {
-        await client.connect()
+    getById(id: string) {
+      const festivalDate = db
+        .prepare('SELECT * FROM festivals WHERE userId = ? AND id = ?')
+        .get(userId, id)
 
-        const db = client.db(DB)
-        const collection = db.collection(collectionName)
-        const query = { id }
-        const festivalData = await collection.findOne(query)
-
-        if (festivalData === null) {
-          return undefined
-        }
-
-        return createFestival(festivalData)
-      } finally {
-        await client.close()
+      if (festivalDate === undefined) {
+        return undefined
       }
+
+      return createFestival({
+        id: festivalDate['id'],
+        name: festivalDate['name'],
+        date: {
+          from: festivalDate['dateFrom'],
+          until: festivalDate['dateUntil'],
+        },
+        bands: splitArray(festivalDate['bands']),
+        companions: splitArray(festivalDate['companions']),
+      })
     },
 
-    async add(festival: Festival) {
-      try {
-        await client.connect()
-
-        const db = client.db(DB)
-        const collection = db.collection(collectionName)
-
-        await collection.insertOne(festival)
-
-        return festival
-      } finally {
-        await client.close()
-      }
+    add(festival: Festival) {
+      db.prepare(
+        'INSERT INTO festivals (id, userId, dateFrom, dateUntil, name, bands, companions) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      ).run(
+        festival.id,
+        userId,
+        festival.date.from,
+        festival.date.until,
+        festival.name,
+        festival.bands.join(', '),
+        festival.companions.join(', '),
+      )
     },
 
-    async update(id: string, festival: Festival) {
-      try {
-        await client.connect()
-
-        const db = client.db(DB)
-        const collection = db.collection(collectionName)
-        const query = { id }
-        const document = {
-          $set: festival,
-        }
-
-        await collection.updateOne(query, document)
-
-        return festival
-      } finally {
-        await client.close()
-      }
+    update(id: string, festival: Festival) {
+      db.prepare(
+        'UPDATE festivals SET dateFrom = ?, dateUntil = ?, name = ?, bands = ?, companions = ? WHERE userId = ? AND id = ?',
+      ).run(
+        festival.date.from,
+        festival.date.until,
+        festival.name,
+        festival.bands.join(', '),
+        festival.companions.join(', '),
+        userId,
+        id,
+      )
     },
 
-    async remove(id: string) {
-      try {
-        await client.connect()
-
-        const db = client.db(DB)
-        const collection = db.collection(collectionName)
-        const query = { id }
-
-        await collection.deleteOne(query)
-      } finally {
-        await client.close()
-      }
+    remove(id: string) {
+      db.prepare('DELETE FROM festivals WHERE userId = ? AND id = ?').run(
+        userId,
+        id,
+      )
     },
   }
 }

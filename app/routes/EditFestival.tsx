@@ -11,7 +11,11 @@ import {
 import { backupFestivals } from '~/logic/backup'
 import { getBands } from '~/logic/bands'
 import { getCompanions } from '~/logic/companions'
-import { commitSession, getSession } from '~/logic/session'
+import {
+  commitSession,
+  getSession,
+  getUserIdFromSession,
+} from '~/logic/session'
 import { getUserById } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
 import festivalsProvider from '~/providers/festivalsProvider'
@@ -31,20 +35,20 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   }
 
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserById(session.get('userId'))
+  const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
   }
 
-  const festival = await festivalsProvider(user.id).getById(params.id)
+  const festival = festivalsProvider(user.id).getById(params.id)
 
   if (festival === undefined) {
     return data('festival not found', { status: 404 })
   }
 
-  const concerts = await concertsProvider(user.id).getAll()
-  const festivals = await festivalsProvider(user.id).getAll()
+  const concerts = concertsProvider(user.id).getAll()
+  const festivals = festivalsProvider(user.id).getAll()
   const { allBands } = getBands(concerts, festivals)
   const { allCompanions } = getCompanions(concerts, festivals)
 
@@ -57,7 +61,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const user = await getUserById(session.get('userId'))
+  const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
@@ -76,7 +80,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
     companions: extractListFromBody(body)('companions'),
   })
 
-  await festivalsProvider(user.id).update(festivalToUpdate.id, festivalToUpdate)
+  festivalsProvider(user.id).update(festivalToUpdate.id, festivalToUpdate)
 
   backupFestivals(user.id)
 

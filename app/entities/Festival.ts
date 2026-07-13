@@ -14,8 +14,8 @@ export type Festival = {
 }
 
 export const createFestival = (
-  festivalData: Partial<Festival> & Record<string, unknown>,
-) => {
+  festivalData: Record<keyof Festival, unknown>,
+): Festival => {
   const schema = z.object({
     id: z.string().default(createId()),
     date: z.object({
