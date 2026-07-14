@@ -79,9 +79,9 @@ const ConcertsView: FC<Route.ComponentProps> = ({ loaderData }) => {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-6 px-6">
+      <div className="flex justify-between items-center flex-wrap mb-6 px-6">
         <h2 className="text-2xl font-bold">Concerts</h2>
-        <ul className="flex gap-3">
+        <ul className="flex">
           <li>
             <NavLink to="/concerts/new">
               Add New Concert
