@@ -10,7 +10,6 @@ import {
   extractStringFromBody,
 } from '~/helpers/extractFromBody'
 import todaysDate from '~/helpers/todaysDate'
-import { backupFestivals } from '~/logic/backup'
 import { getBands } from '~/logic/bands'
 import { getCompanions } from '~/logic/companions'
 import {
@@ -67,8 +66,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
   })
 
   festivalsProvider(user.id).add(festivalToAdd)
-
-  backupFestivals(user.id)
 
   return redirect('/festivals', {
     headers: {

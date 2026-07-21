@@ -8,7 +8,6 @@ import {
   extractListFromBody,
   extractStringFromBody,
 } from '~/helpers/extractFromBody'
-import { backupFestivals } from '~/logic/backup'
 import { getBands } from '~/logic/bands'
 import { getCompanions } from '~/logic/companions'
 import {
@@ -81,8 +80,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
   })
 
   festivalsProvider(user.id).update(festivalToUpdate.id, festivalToUpdate)
-
-  backupFestivals(user.id)
 
   return redirect('/festivals', {
     headers: {

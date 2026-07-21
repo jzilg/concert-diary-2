@@ -8,7 +8,6 @@ import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
 import { downloadAsJSON } from '~/helpers/downloadAsJson'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
-import { backupFestivals } from '~/logic/backup'
 import { getSortedFestivals } from '~/logic/festivals'
 import {
   commitSession,
@@ -53,8 +52,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const id = extractStringFromBody(body)('id')
 
   festivalsProvider(user.id).remove(id)
-
-  backupFestivals(user.id)
 
   return new Response(undefined, {
     status: 204,
