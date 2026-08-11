@@ -1,13 +1,11 @@
-import { type FC, useEffect } from 'react'
+import type { FC } from 'react'
 import { BoxArrowDown, PlusCircle } from 'react-bootstrap-icons'
-import { redirect, useFetcher } from 'react-router'
-import { toast } from 'react-toastify'
+import { redirect } from 'react-router'
 import Button from '~/components/Button'
 import FestivalsTable from '~/components/FestivalsTable'
 import NavLink from '~/components/NavLink'
 import cachedJson from '~/helpers/cachedJson'
 import { downloadAsJSON } from '~/helpers/downloadAsJson'
-import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { getSortedFestivals } from '~/logic/festivals'
 import {
   commitSession,
@@ -40,36 +38,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   return cachedJson(request, await commitSession(session), sortedFestivals)
 }
 
-export const action = async ({ request }: Route.ActionArgs) => {
-  const session = await getSession(request.headers.get('Cookie'))
-  const user = getUserById(getUserIdFromSession(session))
-
-  if (user === undefined) {
-    return redirect('/login')
-  }
-
-  const body = await request.formData()
-  const id = extractStringFromBody(body)('id')
-
-  festivalsProvider(user.id).remove(id)
-
-  return new Response(undefined, {
-    status: 204,
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
-  })
-}
-
 const FestivalsView: FC<Route.ComponentProps> = ({ loaderData }) => {
-  const fetcher = useFetcher()
-
-  useEffect(() => {
-    if (fetcher.state === 'loading' && fetcher.formMethod === 'DELETE') {
-      toast.success('Festival removed')
-    }
-  }, [fetcher.formMethod, fetcher.state])
-
   if (loaderData === undefined) {
     return undefined
   }
@@ -97,17 +66,7 @@ const FestivalsView: FC<Route.ComponentProps> = ({ loaderData }) => {
           </li>
         </ul>
       </div>
-      <FestivalsTable
-        festivals={loaderData}
-        deleteFestival={(id) => {
-          fetcher.submit(
-            { id },
-            {
-              method: 'delete',
-            },
-          )
-        }}
-      />
+      <FestivalsTable festivals={loaderData} />
     </>
   )
 }

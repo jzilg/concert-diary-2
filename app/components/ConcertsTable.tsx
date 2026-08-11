@@ -1,14 +1,14 @@
 import { Activity, type FC } from 'react'
+import { PencilSquare } from 'react-bootstrap-icons'
+import { Link } from 'react-router'
 import type { Concert } from '~/entities/Concert'
-import TableControls from './TableControls'
 
 export type Props = {
   concerts: Concert[]
-  deleteConcert: (id: Concert['id']) => void
 }
 
 const ConcertsTable: FC<Props> = (props) => {
-  const { concerts, deleteConcert } = props
+  const { concerts } = props
 
   const rowElements = concerts.map((concert: Concert) => {
     const { id, band, location } = concert
@@ -18,16 +18,6 @@ const ConcertsTable: FC<Props> = (props) => {
       dateStyle: 'medium',
     }).format(new Date(concert.date))
     const editUrl = `/concerts/${id}`
-
-    const deleteFn = () => {
-      if (
-        window.confirm(
-          `Do you really want to delete the ${concert.band} concert`,
-        )
-      ) {
-        deleteConcert(id)
-      }
-    }
 
     return (
       <li
@@ -53,7 +43,14 @@ const ConcertsTable: FC<Props> = (props) => {
           </p>
         </div>
         <div>
-          <TableControls editUrl={editUrl} deleteFn={deleteFn} title={band} />
+          <Link
+            to={editUrl}
+            title={`Edit ${band}`}
+            aria-label={`Edit ${band}`}
+            className="inline-flex p-4 dark:bg-slate-800 bg-white hover:text-white focus-visible:text-white hover:bg-blue-600 focus-visible:bg-blue-600 outline-offset-2 transition-colors rounded-xl"
+          >
+            <PencilSquare aria-hidden />
+          </Link>
         </div>
       </li>
     )

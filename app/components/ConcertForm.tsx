@@ -1,5 +1,5 @@
-import { type FC, useId } from 'react'
-import { ArrowLeft, Save } from 'react-bootstrap-icons'
+import { Activity, type FC, useId } from 'react'
+import { ArrowLeft, Save, Trash } from 'react-bootstrap-icons'
 import { Form, type SubmitFunction } from 'react-router'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
@@ -81,14 +81,36 @@ const ConcertForm: FC<Props> = (props) => {
           list={companionsDataListId}
         />
       </label>
-      <ul className="flex justify-between mt-6">
+      <ul className="flex gap-3 mt-6">
         <li>
           <Button type="submit">
             Save
             <Save aria-hidden />
           </Button>
         </li>
-        <li>
+        <Activity mode={concert.id === '' ? 'hidden' : 'visible'}>
+          <li>
+            <Button
+              type="button"
+              title={`Delete ${band}`}
+              aria-label={`Delete ${band}`}
+              variant="alert"
+              onClick={() => {
+                if (
+                  window.confirm(
+                    `Do you really want to delete the ${concert.band} concert?`,
+                  )
+                ) {
+                  void saveConcert({ id }, { method: 'delete' })
+                }
+              }}
+            >
+              Delete
+              <Trash aria-hidden />
+            </Button>
+          </li>
+        </Activity>
+        <li className="ml-auto">
           <NavLink to="/concerts">
             <ArrowLeft aria-hidden />
             Back to Concerts

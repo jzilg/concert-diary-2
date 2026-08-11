@@ -68,18 +68,26 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   const body = await request.formData()
 
-  const festivalToUpdate = createFestival({
-    id: extractStringFromBody(body)('id'),
-    name: extractStringFromBody(body)('name'),
-    bands: extractListFromBody(body)('bands'),
-    date: {
-      from: extractStringFromBody(body)('dateFrom'),
-      until: extractStringFromBody(body)('dateUntil'),
-    },
-    companions: extractListFromBody(body)('companions'),
-  })
+  if (request.method === 'DELETE') {
+    const id = extractStringFromBody(body)('id')
 
-  festivalsProvider(user.id).update(festivalToUpdate.id, festivalToUpdate)
+    festivalsProvider(user.id).remove(id)
+  }
+
+  if (request.method === 'PUT') {
+    const festivalToUpdate = createFestival({
+      id: extractStringFromBody(body)('id'),
+      name: extractStringFromBody(body)('name'),
+      bands: extractListFromBody(body)('bands'),
+      date: {
+        from: extractStringFromBody(body)('dateFrom'),
+        until: extractStringFromBody(body)('dateUntil'),
+      },
+      companions: extractListFromBody(body)('companions'),
+    })
+
+    festivalsProvider(user.id).update(festivalToUpdate.id, festivalToUpdate)
+  }
 
   return redirect('/festivals', {
     headers: {
@@ -95,10 +103,21 @@ const EditFestival: FC<Route.ComponentProps> = ({ loaderData }) => {
   useEffect(() => {
     if (
       navigation.state === 'loading' &&
-      navigation.formMethod === 'PUT' &&
-      navigation.location.pathname === '/festivals'
+      navigation.location.pathname === '/festivals' &&
+      navigation.formMethod !== undefined
     ) {
-      toast.success('Festival updated')
+      const methodToMessageMap: Record<string, string> = {
+        DELETE: 'Festival removed',
+        PUT: 'Festival updated',
+      }
+
+      const message = methodToMessageMap[navigation.formMethod]
+
+      if (message === undefined) {
+        return
+      }
+
+      toast.success(message)
     }
   }, [navigation.state, navigation.formMethod, navigation.location])
 

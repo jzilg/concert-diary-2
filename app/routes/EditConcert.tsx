@@ -71,16 +71,24 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   const body = await request.formData()
 
-  const concertToUpdate = createConcert({
-    id: extractStringFromBody(body)('id'),
-    band: extractStringFromBody(body)('band'),
-    supportBands: extractListFromBody(body)('supportBands'),
-    location: extractStringFromBody(body)('location'),
-    date: extractStringFromBody(body)('date'),
-    companions: extractListFromBody(body)('companions'),
-  })
+  if (request.method === 'DELETE') {
+    const id = extractStringFromBody(body)('id')
 
-  concertsProvider(user.id).update(concertToUpdate.id, concertToUpdate)
+    concertsProvider(user.id).remove(id)
+  }
+
+  if (request.method === 'PUT') {
+    const concertToUpdate = createConcert({
+      id: extractStringFromBody(body)('id'),
+      band: extractStringFromBody(body)('band'),
+      supportBands: extractListFromBody(body)('supportBands'),
+      location: extractStringFromBody(body)('location'),
+      date: extractStringFromBody(body)('date'),
+      companions: extractListFromBody(body)('companions'),
+    })
+
+    concertsProvider(user.id).update(concertToUpdate.id, concertToUpdate)
+  }
 
   return redirect('/concerts', {
     headers: {
@@ -96,10 +104,21 @@ const EditConcert: FC<Route.ComponentProps> = ({ loaderData }) => {
   useEffect(() => {
     if (
       navigation.state === 'loading' &&
-      navigation.formMethod === 'PUT' &&
-      navigation.location.pathname === '/concerts'
+      navigation.location.pathname === '/concerts' &&
+      navigation.formMethod !== undefined
     ) {
-      toast.success('Concert updated')
+      const methodToMessageMap: Record<string, string> = {
+        DELETE: 'Concert removed',
+        PUT: 'Concert updated',
+      }
+
+      const message = methodToMessageMap[navigation.formMethod]
+
+      if (message === undefined) {
+        return
+      }
+
+      toast.success(message)
     }
   }, [navigation.state, navigation.formMethod, navigation.location])
 

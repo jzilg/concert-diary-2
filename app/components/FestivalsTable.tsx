@@ -1,14 +1,14 @@
 import type { FC } from 'react'
+import { PencilSquare } from 'react-bootstrap-icons'
+import { Link } from 'react-router'
 import type { Festival } from '~/entities/Festival'
-import TableControls from './TableControls'
 
 export type Props = {
   festivals: Festival[]
-  deleteFestival: (id: Festival['id']) => void
 }
 
 const FestivalsTable: FC<Props> = (props) => {
-  const { festivals, deleteFestival } = props
+  const { festivals } = props
 
   const rowElements = festivals.map((festival: Festival) => {
     const { id, name } = festival
@@ -22,16 +22,6 @@ const FestivalsTable: FC<Props> = (props) => {
     }).format(new Date(festival.date.until))
     const date = `from ${startDate} until ${endDate}`
     const editUrl = `/festivals/${id}`
-
-    const deleteFn = () => {
-      if (
-        window.confirm(
-          `Do you really want to delete the ${festival.name} festival`,
-        )
-      ) {
-        deleteFestival(id)
-      }
-    }
 
     return (
       <li
@@ -47,11 +37,14 @@ const FestivalsTable: FC<Props> = (props) => {
           </p>
         </div>
         <div>
-          <TableControls
-            editUrl={editUrl}
-            deleteFn={deleteFn}
-            title={festival.name}
-          />
+          <Link
+            to={editUrl}
+            title={`Edit ${name}`}
+            aria-label={`Edit ${name}`}
+            className="inline-flex p-4 dark:bg-slate-800 bg-white hover:text-white focus-visible:text-white hover:bg-blue-600 focus-visible:bg-blue-600 outline-offset-2 transition-colors rounded-xl"
+          >
+            <PencilSquare aria-hidden />
+          </Link>
         </div>
       </li>
     )
