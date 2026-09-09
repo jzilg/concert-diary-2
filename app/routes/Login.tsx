@@ -1,20 +1,35 @@
 import { Activity, type FC } from 'react'
 import { data, Form, redirect } from 'react-router'
 import Button from '~/components/Button'
+import CsrfInput from '~/components/CsrfInput'
 import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { commitSession, getSession } from '~/logic/session'
 import { getAuthenticatedUser } from '~/logic/user'
+import { getCsrfToken, validateCsrfRequest } from '~/security/csrf.server'
 import type { Route } from './+types/Login'
 
 export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | Login' },
 ]
 
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const session = await getSession(request.headers.get('Cookie'))
+
+  return data(
+    { csrfToken: getCsrfToken(session) },
+    {
+      headers: {
+        'Set-Cookie': await commitSession(session),
+      },
+    },
+  )
+}
+
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const body = await request.formData()
+  const body = await validateCsrfRequest(request, session)
 
   const authenticatedUser = await getAuthenticatedUser(
     extractStringFromBody(body)('username'),
@@ -46,11 +61,12 @@ export const action = async ({ request }: Route.ActionArgs) => {
   })
 }
 
-const Login: FC<Route.ComponentProps> = ({ actionData }) => {
+const Login: FC<Route.ComponentProps> = ({ actionData, loaderData }) => {
   return (
     <main className="container mx-auto p-6">
       <h1 className="text-4xl font-bold my-6">Concert Diary</h1>
       <Form method="post">
+        <CsrfInput token={loaderData.csrfToken} />
         <h2 className="text-2xl font-bold">Login</h2>
         <label className="block mt-3">
           <span className="block mb-2 font-bold">Username</span>

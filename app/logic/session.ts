@@ -8,6 +8,7 @@ const { getSession, commitSession, destroySession } =
       maxAge: 5 * 60 /* sec */,
       path: '/',
       httpOnly: true,
+      sameSite: 'lax',
       secrets: [config.sessionCookieSecret],
       secure: !config.modeIsDevelopment,
     },

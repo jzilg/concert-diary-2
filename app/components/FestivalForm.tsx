@@ -2,6 +2,7 @@ import { Activity, type FC, useId } from 'react'
 import { ArrowLeft, Save, Trash } from 'react-bootstrap-icons'
 import { Form, type SubmitFunction } from 'react-router'
 import Button from '~/components/Button'
+import CsrfInput from '~/components/CsrfInput'
 import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
 import type { Festival } from '~/entities/Festival'
@@ -10,12 +11,14 @@ type Props = {
   festival: Festival
   saveFestival: SubmitFunction
   method: 'post' | 'put'
+  csrfToken: string
   allBands: string[]
   allCompanions: string[]
 }
 
 const FestivalForm: FC<Props> = (props) => {
-  const { festival, saveFestival, method, allBands, allCompanions } = props
+  const { festival, saveFestival, method, csrfToken, allBands, allCompanions } =
+    props
   const { id, name, bands, date, companions } = festival
   const bandDatalistId = useId()
   const companionsDataListId = useId()
@@ -27,6 +30,7 @@ const FestivalForm: FC<Props> = (props) => {
         void saveFestival(event.currentTarget)
       }}
     >
+      <CsrfInput token={csrfToken} />
       <input name="id" type="hidden" value={id} />
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Name</span>
@@ -89,7 +93,7 @@ const FestivalForm: FC<Props> = (props) => {
                     `Do you really want to delete the ${name} festival?`,
                   )
                 ) {
-                  void saveFestival({ id }, { method: 'delete' })
+                  void saveFestival({ id, csrfToken }, { method: 'delete' })
                 }
               }}
             >

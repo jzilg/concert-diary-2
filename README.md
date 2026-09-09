@@ -16,6 +16,10 @@ Create a `.env` file in the root directory and add any necessary environment var
 cp .env.example .env
 ```
 
+Set `APP_ORIGIN` to the exact public origin used to access the application,
+including the scheme and any non-default port. Production requests fail closed
+when this value is missing or invalid.
+
 Start the development server:
 
 ```sh

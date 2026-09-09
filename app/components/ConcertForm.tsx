@@ -2,6 +2,7 @@ import { Activity, type FC, useId } from 'react'
 import { ArrowLeft, Save, Trash } from 'react-bootstrap-icons'
 import { Form, type SubmitFunction } from 'react-router'
 import Button from '~/components/Button'
+import CsrfInput from '~/components/CsrfInput'
 import Input from '~/components/Input'
 import NavLink from '~/components/NavLink'
 import type { Concert } from '~/entities/Concert'
@@ -10,6 +11,7 @@ type Props = {
   concert: Concert
   saveConcert: SubmitFunction
   method: 'post' | 'put'
+  csrfToken: string
   allBands: string[]
   allCompanions: string[]
   allLocations: string[]
@@ -20,6 +22,7 @@ const ConcertForm: FC<Props> = (props) => {
     concert,
     saveConcert,
     method,
+    csrfToken,
     allBands,
     allCompanions,
     allLocations,
@@ -36,6 +39,7 @@ const ConcertForm: FC<Props> = (props) => {
         void saveConcert(event.currentTarget)
       }}
     >
+      <CsrfInput token={csrfToken} />
       <input name="id" type="hidden" value={id} />
       <label className="block mt-3">
         <span className="block mb-2 font-bold">Band</span>
@@ -101,7 +105,7 @@ const ConcertForm: FC<Props> = (props) => {
                     `Do you really want to delete the ${concert.band} concert?`,
                   )
                 ) {
-                  void saveConcert({ id }, { method: 'delete' })
+                  void saveConcert({ id, csrfToken }, { method: 'delete' })
                 }
               }}
             >
