@@ -2,8 +2,6 @@ import { randomBytes, timingSafeEqual } from 'node:crypto'
 import config from '~/config'
 import { csrfFieldName } from '~/security/csrf'
 
-export { csrfFieldName } from '~/security/csrf'
-
 export const csrfSessionKey = 'csrfToken'
 
 const forbidden = () =>

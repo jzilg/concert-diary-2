@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { csrfFieldName } from '~/security/csrf'
 
 const loadCsrf = async () => {
   const [{ commitSession, getSession }, csrf] = await Promise.all([
@@ -43,8 +44,7 @@ describe('CSRF protection', () => {
   })
 
   it('accepts a same-origin request with the session token', async () => {
-    const { csrfFieldName, getCsrfToken, validateCsrfRequest } =
-      await loadCsrf()
+    const { getCsrfToken, validateCsrfRequest } = await loadCsrf()
     const token = getCsrfToken()
     const body = new FormData()
     body.set(csrfFieldName, token)
@@ -73,8 +73,7 @@ describe('CSRF protection', () => {
     ['missing', null],
     ['incorrect', 'incorrect-token'],
   ])('rejects a %s token', async (_, submittedToken) => {
-    const { csrfFieldName, getCsrfToken, validateCsrfRequest } =
-      await loadCsrf()
+    const { getCsrfToken, validateCsrfRequest } = await loadCsrf()
     const expectedToken = getCsrfToken()
     const body = new FormData()
 
@@ -95,8 +94,7 @@ describe('CSRF protection', () => {
   })
 
   it('rejects a mismatched origin even with a valid token', async () => {
-    const { csrfFieldName, getCsrfToken, validateCsrfRequest } =
-      await loadCsrf()
+    const { getCsrfToken, validateCsrfRequest } = await loadCsrf()
     const expectedToken = getCsrfToken()
     const body = new FormData()
     body.set(csrfFieldName, expectedToken)
@@ -113,8 +111,7 @@ describe('CSRF protection', () => {
   })
 
   it('rejects cross-site Fetch Metadata even with a valid token', async () => {
-    const { csrfFieldName, getCsrfToken, validateCsrfRequest } =
-      await loadCsrf()
+    const { getCsrfToken, validateCsrfRequest } = await loadCsrf()
     const expectedToken = getCsrfToken()
     const body = new FormData()
     body.set(csrfFieldName, expectedToken)
@@ -136,8 +133,7 @@ describe('CSRF protection', () => {
   it('fails closed when APP_ORIGIN is missing in production', async () => {
     vi.stubEnv('APP_ORIGIN', '')
     vi.resetModules()
-    const { csrfFieldName, getCsrfToken, validateCsrfRequest } =
-      await loadCsrf()
+    const { getCsrfToken, validateCsrfRequest } = await loadCsrf()
     const expectedToken = getCsrfToken()
     const body = new FormData()
     body.set(csrfFieldName, expectedToken)
