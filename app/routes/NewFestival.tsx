@@ -4,12 +4,12 @@ import { toast } from 'react-toastify'
 import FestivalForm from '~/components/FestivalForm'
 import type { Festival } from '~/entities/Festival'
 import { createFestival } from '~/entities/Festival'
-import cachedJson from '~/helpers/cachedJson'
 import {
   extractListFromBody,
   extractStringFromBody,
 } from '~/helpers/extractFromBody'
 import todaysDate from '~/helpers/todaysDate'
+import uncachedJson from '~/helpers/uncachedJson'
 import { getBands } from '~/logic/bands'
 import { getCompanions } from '~/logic/companions'
 import {
@@ -31,6 +31,9 @@ export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | New Festival' },
 ]
 
+export const headers = ({ loaderHeaders }: Route.HeadersArgs) =>
+  Object.fromEntries(loaderHeaders.entries())
+
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
   const user = getUserById(getUserIdFromSession(session))
@@ -46,7 +49,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const csrfToken = getCsrfToken()
   session.set(csrfSessionKey, csrfToken)
 
-  return cachedJson(request, await commitSession(session), {
+  return uncachedJson(await commitSession(session), {
     csrfToken,
     allBands,
     allCompanions,

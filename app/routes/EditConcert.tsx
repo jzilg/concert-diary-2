@@ -3,11 +3,11 @@ import { data, redirect, useNavigation, useSubmit } from 'react-router'
 import { toast } from 'react-toastify'
 import ConcertForm from '~/components/ConcertForm'
 import { createConcert } from '~/entities/Concert'
-import cachedJson from '~/helpers/cachedJson'
 import {
   extractListFromBody,
   extractStringFromBody,
 } from '~/helpers/extractFromBody'
+import uncachedJson from '~/helpers/uncachedJson'
 import { getBands } from '~/logic/bands'
 import { getCompanions } from '~/logic/companions'
 import { getAllLocations } from '~/logic/locations'
@@ -60,7 +60,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const csrfToken = getCsrfToken()
   session.set(csrfSessionKey, csrfToken)
 
-  return cachedJson(request, await commitSession(session), {
+  return uncachedJson(await commitSession(session), {
     csrfToken,
     concert,
     allBands,

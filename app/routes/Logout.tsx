@@ -1,5 +1,6 @@
 import { type FC, useEffect } from 'react'
-import { data, redirect, useFetcher } from 'react-router'
+import { redirect, useFetcher } from 'react-router'
+import uncachedJson from '~/helpers/uncachedJson'
 import { commitSession, destroySession, getSession } from '~/logic/session'
 import {
   csrfSessionKey,
@@ -12,19 +13,15 @@ export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | Logging out...' },
 ]
 
+export const headers = ({ loaderHeaders }: Route.HeadersArgs) =>
+  Object.fromEntries(loaderHeaders.entries())
+
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
   const csrfToken = getCsrfToken()
   session.set(csrfSessionKey, csrfToken)
 
-  return data(
-    { csrfToken },
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    },
-  )
+  return uncachedJson(await commitSession(session), { csrfToken })
 }
 
 export const action = async ({ request }: Route.ActionArgs) => {
