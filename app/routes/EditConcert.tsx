@@ -19,7 +19,11 @@ import {
 import { getUserById } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
 import festivalsProvider from '~/providers/festivalsProvider'
-import { getCsrfToken, validateCsrfRequest } from '~/security/csrf.server'
+import {
+  csrfSessionKey,
+  getCsrfToken,
+  validateCsrfRequest,
+} from '~/security/csrf.server'
 import type { Route } from './+types/EditConcert'
 
 export const meta: Route.MetaFunction = () => [
@@ -53,7 +57,8 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const { allBands } = getBands(concerts, festivals)
   const { allCompanions } = getCompanions(concerts, festivals)
   const allLocations = getAllLocations(concerts)
-  const csrfToken = getCsrfToken(session)
+  const csrfToken = getCsrfToken()
+  session.set(csrfSessionKey, csrfToken)
 
   return cachedJson(request, await commitSession(session), {
     csrfToken,
@@ -66,7 +71,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const body = await validateCsrfRequest(request, session)
+  const body = await validateCsrfRequest(request, session.get(csrfSessionKey))
   const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {

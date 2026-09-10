@@ -1,11 +1,10 @@
 import { randomBytes, timingSafeEqual } from 'node:crypto'
-import type { Session } from 'react-router'
 import config from '~/config'
 import { csrfFieldName } from '~/security/csrf'
 
 export { csrfFieldName } from '~/security/csrf'
 
-const csrfSessionKey = 'csrfToken'
+export const csrfSessionKey = 'csrfToken'
 
 const forbidden = () =>
   new Response('Forbidden', {
@@ -60,22 +59,11 @@ const tokensMatch = (
   )
 }
 
-export const getCsrfToken = (session: Session) => {
-  const token = session.get(csrfSessionKey)
-
-  if (typeof token === 'string' && token !== '') {
-    return token
-  }
-
-  const newToken = randomBytes(32).toString('base64url')
-  session.set(csrfSessionKey, newToken)
-
-  return newToken
-}
+export const getCsrfToken = () => randomBytes(32).toString('base64url')
 
 export const validateCsrfRequest = async (
   request: Request,
-  session: Session,
+  expectedToken: unknown,
 ) => {
   const origin = request.headers.get('Origin')
 
@@ -94,7 +82,6 @@ export const validateCsrfRequest = async (
   }
 
   const formData = await request.formData()
-  const expectedToken = session.get(csrfSessionKey)
 
   if (
     typeof expectedToken !== 'string' ||

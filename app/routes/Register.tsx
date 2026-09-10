@@ -7,7 +7,11 @@ import NavLink from '~/components/NavLink'
 import { extractStringFromBody } from '~/helpers/extractFromBody'
 import { commitSession, getSession } from '~/logic/session'
 import { createNewUser, userAlreadyExists, validateToken } from '~/logic/user'
-import { getCsrfToken, validateCsrfRequest } from '~/security/csrf.server'
+import {
+  csrfSessionKey,
+  getCsrfToken,
+  validateCsrfRequest,
+} from '~/security/csrf.server'
 import type { Route } from './+types/Register'
 
 export const meta: Route.MetaFunction = () => [
@@ -16,9 +20,11 @@ export const meta: Route.MetaFunction = () => [
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
+  const csrfToken = getCsrfToken()
+  session.set(csrfSessionKey, csrfToken)
 
   return data(
-    { csrfToken: getCsrfToken(session) },
+    { csrfToken },
     {
       headers: {
         'Set-Cookie': await commitSession(session),
@@ -29,7 +35,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  const body = await validateCsrfRequest(request, session)
+  const body = await validateCsrfRequest(request, session.get(csrfSessionKey))
   const username = extractStringFromBody(body)('username')
   const password = extractStringFromBody(body)('password')
   const token = extractStringFromBody(body)('token')

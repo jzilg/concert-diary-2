@@ -1,7 +1,11 @@
 import { type FC, useEffect } from 'react'
 import { data, redirect, useFetcher } from 'react-router'
 import { commitSession, destroySession, getSession } from '~/logic/session'
-import { getCsrfToken, validateCsrfRequest } from '~/security/csrf.server'
+import {
+  csrfSessionKey,
+  getCsrfToken,
+  validateCsrfRequest,
+} from '~/security/csrf.server'
 import type { Route } from './+types/Logout'
 
 export const meta: Route.MetaFunction = () => [
@@ -10,9 +14,11 @@ export const meta: Route.MetaFunction = () => [
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
+  const csrfToken = getCsrfToken()
+  session.set(csrfSessionKey, csrfToken)
 
   return data(
-    { csrfToken: getCsrfToken(session) },
+    { csrfToken },
     {
       headers: {
         'Set-Cookie': await commitSession(session),
@@ -23,7 +29,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
-  await validateCsrfRequest(request, session)
+  await validateCsrfRequest(request, session.get(csrfSessionKey))
 
   return redirect('/login', {
     headers: {

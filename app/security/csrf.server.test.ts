@@ -43,9 +43,9 @@ describe('CSRF protection', () => {
   })
 
   it('accepts a same-origin request with the session token', async () => {
-    const { csrfFieldName, getCsrfToken, session, validateCsrfRequest } =
+    const { csrfFieldName, getCsrfToken, validateCsrfRequest } =
       await loadCsrf()
-    const token = getCsrfToken(session)
+    const token = getCsrfToken()
     const body = new FormData()
     body.set(csrfFieldName, token)
     const request = new Request('https://concert-diary.example/concerts', {
@@ -57,18 +57,25 @@ describe('CSRF protection', () => {
       body,
     })
 
-    await expect(validateCsrfRequest(request, session)).resolves.toBeInstanceOf(
+    await expect(validateCsrfRequest(request, token)).resolves.toBeInstanceOf(
       FormData,
     )
+  })
+
+  it('generates tokens without reading or mutating session state', async () => {
+    const { getCsrfToken } = await loadCsrf()
+
+    expect(getCsrfToken).toHaveLength(0)
+    expect(getCsrfToken()).not.toBe(getCsrfToken())
   })
 
   it.each([
     ['missing', null],
     ['incorrect', 'incorrect-token'],
   ])('rejects a %s token', async (_, submittedToken) => {
-    const { csrfFieldName, getCsrfToken, session, validateCsrfRequest } =
+    const { csrfFieldName, getCsrfToken, validateCsrfRequest } =
       await loadCsrf()
-    getCsrfToken(session)
+    const expectedToken = getCsrfToken()
     const body = new FormData()
 
     if (submittedToken !== null) {
@@ -81,28 +88,36 @@ describe('CSRF protection', () => {
       body,
     })
 
-    await expectResponseStatus(() => validateCsrfRequest(request, session), 403)
+    await expectResponseStatus(
+      () => validateCsrfRequest(request, expectedToken),
+      403,
+    )
   })
 
   it('rejects a mismatched origin even with a valid token', async () => {
-    const { csrfFieldName, getCsrfToken, session, validateCsrfRequest } =
+    const { csrfFieldName, getCsrfToken, validateCsrfRequest } =
       await loadCsrf()
+    const expectedToken = getCsrfToken()
     const body = new FormData()
-    body.set(csrfFieldName, getCsrfToken(session))
+    body.set(csrfFieldName, expectedToken)
     const request = new Request('https://concert-diary.example/concerts', {
       method: 'POST',
       headers: { Origin: 'https://attacker.example' },
       body,
     })
 
-    await expectResponseStatus(() => validateCsrfRequest(request, session), 403)
+    await expectResponseStatus(
+      () => validateCsrfRequest(request, expectedToken),
+      403,
+    )
   })
 
   it('rejects cross-site Fetch Metadata even with a valid token', async () => {
-    const { csrfFieldName, getCsrfToken, session, validateCsrfRequest } =
+    const { csrfFieldName, getCsrfToken, validateCsrfRequest } =
       await loadCsrf()
+    const expectedToken = getCsrfToken()
     const body = new FormData()
-    body.set(csrfFieldName, getCsrfToken(session))
+    body.set(csrfFieldName, expectedToken)
     const request = new Request('https://concert-diary.example/concerts', {
       method: 'POST',
       headers: {
@@ -112,28 +127,36 @@ describe('CSRF protection', () => {
       body,
     })
 
-    await expectResponseStatus(() => validateCsrfRequest(request, session), 403)
+    await expectResponseStatus(
+      () => validateCsrfRequest(request, expectedToken),
+      403,
+    )
   })
 
   it('fails closed when APP_ORIGIN is missing in production', async () => {
     vi.stubEnv('APP_ORIGIN', '')
     vi.resetModules()
-    const { csrfFieldName, getCsrfToken, session, validateCsrfRequest } =
+    const { csrfFieldName, getCsrfToken, validateCsrfRequest } =
       await loadCsrf()
+    const expectedToken = getCsrfToken()
     const body = new FormData()
-    body.set(csrfFieldName, getCsrfToken(session))
+    body.set(csrfFieldName, expectedToken)
     const request = new Request('https://concert-diary.example/concerts', {
       method: 'POST',
       headers: { Origin: 'https://concert-diary.example' },
       body,
     })
 
-    await expectResponseStatus(() => validateCsrfRequest(request, session), 500)
+    await expectResponseStatus(
+      () => validateCsrfRequest(request, expectedToken),
+      500,
+    )
   })
 
   it('sets SameSite=Lax on the session cookie', async () => {
-    const { commitSession, getCsrfToken, session } = await loadCsrf()
-    getCsrfToken(session)
+    const { commitSession, csrfSessionKey, getCsrfToken, session } =
+      await loadCsrf()
+    session.set(csrfSessionKey, getCsrfToken())
 
     await expect(commitSession(session)).resolves.toContain('SameSite=Lax')
   })
