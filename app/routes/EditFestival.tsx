@@ -3,11 +3,11 @@ import { data, redirect, useNavigation, useSubmit } from 'react-router'
 import { toast } from 'react-toastify'
 import FestivalForm from '~/components/FestivalForm'
 import { createFestival } from '~/entities/Festival'
-import cachedJson from '~/helpers/cachedJson'
 import {
   extractListFromBody,
   extractStringFromBody,
 } from '~/helpers/extractFromBody'
+import uncachedJson from '~/helpers/uncachedJson'
 import { getBands } from '~/logic/bands'
 import { getCompanions } from '~/logic/companions'
 import {
@@ -18,6 +18,11 @@ import {
 import { getUserById } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
 import festivalsProvider from '~/providers/festivalsProvider'
+import {
+  csrfSessionKey,
+  getCsrfToken,
+  validateCsrfRequest,
+} from '~/security/csrf.server'
 import type { Route } from './+types/EditFestival'
 
 export const meta: Route.MetaFunction = () => [
@@ -50,8 +55,11 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const festivals = festivalsProvider(user.id).getAll()
   const { allBands } = getBands(concerts, festivals)
   const { allCompanions } = getCompanions(concerts, festivals)
+  const csrfToken = getCsrfToken()
+  session.set(csrfSessionKey, csrfToken)
 
-  return cachedJson(request, await commitSession(session), {
+  return uncachedJson(await commitSession(session), {
+    csrfToken,
     festival,
     allBands,
     allCompanions,
@@ -60,13 +68,12 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
+  const body = await validateCsrfRequest(request, session.get(csrfSessionKey))
   const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
   }
-
-  const body = await request.formData()
 
   if (request.method === 'DELETE') {
     const id = extractStringFromBody(body)('id')
@@ -136,6 +143,7 @@ const EditFestival: FC<Route.ComponentProps> = ({ loaderData }) => {
         festival={loaderData.festival}
         allBands={loaderData.allBands}
         allCompanions={loaderData.allCompanions}
+        csrfToken={loaderData.csrfToken}
         saveFestival={saveFestival}
         method="put"
       />

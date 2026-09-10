@@ -2,6 +2,7 @@
 
 export default Object.freeze({
   modeIsDevelopment: process.env['NODE_ENV'] === 'development',
+  appOrigin: process.env['APP_ORIGIN'] || '',
   sessionCookieSecret: process.env['SESSION_COOKIE_SECRET'] || '',
   registerToken: process.env['REGISTER_TOKEN'] || '',
   dropboxAccessToken: process.env['DROPBOX_ACCESS_TOKEN'] || '',

@@ -2,6 +2,7 @@ services:
   concert-diary:
     container_name: 'concert-diary'
     environment:
+      - APP_ORIGIN=${APP_ORIGIN}
       - SESSION_COOKIE_SECRET=${SESSION_COOKIE_SECRET}
       - REGISTER_TOKEN=${REGISTER_TOKEN}
       - DROPBOX_ACCESS_TOKEN=${DROPBOX_ACCESS_TOKEN}

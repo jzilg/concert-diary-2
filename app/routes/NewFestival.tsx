@@ -4,12 +4,12 @@ import { toast } from 'react-toastify'
 import FestivalForm from '~/components/FestivalForm'
 import type { Festival } from '~/entities/Festival'
 import { createFestival } from '~/entities/Festival'
-import cachedJson from '~/helpers/cachedJson'
 import {
   extractListFromBody,
   extractStringFromBody,
 } from '~/helpers/extractFromBody'
 import todaysDate from '~/helpers/todaysDate'
+import uncachedJson from '~/helpers/uncachedJson'
 import { getBands } from '~/logic/bands'
 import { getCompanions } from '~/logic/companions'
 import {
@@ -20,11 +20,19 @@ import {
 import { getUserById } from '~/logic/user'
 import concertsProvider from '~/providers/concertsProvider'
 import festivalsProvider from '~/providers/festivalsProvider'
+import {
+  csrfSessionKey,
+  getCsrfToken,
+  validateCsrfRequest,
+} from '~/security/csrf.server'
 import type { Route } from './+types/NewFestival'
 
 export const meta: Route.MetaFunction = () => [
   { title: 'Concert Diary | New Festival' },
 ]
+
+export const headers = ({ loaderHeaders }: Route.HeadersArgs) =>
+  Object.fromEntries(loaderHeaders.entries())
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
@@ -38,8 +46,11 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const festivals = festivalsProvider(user.id).getAll()
   const { allBands } = getBands(concerts, festivals)
   const { allCompanions } = getCompanions(concerts, festivals)
+  const csrfToken = getCsrfToken()
+  session.set(csrfSessionKey, csrfToken)
 
-  return cachedJson(request, await commitSession(session), {
+  return uncachedJson(await commitSession(session), {
+    csrfToken,
     allBands,
     allCompanions,
   })
@@ -47,13 +58,13 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'))
+  const body = await validateCsrfRequest(request, session.get(csrfSessionKey))
   const user = getUserById(getUserIdFromSession(session))
 
   if (user === undefined) {
     return redirect('/login')
   }
 
-  const body = await request.formData()
   const festivalToAdd = createFestival({
     id: undefined,
     name: extractStringFromBody(body)('name'),
@@ -105,6 +116,7 @@ const NewFestival: FC<Route.ComponentProps> = ({ loaderData }) => {
         festival={festival}
         allBands={loaderData.allBands}
         allCompanions={loaderData.allCompanions}
+        csrfToken={loaderData.csrfToken}
         saveFestival={saveFestival}
         method="post"
       />
